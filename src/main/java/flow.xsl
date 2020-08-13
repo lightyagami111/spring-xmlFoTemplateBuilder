@@ -1,2 +1,0 @@
-<fo:flow>
-</fo:flow>

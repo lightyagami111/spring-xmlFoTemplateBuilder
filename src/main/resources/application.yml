@@ -1,109 +1,138 @@
-templateComponents:
-    SKODA, VW:
-        activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
-            - root:
-                root/layout-master-set: 
-                    - simple-page-master:
-                        simple-page-master:
-                            '@master-name': first-page
-                        simple-page-master/region-before: 
-                            '@region-name': xsl-region-before-first
-                        simple-page-master/region-after: 
-                            '@region-name': xsl-region-after                    
-                    - simple-page-master:
-                        simple-page-master:
-                            '@master-name': all-pages
-                        simple-page-master/region-before: 
-                            '@region-name': xsl-region-before
-                        simple-page-master/region-after: 
-                            '@region-name': xsl-region-after
-                    - page-sequence-master:
-                        page-sequence-master:
-                            '@master-name': my-sequence
-                        page-sequence-master/single-page-master-reference:
-                            '@master-reference': first-page
-                        page-sequence-master/repeatable-page-master-reference:
-                            '@master-reference': all-pages
-                root/page-sequence:
-                    - static-content:
-                        static-content:
-                            '@flow-name': xsl-region-before-first
-                    - static-content:
-                        static-content:
-                            '@flow-name': xsl-region-before
-                    - static-content:
-                        static-content:
-                            '@flow-name': xsl-region-after
-                    - flow:
-                        flow:
-                            '@flow-name': xsl-region-body
+templateLayouts:
+  SKODA, VW:
+    activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
+      root:
+        layout-master-set:
+          simple-page-master:
+            - master-name: first-page
+              region-body:
+                region-name: xsl-region-body
+              region-before:
+                region-name: xsl-region-before-first
+              region-after:
+                region-name: xsl-region-after
+            - master-name: all-pages
+              region-body:
+                region-name: xsl-region-body
+              region-before:
+                region-name: xsl-region-before
+              region-after:
+                region-name: xsl-region-after
+          page-sequence-master:
+            master-name: my-sequence
+            single-page-master-reference:
+              master-reference: first-page
+            repeatable-page-master-reference:
+              master-reference: all-pages
+        page-sequence:
+          master-reference: my-sequence
+          static-content:
+            - flow-name: xsl-region-before-first
+            - flow-name: xsl-region-before
+            - flow-name: xsl-region-after
+          flow:
+            flow-name: xsl-region-body
+  VW:
+    voucher-delivery:
+      root:
+        layout-master-set:
+          simple-page-master:
+            - master-name: my-sequence
+              region-body:
+                region-name: xsl-region-body
+        page-sequence:
+          master-reference: my-sequence
+          flow:
+            flow-name: xsl-region-body
 
+#----------------------------------------------
+templateFlows:
+  VW:
+    activation:
+      xsl-region-before-first:
+        block-container:
+          block:
+            external-graphic:
+
+
+
+
+
+#----------------------------------------------
 templateStyleAttributes:
-    VW:
-        activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
-                root: 
-                    - font-family=Arial, sans-serif, SimSun
-                root/layout-master-set/simple-page-master[@master-name="first-page"]: 
-                    - page-height=29.7cm
-                    - page-width=21cm
-                    - margin-top=2.3cm
-                    - margin-bottom=2cm
-                    - margin-left=2cm
-                    - margin-right=2cm
-                root/layout-master-set/simple-page-master[@master-name="first-page"]/region-body: 
-                    - margin-top=4cm
-                    - margin-bottom=3cm
-                root/layout-master-set/simple-page-master[@master-name="first-page"]/region-before: 
-                    - extent=1cm
-                root/layout-master-set/simple-page-master[@master-name="first-page"]/region-after: 
-                    - extent=3cm
-                    - margin-bottom=2cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]: 
-                    - page-height=29.7cm
-                    - page-width=21cm
-                    - margin-top=2.3cm
-                    - margin-bottom=2cm
-                    - margin-left=2cm
-                    - margin-right=2cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-body: 
-                    - margin-top=5.5cm
-                    - margin-bottom=3cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-before: 
-                    - extent=1cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-after: 
-                    - extent=3cm
-                    - margin-bottom=2cm
-    SKODA:
-        activation, credit-note:
-                root: 
-                    - font-family=SKODANext, sans-serif, SimSun
-                root/layout-master-set/simple-page-master[@master-name="first-page"]: 
-                    - page-height=29.7cm
-                    - page-width=21cm
-                    - margin-top=0.6cm
-                    - margin-bottom=2cm
-                    - margin-left=1.2cm
-                    - margin-right=1cm
-                root/layout-master-set/simple-page-master[@master-name="first-page"]/region-body:
-                    - margin-top=3.109cm
-                    - margin-bottom=3cm
-                root/layout-master-set/simple-page-master[@master-name="first-page"]/region-before: 
-                    - extent=1cm
-                root/layout-master-set/simple-page-master[@master-name="first-page"]/region-after:
-                    - extent=3.5cm
-                    - margin-bottom=2cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]: 
-                    - page-height=29.7cm
-                    - page-width=21cm
-                    - margin-top=0.6cm
-                    - margin-bottom=2cm
-                    - margin-left=1.2cm
-                    - margin-right=1cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-body: 
-                    - margin-top=3.5cm
-                    - margin-bottom=3cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-before: 
-                    - extent=1cm
-                root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-after: 
-                    - extent=3.5cm
-                    - margin-bottom=2cm
+  VW:
+    activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
+      root:
+        font-family: Arial, sans-serif, SimSun
+      root/layout-master-set/simple-page-master[@master-name="first-page"]:
+        page-height: 29.7cm
+        page-width: 21cm
+        margin-top: 2.3cm
+        margin-bottom: 2cm
+        margin-left: 2cm
+        margin-right: 2cm
+      root/layout-master-set/simple-page-master[@master-name="first-page"]/region-body:
+        margin-top: 4cm
+        margin-bottom: 3cm
+      root/layout-master-set/simple-page-master[@master-name="first-page"]/region-before:
+        extent: 1cm
+      root/layout-master-set/simple-page-master[@master-name="first-page"]/region-after:
+        extent: 3cm
+        margin-bottom: 2cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]:
+        page-height: 29.7cm
+        page-width: 21cm
+        margin-top: 2.3cm
+        margin-bottom: 2cm
+        margin-left: 2cm
+        margin-right: 2cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-body:
+        margin-top: 5.5cm
+        margin-bottom: 3cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-before:
+        extent: 1cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-after:
+        extent: 3cm
+        margin-bottom: 2cm
+
+    voucher-delivery:
+      root/layout-master-set/simple-page-master[@master-name="my-sequence"]:
+        page-height: 29.7cm
+        page-width: 21cm
+
+
+
+  SKODA:
+    activation, credit-note:
+      root:
+        font-family: SKODANext, sans-serif, SimSun
+      root/layout-master-set/simple-page-master[@master-name="first-page"]:
+        page-height: 29.7cm
+        page-width: 21cm
+        margin-top: 0.6cm
+        margin-bottom: 2cm
+        margin-left: 1.2cm
+        margin-right: 1cm
+      root/layout-master-set/simple-page-master[@master-name="first-page"]/region-body:
+        margin-top: 3.109cm
+        margin-bottom: 3cm
+      root/layout-master-set/simple-page-master[@master-name="first-page"]/region-before:
+        extent: 1cm
+      root/layout-master-set/simple-page-master[@master-name="first-page"]/region-after:
+        extent: 3.5cm
+        margin-bottom: 2cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]:
+        page-height: 29.7cm
+        page-width: 21cm
+        margin-top: 0.6cm
+        margin-bottom: 2cm
+        margin-left: 1.2cm
+        margin-right: 1cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-body:
+        margin-top: 3.5cm
+        margin-bottom: 3cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-before:
+        extent: 1cm
+      root/layout-master-set/simple-page-master[@master-name="all-pages"]/region-after:
+        extent: 3.5cm
+        margin-bottom: 2cm

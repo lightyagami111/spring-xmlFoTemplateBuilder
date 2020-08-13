@@ -10,6 +10,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.*;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -21,42 +24,57 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.*;
 
 /**
- *
  * @author Ivaylo Rusev
  */
 public final class XmlUtil {
-  private XmlUtil(){}
-  
-  public static void applyAttributes(Document document, String xpathExpression, List<String> attributes) throws Exception {
+    private XmlUtil() {
+    }
+
+    public static String convertToXml(Object source, Class... type) {
+        String result;
+        StringWriter sw = new StringWriter();
+        try {
+            JAXBContext carContext = JAXBContext.newInstance(type);
+            Marshaller marshaller = carContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(source, sw);
+            result = sw.toString();
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
+
+    public static void applyAttributes(Document document, String xpathExpression, HashMap<String, String> attributes) throws Exception {
         // Create XPathFactory object
         XPathFactory xpathFactory = XPathFactory.newInstance();
-         
+
         // Create XPath object
         XPath xpath = xpathFactory.newXPath();
- 
-        try
-        {
+
+        try {
             // Create XPathExpression object
             XPathExpression expr = xpath.compile(xpathExpression);
-             
+
             // Evaluate expression result on XML document
             List<Node> nodes = asList((NodeList) expr.evaluate(document, XPathConstants.NODESET));
             for (Node node : nodes) {
-                for (String attribute : attributes) {
-                    String[] attrNV = attribute.split("=");
-                    ((Element)node).setAttribute(attrNV[0],attrNV[1]);                    
+                for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                    ((Element) node).setAttribute(entry.getKey(), entry.getValue());
                 }
             }
-                 
+
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         }
-   }
-  
-  public static String getDocumentAsString(Document doc) throws IOException, TransformerException {
+    }
+
+    public static String getDocumentAsString(Document doc) throws IOException, TransformerException {
         TransformerFactory tf = TransformerFactory.newDefaultInstance().newInstance();
         Transformer transformer = tf.newTransformer();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
@@ -70,22 +88,25 @@ public final class XmlUtil {
         return new String(writer.toString().getBytes());
     }
 
-  public static List<Node> asList(NodeList n) {
-    return n.getLength()==0?
-      Collections.<Node>emptyList(): new NodeListWrapper(n);
-  }
-  
-  
-  static final class NodeListWrapper extends AbstractList<Node> implements RandomAccess {
-    private final NodeList list;
-    NodeListWrapper(NodeList l) {
-      list=l;
+    public static List<Node> asList(NodeList n) {
+        return n.getLength() == 0 ?
+                Collections.<Node>emptyList() : new NodeListWrapper(n);
     }
-    public Node get(int index) {
-      return list.item(index);
+
+
+    static final class NodeListWrapper extends AbstractList<Node> implements RandomAccess {
+        private final NodeList list;
+
+        NodeListWrapper(NodeList l) {
+            list = l;
+        }
+
+        public Node get(int index) {
+            return list.item(index);
+        }
+
+        public int size() {
+            return list.getLength();
+        }
     }
-    public int size() {
-      return list.getLength();
-    }
-  }
 }
