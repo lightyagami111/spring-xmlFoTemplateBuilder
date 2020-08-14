@@ -8,11 +8,13 @@ package com.ivaylorusev.xmlFoTemplateBuilder;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -42,13 +44,27 @@ public class ResourceService {
         }
         return result;
     }
+
+    private String getInputStreamAsString(InputStream inputStream) {
+        String result = "";
+        try {
+            result = IOUtils.toString(inputStream, Charset.defaultCharset());
+        } catch (IOException e) {
+            log.warn(e.getMessage());
+        }
+        return result;
+    }
     
     public InputStream getTemplateConfig() {
         return this.getInputStream(Paths.get("application.yml"));
     }
     
-    public InputStream getTemplateComponent(String componentName) {
-        return this.getInputStream(Paths.get("/templateComponents",componentName+".xsl"));
+    public String getComponent(String componentName) {
+        return getInputStreamAsString(getInputStream(Paths.get("/templateLayout",componentName+".mustache")));
+    }
+
+    public InputStream getComponentIS(String dir, String componentName) {
+        return getInputStream(Paths.get(dir,componentName+".mustache"));
     }
     
 }
