@@ -17,8 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,8 +36,9 @@ public class BasicApplicationTests {
         Brand b = Brand.SKODA;
         MailTypeVariant mtv = MailTypeVariant.ACTIVATION;
 
-        HashMap templateLayoutsByBrandAndMailType = getTemplateComponent("templateLayout", b, mtv);
-        String component = resourceService.getComponent("root");
+        String rootComponent = resourceService.getComponent("/templateLayout","root");
+        HashMap<String, Object> templateLayoutsByBrandAndMailType = getTemplateComponent("templateLayout", b, mtv);
+
 
         Mustache.Compiler templateLayoutCompiler = Mustache.compiler().
                 withDelims("%{ }").
@@ -46,11 +47,14 @@ public class BasicApplicationTests {
                     public Reader getTemplate(String name) throws FileNotFoundException {
                         return new InputStreamReader(resourceService.getComponentIS("/templateLayout", name));
                     }
-                });       
+                });
+        String templateLayout = templateLayoutCompiler.compile(rootComponent).execute(templateLayoutsByBrandAndMailType);
 
-        String templateLayout = templateLayoutCompiler.compile(component).execute(templateLayoutsByBrandAndMailType);
 
-        HashMap templateFlowsByBrandAndMailType = getTemplateComponent("templateFlow", b, mtv);
+
+
+
+        HashMap<String, Object> templateFlowsByBrandAndMailType = getTemplateComponent("templateFlow", b, mtv);
         Mustache.Compiler templateFlowCompiler = Mustache.compiler().
                 withDelims("${ }").
                 escapeHTML(false).
@@ -59,6 +63,21 @@ public class BasicApplicationTests {
                         return new InputStreamReader(resourceService.getComponentIS("/templateFlow", name));
                     }
                 });
+
+        for(Map.Entry<String, Object> flow : templateFlowsByBrandAndMailType.entrySet()) {
+            String flowName = flow.getKey();
+            List<HashMap<String, Object>> components = (List<HashMap<String, Object>>) flow.getValue();
+            StringBuilder sb = new StringBuilder();
+            for(HashMap<String, Object> c : components){
+                for(Map.Entry<String, Object> ce : c.entrySet()) {
+                    String componentName = ce.getKey();
+                    HashMap componentData = (HashMap) ce.getValue();
+                    String component = resourceService.getComponent("/templateFlow",componentName);
+                    sb.append("\n").append(templateFlowCompiler.compile(component).execute(componentData));
+                }
+            }
+            templateFlowsByBrandAndMailType.put(flowName, sb.toString());
+        }
 
         System.out.println(templateFlowCompiler.compile(templateLayout).execute(templateFlowsByBrandAndMailType));
     }

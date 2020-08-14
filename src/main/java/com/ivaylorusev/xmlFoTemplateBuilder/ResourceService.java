@@ -59,8 +59,8 @@ public class ResourceService {
         return this.getInputStream(Paths.get("application.yml"));
     }
     
-    public String getComponent(String componentName) {
-        return getInputStreamAsString(getInputStream(Paths.get("/templateLayout",componentName+".mustache")));
+    public String getComponent(String dir, String componentName) {
+        return getInputStreamAsString(getInputStream(Paths.get(dir,componentName+".mustache")));
     }
 
     public InputStream getComponentIS(String dir, String componentName) {

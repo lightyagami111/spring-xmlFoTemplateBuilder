@@ -1,0 +1,10 @@
+<fo:layout-master-set>
+    %{#simple-page-master}
+        %{> simple-page-master}
+    %{/simple-page-master}
+
+    %{#page-sequence-master}
+        %{> page-sequence-master}
+    %{/page-sequence-master}
+
+</fo:layout-master-set>
