@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format" exclude-result-prefixes="fo">
+
     <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" %{root.attributes}>
+
         %{#root.layout-master-set}
-            %{> layout-master-set}
+
+            <fo:layout-master-set>
+                %{#simple-page-master}
+                    <fo:simple-page-master master-name="%{master-name}" %{attributes}>
+                        <fo:region-body %{#region-body.region-name} region-name="%{.}" %{/region-body.region-name} %{#region-body.attributes} %{.} %{/region-body.attributes}/>
+                        %{#region-before} <fo:region-before region-name="%{region-before.region-name}" %{region-before.attributes}/> %{/region-before}
+                        %{#region-after} <fo:region-after region-name="%{region-after.region-name}" %{region-after.attributes}/> %{/region-after}
+                        %{#region-start} <fo:region-start region-name="%{region-start.region-name}" %{region-start.attributes}/> %{/region-start}
+                        %{#region-end} <fo:region-end region-name="%{region-end.region-name}" %{region-end.attributes}/> %{/region-end}
+                    </fo:simple-page-master>
+                %{/simple-page-master}
+
+                %{#page-sequence-master}
+                    <fo:page-sequence-master master-name="%{master-name}">
+                        <fo:single-page-master-reference master-reference="%{single-page-master-reference.master-reference}"/>
+                        <fo:repeatable-page-master-reference master-reference="%{repeatable-page-master-reference.master-reference}"/>
+                    </fo:page-sequence-master>
+                %{/page-sequence-master}
+
+            </fo:layout-master-set>
+
         %{/root.layout-master-set}
 
+
+
         %{#root.page-sequence}
-            %{> page-sequence}
+            <fo:page-sequence master-reference="%{master-reference}">
+                %{#static-content}
+                <fo:static-content flow-name="%{flow-name}">
+                    ${#%{flow-name}}
+                    ${.}
+                    ${/%{flow-name}}
+                </fo:static-content>
+                %{/static-content}
+
+                <fo:flow flow-name="xsl-region-body">
+                    ${#xsl-region-body}
+                    ${.}
+                    ${/xsl-region-body}
+                </fo:flow>
+
+            </fo:page-sequence>
         %{/root.page-sequence}
+
     </fo:root>
 </xsl:stylesheet>

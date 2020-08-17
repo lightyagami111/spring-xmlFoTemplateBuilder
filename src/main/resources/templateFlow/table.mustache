@@ -1,0 +1,34 @@
+<fo:table ${#table.attributes} ${.} ${/table.attributes}>
+    ${#table-column}
+        <fo:table-column ${#attributes} ${.} ${/attributes}/>
+    ${/table-column}
+
+    ${#table-header}
+    <fo:table-header>
+        ${#table-cell}
+            <fo:table-cell ${#table-cell.attributes} ${.} ${/table-cell.attributes}>
+                <fo:block ${#block.attributes} ${.} ${/block.attributes}>
+                    ${#block.contentKey} {{&{${.}}} ${/block.contentKey}
+                </fo:block>
+            </fo:table-cell>
+        ${/table-cell}
+    </fo:table-header>
+    ${/table-header}
+
+    ${#table-body}
+    <fo:table-body ${#table-body.attributes} ${.} ${/table-body.attributes}>
+        ${#table-row}
+        <fo:table-row ${#table-row.attributes} ${.} ${/table-row.attributes}>
+            ${#table-cell}
+            <fo:table-cell ${#table-cell.attributes} ${.} ${/table-cell.attributes}>
+                <fo:block ${#block.attributes} ${.} ${/block.attributes}>
+                    ${#block.contentKey} {{&{${.}}} ${/block.contentKey}
+                </fo:block>
+            </fo:table-cell>
+            ${/table-cell}
+        </fo:table-row>
+        ${/table-row}
+    </fo:table-body>
+    ${/table-body}
+
+</fo:table>

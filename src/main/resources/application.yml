@@ -1,3 +1,20 @@
+templateRequestData:
+  logo: classpath:{//logo}
+
+templateContentKeys:
+  general:
+    page-number-citation: invoice.text.page
+  VW:
+    activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
+      commercialregister: invoice.text.commercialregister
+      vatvw: invoice.text.vatvw
+      postalvw: invoice.text.postalvw
+      board: invoice.text.board
+  SKODA:
+    activation, credit-note:
+      address: invoice.footer.address
+
+
 templateLayout:
   VW:
     activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
@@ -101,7 +118,7 @@ templateFlow:
             block-external-graphic:
               atributes: text-align="left" margin-left="-4.5mm"
               external-graphic:
-                src: classpath:{//logo}
+                src: templateRequestData.logo
                 attributes: height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"
       xsl-region-before:
         - block-container-external-graphic:
@@ -109,24 +126,43 @@ templateFlow:
             block-external-graphic:
               atributes: text-align="left" margin-left="-4.5mm"
               external-graphic:
-                src: classpath:{//logo}
+                src: templateRequestData.logo
                 attributes: height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"
         - page-number-citation:
             attributes: text-align="end" margin-top="12mm"  font-size="10pt"
-            contentKey: '{{invoice.text.page}}'
+            contentKey: templateContentKeys.page-number-citation
+      xsl-region-after:
+        - block-contentKeys-2:
+            attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
+            contentKey1: templateContentKeys.commercialregister
+            contentKey2: templateContentKeys.vatvw
+        - block-table:
+            attributes: font-size="7pt"
+            table:
+              table-body:
+                table-row:
+                  table-cell:
+                    - block:
+                        attributes: color="#B4B8BA"
+                        contentKey: templateContentKeys.postalvw
+                    - block:
+                        attributes: color="#B4B8BA"
+                    - block:
+                        attributes: color="#B4B8BA"
+                        contentKey: templateContentKeys.board
 
     voucher-delivery:
       xsl-region-body:
 
   SKODA:
-    activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
+    activation, credit-note:
       xsl-region-before-first:
         - block-container-external-graphic-and-leader:
             block-external-graphic:
-              atributes: text-align="left" margin-left="-4.5mm"
+              atributes: margin-top="1.1mm" margin-left="0.2mm"
               external-graphic:
-                src: classpath:{//logo}
-                attributes: height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"
+                src: templateRequestData.logo
+                attributes: height="8.6mm" width="3.95cm" content-height="scale-to-fit" scaling="non-uniform"
             block-leader:
               attributes: margin-bottom="5mm" margin-top="2.22mm"
               leader:
@@ -135,10 +171,10 @@ templateFlow:
       xsl-region-before:
         - block-container-external-graphic-and-leader:
             block-external-graphic:
-              atributes: text-align="left" margin-left="-4.5mm"
+              atributes: margin-top="1.1mm" margin-left="0.2mm"
               external-graphic:
-                src: classpath:{//logo}
-                attributes: height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"
+                src: templateRequestData.logo
+                attributes: height="8.6mm" width="3.95cm" content-height="scale-to-fit" scaling="non-uniform"
             block-leader:
               attributes: margin-bottom="5mm" margin-top="2.22mm"
               leader:
@@ -146,4 +182,23 @@ templateFlow:
                 attributes: leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"
         - page-number-citation:
             attributes: text-align="end" margin-top="12mm"  font-size="11pt"
-            contentKey: '{{invoice.text.page}}'
+            contentKey: templateContentKeys.page-number-citation
+      xsl-region-after:
+        - block-leader:
+            leader:
+              pattern: rule
+              attributes: leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"
+        - block-table:
+            attributes: font-size="10pt" margin-top="5mm"
+            table:
+              attributes: table-layout="fixed" width="100%"
+              table-column:
+                - attributes: column-width="70%"
+                - attributes: column-width="30%"
+              table-body:
+                attributes: width="100%"
+                table-row:
+                  table-cell:
+                    - block:
+                        contentKey: templateContentKeys.address
+                    - block:

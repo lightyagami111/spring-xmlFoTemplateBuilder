@@ -1,7 +1,11 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format" exclude-result-prefixes="fo">
+
     <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="SKODANext, sans-serif, SimSun">
+
+
         <fo:layout-master-set>
             <fo:simple-page-master master-name="first-page" page-height="29.7cm" page-width="21cm" margin-top="0.6cm" margin-bottom="2cm" margin-left="1.2cm" margin-right="1cm">
                 <fo:region-body  region-name="xsl-region-body"   margin-top="3.109cm" margin-bottom="3cm" />
@@ -25,16 +29,19 @@
 
         </fo:layout-master-set>
 
+
+
+
         <fo:page-sequence master-reference="my-sequence">
             <fo:static-content flow-name="xsl-region-before-first">
 
                 <fo:block-container >
                     <fo:block>
-                        <fo:block text-align="left" margin-left="-4.5mm">
-                            <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"/>
+                        <fo:block margin-top="1.1mm" margin-left="0.2mm">
+                            <fo:external-graphic src="classpath:{//logo}" height="8.6mm" width="3.95cm" content-height="scale-to-fit" scaling="non-uniform"/>
                         </fo:block>
 
-                        <fo:block margin-bottom="5mm" margin-top="2.22mm">
+                        <fo:block  margin-bottom="5mm" margin-top="2.22mm" >
                             <fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"/>
                         </fo:block>
 
@@ -45,11 +52,11 @@
 
                 <fo:block-container >
                     <fo:block>
-                        <fo:block text-align="left" margin-left="-4.5mm">
-                            <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"/>
+                        <fo:block margin-top="1.1mm" margin-left="0.2mm">
+                            <fo:external-graphic src="classpath:{//logo}" height="8.6mm" width="3.95cm" content-height="scale-to-fit" scaling="non-uniform"/>
                         </fo:block>
 
-                        <fo:block margin-bottom="5mm" margin-top="2.22mm">
+                        <fo:block  margin-bottom="5mm" margin-top="2.22mm" >
                             <fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"/>
                         </fo:block>
 
@@ -60,11 +67,39 @@
                 </fo:block>
             </fo:static-content>
             <fo:static-content flow-name="xsl-region-after">
+
+                <fo:block >
+                    <fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"/>
+                </fo:block>
+                <fo:block  font-size="10pt" margin-top="5mm" >
+                    <fo:table  table-layout="fixed" width="100%" >
+                        <fo:table-column  column-width="70%" />
+                        <fo:table-column  column-width="30%" />
+
+
+                        <fo:table-body  width="100%" >
+                            <fo:table-row >
+                                <fo:table-cell >
+                                    <fo:block >
+                                        {{invoice.footer.address}
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell >
+                                    <fo:block >
+
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+
+                    </fo:table>
+                </fo:block>
             </fo:static-content>
 
             <fo:flow flow-name="xsl-region-body">
             </fo:flow>
 
         </fo:page-sequence>
+
     </fo:root>
 </xsl:stylesheet>
