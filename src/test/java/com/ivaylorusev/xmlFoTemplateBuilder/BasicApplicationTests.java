@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -32,8 +34,8 @@ public class BasicApplicationTests {
 
     @Test
     public void parse() throws Exception {
-        Brand b = Brand.SKODA;
-        MailTypeVariant mtv = MailTypeVariant.ACTIVATION;
+        Brand b = Brand.VW;
+        MailTypeVariant mtv = MailTypeVariant.CREDIT_NOTE;
 
         //----------------------------------
         //building root layout
@@ -95,7 +97,7 @@ public class BasicApplicationTests {
                 withDelims("&{ }").
                 escapeHTML(false);
 
-        System.out.println(templateDataCompiler.compile(templateFlow).execute(templateData));
+        Files.writeString(Paths.get("format.xsl"), templateDataCompiler.compile(templateFlow).execute(templateData));
     }
 
     private HashMap getTemplateConfigHashMap() throws Exception {
@@ -135,17 +137,31 @@ public class BasicApplicationTests {
         HashMap templateConfigHashMap = getTemplateConfigHashMap();
         HashMap templateContentKeys = (HashMap) templateConfigHashMap.get("templateContentKeys");
 
-        HashMap templateContentKeysGeneral = (HashMap) templateContentKeys.get("general");
-        HashMap templateContentKeysByBrandAndMailType = getTemplateComponent("templateContentKeys", b, mtv);
+        HashMap templateContentKeysGeneral = (HashMap) templateContentKeys.get("general"); //templateContentKeys -> general
+        HashMap templateContentKeysByBrand = (HashMap) templateContentKeys.get(b.name()); //templateContentKeys -> brand
+        HashMap templateContentKeysGeneralByBrand = (HashMap) templateContentKeysByBrand.get("general"); //templateContentKeys -> brand -> general
+        HashMap templateContentKeysByBrandAndMailType = getTemplateComponent("templateContentKeys", b, mtv); //templateContentKeys -> brand -> mailtype
+
         if (templateContentKeysByBrandAndMailType != null) {
-            templateContentKeysGeneral.putAll(templateContentKeysByBrandAndMailType);
+            templateContentKeysGeneralByBrand.putAll(templateContentKeysByBrandAndMailType);
         }
+
+        templateContentKeysGeneral.putAll(templateContentKeysGeneralByBrand);
+
+        convertKeysToMustacheFormat(templateContentKeysGeneral);
 
         HashMap templateContentKeysSum = new HashMap();
         templateContentKeysSum.put("templateContentKeys", templateContentKeysGeneral);
 
         return templateContentKeysSum;
 
+    }
+
+    private void convertKeysToMustacheFormat(HashMap<String, String> templateContentKeys) {
+        for (Map.Entry<String, String> entry : templateContentKeys.entrySet()) {
+            String key = entry.getKey();
+            templateContentKeys.put(key, "{{" + entry.getValue() + "}}");
+        }
     }
 
 

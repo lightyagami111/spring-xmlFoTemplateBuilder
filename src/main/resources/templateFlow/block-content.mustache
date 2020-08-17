@@ -1,0 +1,13 @@
+
+${#block.content}
+    <fo:block ${#block.attributes} ${.} ${/block.attributes}>
+        &{${block.content}}
+    </fo:block>
+${/block.content}
+
+
+${#block-content2}
+    <fo:block ${#attributes} ${.} ${/attributes}>
+        &{${content1}} <fo:block/> &{${content2}}
+    </fo:block>
+${/block-content2}

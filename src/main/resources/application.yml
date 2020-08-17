@@ -3,16 +3,24 @@ templateRequestData:
 
 templateContentKeys:
   general:
-    page-number-citation: invoice.text.page
+    pagenumbercitation: invoice.text.page
   VW:
-    activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
+    general:
       commercialregister: invoice.text.commercialregister
       vatvw: invoice.text.vatvw
       postalvw: invoice.text.postalvw
       board: invoice.text.board
+      headingtitle: invoice.subheadline.shop
+    credit-note:
+      headingtitle: label.credit.note
   SKODA:
-    activation, credit-note:
-      address: invoice.footer.address
+    general:
+      footeraddress: invoice.footer.address
+    activation:
+      headingtitle: invoice.subheadline.shop
+    credit-note:
+      headingtitle: invoice.label.credit-note
+
 
 
 templateLayout:
@@ -113,33 +121,24 @@ templateFlow:
   VW:
     activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
       xsl-region-before-first:
-        - block-container-external-graphic:
-            attributes: margin-top="-7.5mm"
-            block-external-graphic:
-              atributes: text-align="left" margin-left="-4.5mm"
-              external-graphic:
-                src: templateRequestData.logo
-                attributes: height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"
+        - block-container-external-graphic-with-attr:
       xsl-region-before:
-        - block-container-external-graphic:
-            attributes: margin-top="-7.5mm"
-            block-external-graphic:
-              atributes: text-align="left" margin-left="-4.5mm"
-              external-graphic:
-                src: templateRequestData.logo
-                attributes: height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"
+        - block-container-external-graphic-with-attr:
         - page-number-citation:
             attributes: text-align="end" margin-top="12mm"  font-size="10pt"
-            contentKey: templateContentKeys.page-number-citation
+            contentKey: templateContentKeys.pagenumbercitation
       xsl-region-after:
-        - block-contentKeys-2:
-            attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
-            contentKey1: templateContentKeys.commercialregister
-            contentKey2: templateContentKeys.vatvw
+        - block-content:
+            block-content2:
+              attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
+              content1: templateContentKeys.commercialregister
+              content2: templateContentKeys.vatvw
         - block-table:
             attributes: font-size="7pt"
             table:
+              table-attributes: table-layout="fixed" width="100%" border-collapse="separate"
               table-body:
+                body-attributes: width="100%"
                 table-row:
                   table-cell:
                     - block:
@@ -150,6 +149,28 @@ templateFlow:
                     - block:
                         attributes: color="#B4B8BA"
                         contentKey: templateContentKeys.board
+      xsl-region-body:
+        - table-contentKey-pagenumber:
+            title:
+              attributes: font-size="16pt" color="#899093" font-weight="bold"
+              contentKey: templateContentKeys.headingtitle
+            page-number-citation:
+              attributes: text-align="end" font-size="10pt"
+              contentKey: templateContentKeys.pagenumbercitation
+        - table:
+            table-body:
+              body-attributes: table-layout="fixed" width="100%" border-collapse="separate" font-size="10pt" space-before="15mm"
+              table-row:
+                table-cell:
+                  - embedded-table:
+                      table-attributes: font-size="17pt" color="#838F97"  font-weight="bold"
+                      table-column:
+                        - table-column-attributes: column-width="55%"
+                        - table-column-attributes: column-width="45%"
+                      table-body:
+                        body-attributes: width="100%"
+                        table-row:
+                          table-cell:
 
     voucher-delivery:
       xsl-region-body:
@@ -157,32 +178,12 @@ templateFlow:
   SKODA:
     activation, credit-note:
       xsl-region-before-first:
-        - block-container-external-graphic-and-leader:
-            block-external-graphic:
-              atributes: margin-top="1.1mm" margin-left="0.2mm"
-              external-graphic:
-                src: templateRequestData.logo
-                attributes: height="8.6mm" width="3.95cm" content-height="scale-to-fit" scaling="non-uniform"
-            block-leader:
-              attributes: margin-bottom="5mm" margin-top="2.22mm"
-              leader:
-                pattern: rule
-                attributes: leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"
+        - block-container-external-graphic-and-leader-with-attr:
       xsl-region-before:
-        - block-container-external-graphic-and-leader:
-            block-external-graphic:
-              atributes: margin-top="1.1mm" margin-left="0.2mm"
-              external-graphic:
-                src: templateRequestData.logo
-                attributes: height="8.6mm" width="3.95cm" content-height="scale-to-fit" scaling="non-uniform"
-            block-leader:
-              attributes: margin-bottom="5mm" margin-top="2.22mm"
-              leader:
-                pattern: rule
-                attributes: leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"
+        - block-container-external-graphic-and-leader-with-attr:
         - page-number-citation:
             attributes: text-align="end" margin-top="12mm"  font-size="11pt"
-            contentKey: templateContentKeys.page-number-citation
+            contentKey: templateContentKeys.pagenumbercitation
       xsl-region-after:
         - block-leader:
             leader:
@@ -191,14 +192,22 @@ templateFlow:
         - block-table:
             attributes: font-size="10pt" margin-top="5mm"
             table:
-              attributes: table-layout="fixed" width="100%"
+              table-attributes: table-layout="fixed" width="100%"
               table-column:
-                - attributes: column-width="70%"
-                - attributes: column-width="30%"
+                - table-column-attributes: column-width="70%"
+                - table-column-attributes: column-width="30%"
               table-body:
-                attributes: width="100%"
+                body-attributes: width="100%"
                 table-row:
                   table-cell:
                     - block:
-                        contentKey: templateContentKeys.address
+                        contentKey: templateContentKeys.footeraddress
                     - block:
+      xsl-region-body:
+        - table-contentKey-pagenumber:
+            title:
+              attributes: font-size="17pt" color="#838F97"  font-weight="bold"
+              contentKey: templateContentKeys.headingtitle
+            page-number-citation:
+              attributes: text-align="end" font-size="11pt"
+              contentKey: templateContentKeys.pagenumbercitation

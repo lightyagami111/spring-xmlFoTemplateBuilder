@@ -1,0 +1,16 @@
+<fo:table table-layout="fixed" width="100%">
+    <fo:table-body width="100%">
+        <fo:table-row>
+            <fo:table-cell>
+                <fo:block ${title.attributes}>
+                    {{&{${title.contentKey}}}}
+                </fo:block>
+            </fo:table-cell>
+            <fo:table-cell display-align="after">
+                ${#page-number-citation}
+                    ${> page-number-citation}
+                ${/page-number-citation}
+            </fo:table-cell>
+        </fo:table-row>
+    </fo:table-body>
+</fo:table>
