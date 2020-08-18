@@ -37,19 +37,18 @@ public class BasicApplicationTests {
         Brand b = Brand.VW;
         MailTypeVariant mtv = MailTypeVariant.CREDIT_NOTE;
 
+        Mustache.TemplateLoader templateLoader = new Mustache.TemplateLoader() {
+            public Reader getTemplate(String name) throws FileNotFoundException {
+                return new InputStreamReader(resourceService.getComponentIS("/templateLayouts", name));
+            }
+        };
+
         //----------------------------------
         //building root layout
         //----------------------------------
-        String rootComponent = resourceService.getComponent("/templateLayout","root");
+        String rootComponent = resourceService.getComponent("/templateLayouts","root");
         HashMap<String, Object> templateLayoutsByBrandAndMailType = getTemplateComponent("templateLayout", b, mtv);
-        Mustache.Compiler templateLayoutCompiler = Mustache.compiler().
-                withDelims("%{ }").
-                escapeHTML(false).
-                withLoader(new Mustache.TemplateLoader() {
-                    public Reader getTemplate(String name) throws FileNotFoundException {
-                        return new InputStreamReader(resourceService.getComponentIS("/templateLayout", name));
-                    }
-                });
+        Mustache.Compiler templateLayoutCompiler = Mustache.compiler().withDelims("%{ }").escapeHTML(false);
         String templateLayout = templateLayoutCompiler.compile(rootComponent).execute(templateLayoutsByBrandAndMailType);
 
 
@@ -59,45 +58,25 @@ public class BasicApplicationTests {
         //building layout flows
         //----------------------------------
         HashMap<String, Object> templateFlowsByBrandAndMailType = getTemplateComponent("templateFlow", b, mtv);
-        Mustache.Compiler templateFlowCompiler = Mustache.compiler().
-                withDelims("${ }").
-                escapeHTML(false).
-                withLoader(new Mustache.TemplateLoader() {
-                    public Reader getTemplate(String name) throws FileNotFoundException {
-                        return new InputStreamReader(resourceService.getComponentIS("/templateFlow", name));
-                    }
-                });
-
-        for(Map.Entry<String, Object> flow : templateFlowsByBrandAndMailType.entrySet()) {
-            String flowName = flow.getKey();
-            List<HashMap<String, Object>> components = (List<HashMap<String, Object>>) flow.getValue();
-            StringBuilder sb = new StringBuilder();
-            for(HashMap<String, Object> c : components){
-                for(Map.Entry<String, Object> ce : c.entrySet()) {
-                    String componentName = ce.getKey();
-                    HashMap componentData = (HashMap) ce.getValue();
-                    String component = resourceService.getComponent("/templateFlow",componentName);
-                    sb.append("\n").append(templateFlowCompiler.compile(component).execute(componentData));
-                }
-            }
-            templateFlowsByBrandAndMailType.put(flowName, sb.toString());
-        }
-
+        Mustache.Compiler templateFlowCompiler = Mustache.compiler().withDelims("${ }").escapeHTML(false).withLoader(templateLoader);
         String templateFlow = templateFlowCompiler.compile(templateLayout).execute(templateFlowsByBrandAndMailType);
+
+        Files.writeString(Paths.get("format.xsl"), templateFlow);
 
         //----------------------------------
         //resolve content keys & request data fields
         //----------------------------------
+    /*
         HashMap<String, Object> templateRequestData = getTemplateRequestData(b, mtv);
         HashMap<String, Object> templateContentKeys = getTemplateContentKeys(b, mtv);
         HashMap<String, Object> templateData = new HashMap<>();
         templateData.putAll(templateRequestData);
         templateData.putAll(templateContentKeys);
-        Mustache.Compiler templateDataCompiler = Mustache.compiler().
-                withDelims("&{ }").
-                escapeHTML(false);
-
+        Mustache.Compiler templateDataCompiler = Mustache.compiler().withDelims("&{ }").escapeHTML(false);
         Files.writeString(Paths.get("format.xsl"), templateDataCompiler.compile(templateFlow).execute(templateData));
+    */
+
+
     }
 
     private HashMap getTemplateConfigHashMap() throws Exception {

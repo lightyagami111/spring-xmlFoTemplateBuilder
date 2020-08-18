@@ -34,117 +34,49 @@
         <fo:page-sequence master-reference="my-sequence">
             <fo:static-content flow-name="xsl-region-before-first">
 
-                <fo:block-container margin-top="-7.5mm">
-                    <fo:block text-align="left" margin-left="-4.5mm">
-                        <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm"
-                                             content-height="scale-to-fit" scaling="non-uniform"/>
-                    </fo:block>
-                </fo:block-container>
-            </fo:static-content>
-            <fo:static-content flow-name="xsl-region-before">
 
                 <fo:block-container margin-top="-7.5mm">
                     <fo:block text-align="left" margin-left="-4.5mm">
-                        <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm"
+                        <fo:external-graphic src="templateRequestData.logo" height="28.2mm" width="31mm"
                                              content-height="scale-to-fit" scaling="non-uniform"/>
                     </fo:block>
                 </fo:block-container>
+
+
+            </fo:static-content>
+            <fo:static-content flow-name="xsl-region-before">
+
+
+                <fo:block-container margin-top="-7.5mm">
+                    <fo:block text-align="left" margin-left="-4.5mm">
+                        <fo:external-graphic src="templateRequestData.logo" height="28.2mm" width="31mm"
+                                             content-height="scale-to-fit" scaling="non-uniform"/>
+                    </fo:block>
+                </fo:block-container>
+
+
                 <fo:block text-align="end" margin-top="12mm" font-size="10pt">
-                    {{{{invoice.text.page}}}} &#160;<fo:page-number/>/
+                    templateContentKeys.pagenumbercitation &#160;<fo:page-number/>/
                     <fo:page-number-citation ref-id="TheVeryLastPage"/>
                 </fo:block>
+
+
             </fo:static-content>
             <fo:static-content flow-name="xsl-region-after">
 
 
                 <fo:block font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm">
-                    {{invoice.text.commercialregister}}
+                    templateContentKeys.commercialregister
                     <fo:block/>
-                    {{invoice.text.vatvw}}
+                    templateContentKeys.vatvw
                 </fo:block>
 
-                <fo:block font-size="7pt">
-                    <fo:table table-layout="fixed" width="100%" border-collapse="separate">
 
-
-                        <fo:table-body width="100%">
-                            <fo:table-row>
-                                <fo:table-cell>
-
-                                    <fo:block color="#B4B8BA">
-                                        {{{{invoice.text.postalvw}}}}
-                                    </fo:block>
-
-
-                                </fo:table-cell>
-                                <fo:table-cell>
-
-                                    <fo:block color="#B4B8BA">
-
-                                    </fo:block>
-
-
-                                </fo:table-cell>
-                                <fo:table-cell>
-
-                                    <fo:block color="#B4B8BA">
-                                        {{{{invoice.text.board}}}}
-                                    </fo:block>
-
-
-                                </fo:table-cell>
-                            </fo:table-row>
-                        </fo:table-body>
-
-                    </fo:table>
-                </fo:block>
             </fo:static-content>
 
             <fo:flow flow-name="xsl-region-body">
 
-                <fo:table table-layout="fixed" width="100%">
-                    <fo:table-body width="100%">
-                        <fo:table-row>
-                            <fo:table-cell>
-                                <fo:block font-size="16pt" color="#899093" font-weight="bold">
-                                    {{{{label.credit.note}}}}
-                                </fo:block>
-                            </fo:table-cell>
-                            <fo:table-cell display-align="after">
-                                <fo:block text-align="end" font-size="10pt">
-                                    {{{{invoice.text.page}}}} &#160;<fo:page-number/>/
-                                    <fo:page-number-citation ref-id="TheVeryLastPage"/>
-                                </fo:block>
-                            </fo:table-cell>
-                        </fo:table-row>
-                    </fo:table-body>
-                </fo:table>
-                <fo:table>
-
-
-                    <fo:table-body table-layout="fixed" width="100%" border-collapse="separate" font-size="10pt"
-                                   space-before="15mm">
-                        <fo:table-row>
-                            <fo:table-cell>
-
-
-                                <fo:table font-size="17pt" color="#838F97" font-weight="bold">
-                                    <fo:table-column column-width="55%"/>
-                                    <fo:table-column column-width="45%"/>
-
-
-                                    <fo:table-body width="100%">
-                                        <fo:table-row>
-                                        </fo:table-row>
-                                    </fo:table-body>
-
-                                </fo:table>
-
-                            </fo:table-cell>
-                        </fo:table-row>
-                    </fo:table-body>
-
-                </fo:table>
+                <fo:block id="TheVeryLastPage"></fo:block>
             </fo:flow>
 
         </fo:page-sequence>

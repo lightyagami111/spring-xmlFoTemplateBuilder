@@ -121,19 +121,22 @@ templateFlow:
   VW:
     activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
       xsl-region-before-first:
-        - block-container-external-graphic-with-attr:
+        - block-external-graphic-v1:
+            external-graphic:
+              src: templateRequestData.logo
       xsl-region-before:
-        - block-container-external-graphic-with-attr:
+        - block-external-graphic-v1:
+            external-graphic:
+              src: templateRequestData.logo
         - page-number-citation:
             attributes: text-align="end" margin-top="12mm"  font-size="10pt"
-            contentKey: templateContentKeys.pagenumbercitation
+            content: templateContentKeys.pagenumbercitation
       xsl-region-after:
+        - block-text-2:
+            attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
+            text1: templateContentKeys.commercialregister
+            text2: templateContentKeys.vatvw
         - block-content:
-            block-content2:
-              attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
-              content1: templateContentKeys.commercialregister
-              content2: templateContentKeys.vatvw
-        - block-table:
             attributes: font-size="7pt"
             table:
               table-attributes: table-layout="fixed" width="100%" border-collapse="separate"
@@ -141,36 +144,36 @@ templateFlow:
                 body-attributes: width="100%"
                 table-row:
                   table-cell:
-                    - block:
+                    - block-text:
                         attributes: color="#B4B8BA"
-                        contentKey: templateContentKeys.postalvw
-                    - block:
+                        content: templateContentKeys.postalvw
+                      table-cell:
+                    - block-text:
                         attributes: color="#B4B8BA"
-                    - block:
+                      table-cell:
+                    - block-text:
                         attributes: color="#B4B8BA"
-                        contentKey: templateContentKeys.board
-      xsl-region-body:
-        - table-contentKey-pagenumber:
-            title:
-              attributes: font-size="16pt" color="#899093" font-weight="bold"
-              contentKey: templateContentKeys.headingtitle
-            page-number-citation:
-              attributes: text-align="end" font-size="10pt"
-              contentKey: templateContentKeys.pagenumbercitation
-        - table:
-            table-body:
-              body-attributes: table-layout="fixed" width="100%" border-collapse="separate" font-size="10pt" space-before="15mm"
-              table-row:
-                table-cell:
-                  - embedded-table:
-                      table-attributes: font-size="17pt" color="#838F97"  font-weight="bold"
-                      table-column:
-                        - table-column-attributes: column-width="55%"
-                        - table-column-attributes: column-width="45%"
-                      table-body:
-                        body-attributes: width="100%"
-                        table-row:
-                          table-cell:
+                        content: templateContentKeys.board
+                      table-cell:
+
+#      xsl-region-body:
+#        - table-v1:
+#            - block-text:
+#              attributes: font-size="16pt" color="#899093" font-weight="bold"
+#              content: templateContentKeys.headingtitle
+#            - page-number-citation:
+#              attributes: text-align="end" font-size="10pt"
+#              content: templateContentKeys.pagenumbercitation
+#
+#        - table:
+#            table-attributes: table-layout="fixed" width="100%" border-collapse="separate" font-size="10pt" space-before="15mm"
+#            table-column:
+#              - table-column-attributes: column-width="55%"
+#              - table-column-attributes: column-width="45%"
+#            table-body:
+#              body-attributes: width="100%"
+#              table-row:
+#                table-cell:
 
     voucher-delivery:
       xsl-region-body:
@@ -183,7 +186,7 @@ templateFlow:
         - block-container-external-graphic-and-leader-with-attr:
         - page-number-citation:
             attributes: text-align="end" margin-top="12mm"  font-size="11pt"
-            contentKey: templateContentKeys.pagenumbercitation
+            content: templateContentKeys.pagenumbercitation
       xsl-region-after:
         - block-leader:
             leader:
@@ -201,13 +204,13 @@ templateFlow:
                 table-row:
                   table-cell:
                     - block:
-                        contentKey: templateContentKeys.footeraddress
+                        content: templateContentKeys.footeraddress
                     - block:
       xsl-region-body:
         - table-contentKey-pagenumber:
             title:
               attributes: font-size="17pt" color="#838F97"  font-weight="bold"
-              contentKey: templateContentKeys.headingtitle
+              content: templateContentKeys.headingtitle
             page-number-citation:
               attributes: text-align="end" font-size="11pt"
-              contentKey: templateContentKeys.pagenumbercitation
+              content: templateContentKeys.pagenumbercitation
