@@ -72,9 +72,77 @@
                 </fo:block>
 
 
+                <fo:block font-size="7pt">
+
+
+                    <fo:table table-layout="fixed" width="100%" border-collapse="separate">
+
+
+                        <fo:table-body width="100%">
+                            <fo:table-row>
+                                <fo:table-cell>
+
+                                    <fo:block color="#B4B8BA">
+                                        templateContentKeys.postalvw
+                                    </fo:block>
+
+
+                                </fo:table-cell>
+                                <fo:table-cell>
+
+                                    <fo:block color="#B4B8BA">
+
+                                    </fo:block>
+
+
+                                </fo:table-cell>
+                                <fo:table-cell>
+
+                                    <fo:block color="#B4B8BA">
+                                        templateContentKeys.board
+                                    </fo:block>
+
+
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+
+                    </fo:table>
+
+
+                </fo:block>
+
+
             </fo:static-content>
 
             <fo:flow flow-name="xsl-region-body">
+
+
+                <fo:table table-layout="fixed" width="100%">
+                    <fo:table-body width="100%">
+                        <fo:table-row>
+                            <fo:table-cell>
+
+                                <fo:block font-size="16pt" color="#899093" font-weight="bold">
+                                    templateContentKeys.headingtitle
+                                </fo:block>
+
+
+                            </fo:table-cell>
+                            <fo:table-cell display-align="after">
+
+
+                                <fo:block text-align="end" font-size="10pt">
+                                    templateContentKeys.pagenumbercitation &#160;<fo:page-number/>/
+                                    <fo:page-number-citation ref-id="TheVeryLastPage"/>
+                                </fo:block>
+
+
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+
 
                 <fo:block id="TheVeryLastPage"></fo:block>
             </fo:flow>

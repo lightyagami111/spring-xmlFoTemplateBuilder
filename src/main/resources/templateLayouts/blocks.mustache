@@ -52,7 +52,7 @@ ${/block-leader}
 
 ${#page-number-citation}
     <fo:block ${#attributes} ${.} ${/attributes}>
-        ${content} &#160;<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
+        ${text} &#160;<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
     </fo:block>
 ${/page-number-citation}
 
@@ -97,10 +97,14 @@ ${#table-v1}
     <fo:table-body width="100%">
         <fo:table-row>
             <fo:table-cell>
-                ${> blocks}
+                ${#table-v1[1]}
+                    ${> blocks}
+                ${/table-v1[1]}
             </fo:table-cell>
             <fo:table-cell display-align="after">
-                ${> blocks}
+                ${#table-v1[2]}
+                    ${> blocks}
+                ${/table-v1[2]}
             </fo:table-cell>
         </fo:table-row>
     </fo:table-body>
