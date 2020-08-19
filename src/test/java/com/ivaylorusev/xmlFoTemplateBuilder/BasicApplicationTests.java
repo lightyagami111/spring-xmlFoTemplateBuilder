@@ -6,7 +6,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.ivaylorusev.xmlFoTemplateBuilder.models.Brand;
 import com.ivaylorusev.xmlFoTemplateBuilder.models.ExtendedHashMap;
 import com.ivaylorusev.xmlFoTemplateBuilder.models.MailTypeVariant;
+import com.samskivert.mustache.BasicCollector;
 import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.Template;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -59,6 +62,7 @@ public class BasicApplicationTests {
         //----------------------------------
         HashMap<String, Object> templateFlowsByBrandAndMailType = getTemplateComponent("templateFlow", b, mtv);
         Mustache.Compiler templateFlowCompiler = Mustache.compiler().withDelims("${ }").escapeHTML(false).withLoader(templateLoader);
+        //modifyMustacheMapToPreventStackOverFlow(null, templateFlowsByBrandAndMailType);
         String templateFlow = templateFlowCompiler.compile(templateLayout).execute(templateFlowsByBrandAndMailType);
 
         Files.writeString(Paths.get("format.xsl"), templateFlow);
@@ -140,6 +144,26 @@ public class BasicApplicationTests {
         for (Map.Entry<String, String> entry : templateContentKeys.entrySet()) {
             String key = entry.getKey();
             templateContentKeys.put(key, "{{" + entry.getValue() + "}}");
+        }
+    }
+
+    private void modifyMustacheMapToPreventStackOverFlow(Object parent, Object child) {
+        if (child instanceof HashMap) {
+            LinkedHashMap myMap = (LinkedHashMap) child;
+            Iterator<String> it1 = myMap.keySet().iterator();
+            while (it1.hasNext()) {
+                String key = it1.next();
+                Object val = myMap.get(key);
+                modifyMustacheMapToPreventStackOverFlow(key, val);
+                if (parent != null) {
+                    myMap.put(parent, null);
+                }
+            }
+        }
+        else if (child instanceof List) {
+            for (Object o : (List) child) {
+                modifyMustacheMapToPreventStackOverFlow(parent, o);
+            }
         }
     }
 

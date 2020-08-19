@@ -120,63 +120,58 @@ templateLayout:
 templateFlow:
   VW:
     activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
-      xsl-region-before-first:
-        - block-external-graphic-v1:
-            external-graphic:
-              src: templateRequestData.logo
-      xsl-region-before:
-        - block-external-graphic-v1:
-            external-graphic:
-              src: templateRequestData.logo
-        - page-number-citation:
-            attributes: text-align="end" margin-top="12mm"  font-size="10pt"
-            text: templateContentKeys.pagenumbercitation
-      xsl-region-after:
-        - block-text-2:
-            attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
-            text1: templateContentKeys.commercialregister
-            text2: templateContentKeys.vatvw
+#      xsl-region-before-first:
+#        - block-external-graphic-v1:
+#            external-graphic:
+#              src: templateRequestData.logo
+#      xsl-region-before:
+#        - block-external-graphic-v1:
+#            external-graphic:
+#              src: templateRequestData.logo
+#        - page-number-citation:
+#            attributes: text-align="end" margin-top="12mm"  font-size="10pt"
+#            text: templateContentKeys.pagenumbercitation
+#      xsl-region-after:
+#        - block-text-2:
+#            attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
+#            text1: templateContentKeys.commercialregister
+#            text2: templateContentKeys.vatvw
+#        - block-content:
+#            block-content:
+#            attributes: font-size="7pt"
+#            table-row-1:
+#              table-row-1:
+#              table-cell:
+#                - block-text:
+#                    attributes: color="#B4B8BA"
+#                    text: templateContentKeys.postalvw
+#                - block-text:
+#                    attributes: color="#B4B8BA"
+#                - block-text:
+#                    attributes: color="#B4B8BA"
+#                    text: templateContentKeys.board
+
+      xsl-region-body:
+#        - table-row-1:
+#            table-row-1:
+#            table-cell:
+#              - block-text:
+#                  attributes: font-size="16pt" color="#899093" font-weight="bold"
+#                  text: templateContentKeys.headingtitle
+#              - page-number-citation:
+#                  attributes: text-align="end" font-size="10pt"
+#                  text: templateContentKeys.pagenumbercitation
+#                cell-attributes: display-align="after"
+
         - block-content:
-            block-content:
-            attributes: font-size="7pt"
             table:
-              table:
-              table-attributes: table-layout="fixed" width="100%" border-collapse="separate"
+              table-attributes: font-size="10pt" space-before="15mm"
+              table-column:
+                - table-column-attributes: column-width="55%"
+                - table-column-attributes: column-width="45%"
               table-body:
-                body-attributes: width="100%"
                 table-row:
                   table-cell:
-                    - block-text:
-                        attributes: color="#B4B8BA"
-                        text: templateContentKeys.postalvw
-                    - block-text:
-                        attributes: color="#B4B8BA"
-                    - block-text:
-                        attributes: color="#B4B8BA"
-                        text: templateContentKeys.board
-      xsl-region-body:
-        - table-v1:
-            table-v1:
-            table-v1[1]:
-              block-text:
-                attributes: font-size="16pt" color="#899093" font-weight="bold"
-                text: templateContentKeys.headingtitle
-                table-v1[1]:
-            table-v1[2]:
-              page-number-citation:
-                attributes: text-align="end" font-size="10pt"
-                text: templateContentKeys.pagenumbercitation
-                table-v1[2]:
-        - table:
-            table:
-            table-attributes: table-layout="fixed" width="100%" border-collapse="separate" font-size="10pt" space-before="15mm"
-            table-column:
-              - table-column-attributes: column-width="55%"
-              - table-column-attributes: column-width="45%"
-            table-body:
-              body-attributes: width="100%"
-              table-row:
-                table-cell:
 
     voucher-delivery:
       xsl-region-body:
