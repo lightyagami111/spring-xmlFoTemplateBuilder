@@ -3,12 +3,9 @@ package com.ivaylorusev.xmlFoTemplateBuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.ivaylorusev.xmlFoTemplateBuilder.models.Brand;
-import com.ivaylorusev.xmlFoTemplateBuilder.models.ExtendedHashMap;
-import com.ivaylorusev.xmlFoTemplateBuilder.models.MailTypeVariant;
-import com.samskivert.mustache.BasicCollector;
+import com.ivaylorusev.xmlFoTemplateBuilder.models.*;
 import com.samskivert.mustache.Mustache;
-import com.samskivert.mustache.Template;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,6 +31,27 @@ public class BasicApplicationTests {
     public void contextLoads() {
     }
 
+    @Test
+    public void hashmaps() throws Exception {
+        Brand b = Brand.VW;
+        MailTypeVariant mtv = MailTypeVariant.CREDIT_NOTE;
+        Salutation s = Salutation.MR;
+        CustomerType c = CustomerType.COMPANY;
+        MasterRequest masterRequest = new MasterRequest();
+        masterRequest.setBrand(b);
+        masterRequest.setMailType(mtv);
+        masterRequest.setCustomerInformation(new CustomerInformation(s, c));
+
+        HashMap<String, Object> templateContentKeys = (HashMap<String, Object>) getTemplateConfigHashMap().get("templateContentKeys");
+        HashMap<String, Object> masterRequestHashMap = getHashMap(masterRequest);
+        System.out.println(masterRequestHashMap);
+        System.out.println("==================");
+        getConcreteHashMap(masterRequestHashMap, templateContentKeys);
+        System.out.println(templateContentKeys);
+
+    }
+
+    @Ignore
     @Test
     public void parse() throws Exception {
         Brand b = Brand.VW;
@@ -62,7 +79,6 @@ public class BasicApplicationTests {
         //----------------------------------
         HashMap<String, Object> templateFlowsByBrandAndMailType = getTemplateComponent("templateFlow", b, mtv);
         Mustache.Compiler templateFlowCompiler = Mustache.compiler().withDelims("${ }").escapeHTML(false).withLoader(templateLoader);
-        //modifyMustacheMapToPreventStackOverFlow(null, templateFlowsByBrandAndMailType);
         String templateFlow = templateFlowCompiler.compile(templateLayout).execute(templateFlowsByBrandAndMailType);
 
         Files.writeString(Paths.get("format.xsl"), templateFlow);
@@ -93,6 +109,53 @@ public class BasicApplicationTests {
         return templateConfigHashMap;
     }
 
+    private HashMap<String, Object> getHashMap(MasterRequest request) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        HashMap<String, Object> masterRequestHashMap = objectMapper.convertValue(request, HashMap.class);
+        return masterRequestHashMap;
+    }
+
+    private void getConcreteHashMap(HashMap<String, Object> masterRequestHashMap, HashMap<String, Object> configHashMap) {
+        for (Map.Entry<String, Object> entry : masterRequestHashMap.entrySet()) {
+            String fieldName = entry.getKey();
+            Object fieldValue = entry.getValue();
+
+            if (fieldValue instanceof HashMap) {
+                if (configHashMap.keySet().contains(fieldName)) {
+                    HashMap<String, Object> valueByFieldName = (HashMap) configHashMap.get(fieldName);
+                    getConcreteHashMap((HashMap<String, Object>) fieldValue, valueByFieldName);
+                }
+            }
+            else if (fieldValue instanceof List) {
+
+            }
+            else {
+                if (configHashMap.keySet().contains(fieldName)) {
+                    HashMap<String, Object> valueByFieldName = (HashMap) configHashMap.get(fieldName);
+                    removeKeyValueReverse((String) fieldValue, valueByFieldName);
+
+                    Object byFieldValue = valueByFieldName.get(fieldValue);
+                    if ((byFieldValue instanceof HashMap)) {
+                        getConcreteHashMap(masterRequestHashMap, (HashMap<String, Object>) byFieldValue);
+                    }
+
+                }
+            }
+        }
+    }
+
+
+    private void removeKeyValueReverse(String key, HashMap<String, Object> testMap) {
+        Iterator<Map.Entry<String,Object>> iter = testMap.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String,Object> entry = iter.next();
+            if(!key.equalsIgnoreCase(entry.getKey())){
+                iter.remove();
+            }
+        }
+    }
+
+
     private HashMap getTemplateComponent(String component, Brand b, MailTypeVariant mtv) throws Exception {
         HashMap templateConfigHashMap = getTemplateConfigHashMap();
         HashMap templateComponents = (HashMap) templateConfigHashMap.get(component);
@@ -116,7 +179,7 @@ public class BasicApplicationTests {
         return templateConfigHashMap;
     }
 
-    private HashMap getTemplateContentKeys(Brand b, MailTypeVariant mtv) throws Exception {
+    private HashMap getTemplateContentKeys(Brand b, MailTypeVariant mtv, Salutation s) throws Exception {
         HashMap templateConfigHashMap = getTemplateConfigHashMap();
         HashMap templateContentKeys = (HashMap) templateConfigHashMap.get("templateContentKeys");
 
@@ -131,40 +194,11 @@ public class BasicApplicationTests {
 
         templateContentKeysGeneral.putAll(templateContentKeysGeneralByBrand);
 
-        convertKeysToMustacheFormat(templateContentKeysGeneral);
-
         HashMap templateContentKeysSum = new HashMap();
         templateContentKeysSum.put("templateContentKeys", templateContentKeysGeneral);
 
         return templateContentKeysSum;
 
-    }
-
-    private void convertKeysToMustacheFormat(HashMap<String, String> templateContentKeys) {
-        for (Map.Entry<String, String> entry : templateContentKeys.entrySet()) {
-            String key = entry.getKey();
-            templateContentKeys.put(key, "{{" + entry.getValue() + "}}");
-        }
-    }
-
-    private void modifyMustacheMapToPreventStackOverFlow(Object parent, Object child) {
-        if (child instanceof HashMap) {
-            LinkedHashMap myMap = (LinkedHashMap) child;
-            Iterator<String> it1 = myMap.keySet().iterator();
-            while (it1.hasNext()) {
-                String key = it1.next();
-                Object val = myMap.get(key);
-                modifyMustacheMapToPreventStackOverFlow(key, val);
-                if (parent != null) {
-                    myMap.put(parent, null);
-                }
-            }
-        }
-        else if (child instanceof List) {
-            for (Object o : (List) child) {
-                modifyMustacheMapToPreventStackOverFlow(parent, o);
-            }
-        }
     }
 
 

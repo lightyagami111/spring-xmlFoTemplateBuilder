@@ -1,113 +1,34 @@
-${#block-content}
-    <fo:block ${#attributes} ${.} ${/attributes}>
-        ${> blocks}
+${> blocks-table}
+${> blocks-external-graphic}
+${> blocks-leader}
+
+${#this.page-number-citation}
+    <fo:block ${#this.attributes} ${.} ${/this.attributes}>
+        ${> blocks}<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
     </fo:block>
-${/block-content}
-
-${#block-text}
-    <fo:block ${#attributes} ${.} ${/attributes}>
-        ${#text} ${.} ${/text}
-    </fo:block>
-${/block-text}
-
-${#block-text-2}
-    <fo:block ${#attributes} ${.} ${/attributes}>
-        ${text1} <fo:block/> ${text2}
-    </fo:block>
-${/block-text-2}
+${/this.page-number-citation}
 
 
-
-${#block-external-graphic}
-    <fo:block ${#attributes} ${.} ${/attributes}>
-        <fo:external-graphic src="${external-graphic.src}" ${#external-graphic.attributes} ${.} ${/external-graphic.attributes}/>
-    </fo:block>
-${/block-external-graphic}
-
-${#block-external-graphic-leader-v1}
-<fo:block-container>
-    <fo:block margin-top="1.1mm" margin-left="0.2mm">
-        <fo:external-graphic src="${external-graphic.src}" height="8.6mm" width="3.95cm" content-height="scale-to-fit" scaling="non-uniform"/>
-    </fo:block>
-    <fo:block margin-bottom="5mm" margin-top="2.22mm">
-        <fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"/>
-    </fo:block>
-</fo:block-container>
-${/block-external-graphic-leader-v1}
-
-${#block-external-graphic-v1}
-<fo:block-container margin-top="-7.5mm">
-    <fo:block  text-align="left" margin-left="-4.5mm">
-        <fo:external-graphic src="${external-graphic.src}" height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"/>
-    </fo:block>
-</fo:block-container>
-${/block-external-graphic-v1}
-
-
-${#block-leader}
-    <fo:block ${#attributes} ${.} ${/attributes}>
-        <fo:leader leader-pattern="${leader.pattern}" ${#leader.attributes} ${.} ${/leader.attributes}/>
-    </fo:block>
-${/block-leader}
-
-${#page-number-citation}
-    <fo:block ${#attributes} ${.} ${/attributes}>
-        ${text} &#160;<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
-    </fo:block>
-${/page-number-citation}
-
-
-
-${#table}
-    <fo:table ${#table-attributes} ${.} ${/table-attributes}>
-
-    ${#table-column}
-        <fo:table-column ${#table-column-attributes} ${.} ${/table-column-attributes}/>
-    ${/table-column}
-
-    ${#table-header}
-        <fo:table-header>
-            ${#header-cell}
-                <fo:table-cell ${#header-cell-attributes} ${.} ${/header-cell-attributes}>
-                    ${> block}
-                </fo:table-cell>
-            ${/header-cell}
-        </fo:table-header>
-    ${/table-header}
-
-    ${#table-body}
-        <fo:table-body ${#body-attributes} ${.} ${/body-attributes}>
-        ${#table-row}
-            <fo:table-row ${#row-attributes} ${.} ${/row-attributes}>
-            ${#table-cell}
-                <fo:table-cell ${#cell-attributes} ${.} ${/cell-attributes}>
-                    ${> blocks}
-                </fo:table-cell>
-            ${/table-cell}
-            </fo:table-row>
-        ${/table-row}
-        </fo:table-body>
-    ${/table-body}
-
-    </fo:table>
-${/table}
-
-${#table-row-1}
-<fo:table>
-    <fo:table-body>
-        <fo:table-row>
-            ${#table-cell}
-                <fo:table-cell ${#cell-attributes} ${.} ${/cell-attributes}>
-                    ${> blocks}
-                </fo:table-cell>
-            ${/table-cell}
-        </fo:table-row>
-    </fo:table-body>
-</fo:table>
-${/table-row-1}
-
-${#block-container}
-    <fo:block-container ${#attributes} ${.} ${/attributes}>
+${#this.block-container}
+    <fo:block-container ${#this.attributes} ${.} ${/this.attributes}>
         ${> blocks}
     </fo:block-container>
-${/block-container}
+${/this.block-container}
+
+
+${#this.block}
+    <fo:block ${#this.attributes} ${.} ${/this.attributes}>
+        ${> blocks}
+    </fo:block>
+${/this.block}
+
+
+${#this.text-block} ${> blocks} <fo:block/> ${/this.text-block}
+${#this.block-text} <fo:block/> ${> blocks} ${/this.block-text}
+${#this.text-space} ${> blocks} &#160; ${/this.text-space}
+${#this.space-text} &#160; ${> blocks} ${/this.space-text}
+
+
+${#this.contentKey} {{&{${.}}}} ${/this.contentKey}
+${#this.requestField} <xsl:value-of select="${.}"/> ${/this.requestField}
+${#this.text} ${.} ${/this.text}

@@ -1,0 +1,51 @@
+${#this.table}
+    <fo:table ${#this.attributes} ${.} ${/this.attributes}>
+
+    ${#this.table-column}
+        <fo:table-column ${#this.attributes} ${.} ${/this.attributes}/>
+    ${/this.table-column}
+
+    ${#this.table-header}
+        <fo:table-header>
+            ${#this.table-cell}
+                <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
+                ${> block}
+                </fo:table-cell>
+            ${/this.table-cell}
+        </fo:table-header>
+    ${/this.table-header}
+
+    ${#this.table-body}
+        <fo:table-body ${#this.attributes} ${.} ${/this.attributes}>
+        ${#this.table-row}
+            <fo:table-row ${#this.attributes} ${.} ${/this.attributes}>
+            ${#this.table-cell}
+                <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
+                    ${> blocks}
+                </fo:table-cell>
+            ${/this.table-cell}
+            </fo:table-row>
+        ${/this.table-row}
+        </fo:table-body>
+    ${/this.table-body}
+
+    </fo:table>
+${/this.table}
+
+${#this.table-row-1}
+    <fo:table ${#this.attributes} ${.} ${/this.attributes}>
+        ${#this.table-column}
+            <fo:table-column ${#this.attributes} ${.} ${/this.attributes}/>
+        ${/this.table-column}
+
+        <fo:table-body>
+            <fo:table-row>
+                ${#this.table-cell}
+                    <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
+                        ${> blocks}
+                    </fo:table-cell>
+                ${/this.table-cell}
+            </fo:table-row>
+        </fo:table-body>
+    </fo:table>
+${/this.table-row-1}
