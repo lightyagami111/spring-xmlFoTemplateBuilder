@@ -1,4 +1,4 @@
-package com.ivaylorusev.xmlFoTemplateBuilder;
+package com.ivaylorusev.xmlFoTemplateBuilder.services;
 
 import com.ivaylorusev.xmlFoTemplateBuilder.models.MasterRequest;
 import com.samskivert.mustache.Mustache;
@@ -35,30 +35,25 @@ public class AttachmentsMustacheService {
     }
 
 
-    public void buildAttachmentTemplate(MasterRequest masterRequest) throws Exception {
+    public String buildAttachmentTemplate(MasterRequest masterRequest) throws Exception {
         YamlConfiguration yamlConfiguration = attachmentsYamlService.getYamlConfiguration(masterRequest);
 
         //building root layout
-        String rootComponent = resourceService.getComponent("/templateLayouts","root");
-        String templateLayout = compile(templateLayoutCompiler, rootComponent, yamlConfiguration.getTemplateLayout());
+        Object rootLayout = yamlConfiguration.getTemplateLayout().get("root");
+        String templateLayout = "";
+        if (rootLayout instanceof String) { //it's the name of template
+            templateLayout = resourceService.getComponent("/templateLayouts",(String) yamlConfiguration.getTemplateLayout().get("root"));
+        }
+        else if (rootLayout instanceof HashMap) { //it's hashmap structure , must compile root.mustache
+            String rootComponent = resourceService.getComponent("/templateLayouts","root");
+            templateLayout = compile(templateLayoutCompiler, rootComponent, yamlConfiguration.getTemplateLayout());
+        }
 
         //building layout flows
         String templateFlow = compile(templateFlowCompiler, templateLayout, yamlConfiguration.getTemplateFlow());
 
-        Files.writeString(Paths.get("format.xsl"), templateFlow);
-
-        //----------------------------------
-        //resolve content keys & request data fields
-        //----------------------------------
-    /*
-        HashMap<String, Object> templateRequestData = getTemplateRequestData(b, mtv);
-        HashMap<String, Object> templateContentKeys = getTemplateContentKeys(b, mtv);
-        HashMap<String, Object> templateData = new HashMap<>();
-        templateData.putAll(templateRequestData);
-        templateData.putAll(templateContentKeys);
-        Mustache.Compiler templateDataCompiler = Mustache.compiler().withDelims("&{ }").escapeHTML(false);
-        Files.writeString(Paths.get("format.xsl"), templateDataCompiler.compile(templateFlow).execute(templateData));
-    */
+        //resolve content keys
+        return compile(templateDataCompiler, templateFlow, yamlConfiguration.getTemplateContentKeys());
 
     }
 

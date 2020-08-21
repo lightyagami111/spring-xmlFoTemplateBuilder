@@ -1,0 +1,52 @@
+!!com.ivaylorusev.xmlFoTemplateBuilder.services.YamlConfiguration
+templateContentKeys:
+  templateContentKeys: {headingtitle: invoice.subheadline.shop, vatvw: invoice.text.vatvw,
+    postalvw: invoice.text.postalvw, salutation: customerSalutation-MR, pagenumbercitation: invoice.text.page,
+    commercialregister: invoice.text.commercialregister, board: invoice.text.board}
+templateFlow:
+  xsl-region-after:
+  - block:
+      attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
+      contentKey: templateContentKeys.vatvw
+      text-block: {contentKey: templateContentKeys.commercialregister}
+  - block:
+      attributes: font-size="7pt"
+      table-row-1:
+        table-cell:
+        - block: {attributes: color="#B4B8BA", contentKey: templateContentKeys.postalvw}
+        - block: {attributes: color="#B4B8BA"}
+        - block: {attributes: color="#B4B8BA", contentKey: templateContentKeys.board}
+  xsl-region-before-first:
+  - block-container-external-graphic: &id001
+      external-graphic: {src: 'classpath:{//logo}'}
+  external-graphic: *id001
+  salutation-block: &id002
+    field[customerInformation]:
+      field[customerType]:
+        value[PRIVATE]:
+          text-space-v1:
+          - {contentKey: templateContentKeys.salutation}
+          - {requestField: //request/customerInformation/firstName}
+          - {requestField: //request/customerInformation/lastName}
+        value[COMPANY]: {requestField: //request/customerInformation/company}
+  xsl-region-before:
+  - block-container-external-graphic: *id001
+  - page-number-citation: {attributes: text-align="end" font-size="10pt" margin-top="12mm",
+      contentKey: templateContentKeys.pagenumbercitation}
+  xsl-region-body:
+  - table-row-1:
+      table-cell:
+      - block: {attributes: font-size="16pt" color="#899093" font-weight="bold", contentKey: templateContentKeys.headingtitle}
+      - page-number-citation: {attributes: text-align="end" font-size="10pt", contentKey: templateContentKeys.pagenumbercitation}
+        attributes: display-align="after"
+  - block:
+      table-row-1:
+        attributes: font-size="10pt" space-before="15mm"
+        table-column:
+        - {attributes: column-width="55%"}
+        - {attributes: column-width="45%"}
+        table-cell:
+        - block-container:
+            attributes: width="85%"
+            block: *id002
+templateLayout: {root: root-v1.1}

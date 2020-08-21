@@ -1,1 +1,0 @@
-{templateRequestData={logo=classpath:{//logo}, customerInformation.firstName=//request/customerInformation/firstName, customerInformation.salutation=//request/customerInformation/salutation, customerInformation.lastName=//request/customerInformation/lastName}}

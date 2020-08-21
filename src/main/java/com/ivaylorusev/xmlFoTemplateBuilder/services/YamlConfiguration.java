@@ -1,4 +1,4 @@
-package com.ivaylorusev.xmlFoTemplateBuilder;
+package com.ivaylorusev.xmlFoTemplateBuilder.services;
 
 import lombok.Data;
 
