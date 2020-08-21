@@ -1,21 +1,20 @@
-templateRequestData:
-  logo: classpath:{//logo}
-
 templateContentKeys:
-  customerInformation:
-    salutation:
-      MR: customerSalutation-MR
-      MRS: customerSalutation-MRS
-      MS: customerSalutation-MS
-      MS2: customerSalutation-MS2
+  field[customerInformation]:
+    field[salutation]:
+      value[MR]:
+        salutation: customerSalutation-MR
+      value[MRS]:
+        salutation: customerSalutation-MRS
+      value[MS]:
+        salutation: customerSalutation-MS
+      value[MS2]:
+        salutation: customerSalutation-MS2
 
-  brand:
-    VW:
-      mailType:
-        CREDIT_NOTE:
+  field[brand]:
+    value[VW]:
+      field[mailTypeVariant]:
+        value[credit-node]:
           headingtitle: label.credit.note
-        ACTIVATION:
-          headingtitle: invoice.aaaaaa
 
       commercialregister: invoice.text.commercialregister
       vatvw: invoice.text.vatvw
@@ -23,11 +22,11 @@ templateContentKeys:
       board: invoice.text.board
       headingtitle: invoice.subheadline.shop
 
-    SKODA:
-      mailType:
-        ACTIVATION:
+    value[SKODA]:
+      field[mailTypeVariant]:
+        value[activation]:
           headingtitle: invoice.subheadline.shop
-        CREDIT_NOTE:
+        value[credit-node]:
           headingtitle: invoice.label.credit-note
 
       footeraddress: invoice.footer.address
@@ -35,10 +34,9 @@ templateContentKeys:
   pagenumbercitation: invoice.text.page
 
 
-
 templateLayout:
-  VW:
-    activation, credit-note, voucher-invoice-de, voucher-invoice-eu:
+  field[brand]:
+    value[VW]:
       root:
         attributes: font-family="Arial, sans-serif, SimSun"
         layout-master-set:
@@ -78,18 +76,18 @@ templateLayout:
             - flow-name: xsl-region-before
             - flow-name: xsl-region-after
 
-    voucher-delivery:
-      root:
-        attributes: font-family="Arial, sans-serif, SimSun"
-        layout-master-set:
-          simple-page-master:
-            - master-name: my-sequence
-              attributes: page-height="29.7cm" page-width="21cm"
-        page-sequence:
-          master-reference: my-sequence
+      field[mailTypeVariant]:
+        value[voucher-delivery]:
+          root:
+            attributes: font-family="Arial, sans-serif, SimSun"
+            layout-master-set:
+              simple-page-master:
+                - master-name: my-sequence
+                  attributes: page-height="29.7cm" page-width="21cm"
+            page-sequence:
+              master-reference: my-sequence
 
-  SKODA:
-    activation, credit-note:
+    value[SKODA]:
       root:
         attributes: font-family="SKODANext, sans-serif, SimSun"
         layout-master-set:
@@ -190,9 +188,9 @@ templateFlow:
     voucher-delivery:
       xsl-region-body:
 
-  SKODA:
-    activation, credit-note:
-      xsl-region-before-first:
-      xsl-region-before:
-      xsl-region-after:
-      xsl-region-body:
+    SKODA:
+      activation, credit-note:
+        xsl-region-before-first:
+        xsl-region-before:
+        xsl-region-after:
+        xsl-region-body:

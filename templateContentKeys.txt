@@ -1,0 +1,1 @@
+{templateContentKeys={headingtitle=invoice.subheadline.shop, vatvw=invoice.text.vatvw, postalvw=invoice.text.postalvw, salutation=customerSalutation-MR, pagenumbercitation=invoice.text.page, commercialregister=invoice.text.commercialregister, board=invoice.text.board}}
