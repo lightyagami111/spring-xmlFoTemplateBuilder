@@ -37,10 +37,9 @@ public class AttachmentsMustacheService {
         Object rootLayout = yamlConfiguration.getTemplateLayout().get("root");
         String templateLayout = "";
         if (rootLayout instanceof String) { //it's the name of template
-            templateLayout = resourceService.getComponent("/templateLayouts",(String) yamlConfiguration.getTemplateLayout().get("root"));
-        }
-        else if (rootLayout instanceof HashMap) { //it's hashmap structure , must compile root.mustache
-            String rootComponent = resourceService.getComponent("/templateLayouts","root");
+            templateLayout = resourceService.getComponent("/templateLayouts", (String) yamlConfiguration.getTemplateLayout().get("root"));
+        } else if (rootLayout instanceof HashMap) { //it's hashmap structure , must compile root.mustache
+            String rootComponent = resourceService.getComponent("/templateLayouts", "root");
             templateLayout = compile(templateLayoutCompiler, rootComponent, yamlConfiguration.getTemplateLayout());
         }
 
