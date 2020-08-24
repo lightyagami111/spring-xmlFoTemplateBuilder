@@ -38,679 +38,186 @@
 
         <fo:page-sequence master-reference="my-sequence">
             <fo:static-content flow-name="xsl-region-before-first">
-                    
 
 
-<fo:block-container margin-top="-7.5mm">
-    <fo:block  text-align="left" margin-left="-4.5mm">
-        <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"/>
-    </fo:block>
-</fo:block-container>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <fo:block-container margin-top="-7.5mm">
+                    <fo:block text-align="left" margin-left="-4.5mm">
+                        <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm"
+                                             content-height="scale-to-fit" scaling="non-uniform"/>
+                    </fo:block>
+                </fo:block-container>
 
 
             </fo:static-content>
 
             <fo:static-content flow-name="xsl-region-before">
-                    
 
 
-<fo:block-container margin-top="-7.5mm">
-    <fo:block  text-align="left" margin-left="-4.5mm">
-        <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm" content-height="scale-to-fit" scaling="non-uniform"/>
-    </fo:block>
-</fo:block-container>
+                <fo:block-container margin-top="-7.5mm">
+                    <fo:block text-align="left" margin-left="-4.5mm">
+                        <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm"
+                                             content-height="scale-to-fit" scaling="non-uniform"/>
+                    </fo:block>
+                </fo:block-container>
 
 
+                <fo:block text-align="end" font-size="10pt" margin-top="12mm">
 
 
+                    {{invoice.text.page}}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    
-
-
-
-
-
-
-
-    <fo:block  text-align="end" font-size="10pt" margin-top="12mm" >
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {{invoice.text.page}} 
-
-<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    <fo:page-number/>/
+                    <fo:page-number-citation ref-id="TheVeryLastPage"/>
+                </fo:block>
 
 
             </fo:static-content>
 
             <fo:static-content flow-name="xsl-region-after">
-                    
 
 
+                <fo:block font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm">
 
 
+                    {{invoice.text.vatvw}}
 
 
+                </fo:block>
 
 
+                <fo:block font-size="7pt">
 
+                    <fo:table>
 
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
 
-    <fo:block  font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm" >
-        
 
+                                    <fo:block color="#B4B8BA">
 
 
+                                        {{invoice.text.postalvw}}
 
 
+                                    </fo:block>
 
 
+                                </fo:table-cell>
+                                <fo:table-cell>
 
 
+                                    <fo:block color="#B4B8BA">
 
 
+                                    </fo:block>
 
 
- 
+                                </fo:table-cell>
+                                <fo:table-cell>
 
 
+                                    <fo:block color="#B4B8BA">
 
 
+                                        {{invoice.text.board}}
 
 
+                                    </fo:block>
 
 
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
 
 
-
-
-
-
-
-
-
-
-
-
- {{invoice.text.commercialregister}} 
-
- <fo:block/> 
-
-
-
-
-
-
- {{invoice.text.vatvw}} 
-
-
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
-
-
-                    
-
-
-
-
-
-
-
-
-
-
-
-    <fo:block  font-size="7pt" >
-        
-    <fo:table >
-
-        <fo:table-body>
-            <fo:table-row>
-                    <fo:table-cell >
-                        
-
-
-
-
-
-
-
-
-
-
-
-    <fo:block  color="#B4B8BA" >
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {{invoice.text.postalvw}} 
-
-
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
-
-
-                    </fo:table-cell>
-                    <fo:table-cell >
-                        
-
-
-
-
-
-
-
-
-
-
-
-    <fo:block  color="#B4B8BA" >
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
-
-
-                    </fo:table-cell>
-                    <fo:table-cell >
-                        
-
-
-
-
-
-
-
-
-
-
-
-    <fo:block  color="#B4B8BA" >
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {{invoice.text.board}} 
-
-
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
-
-
-                    </fo:table-cell>
-            </fo:table-row>
-        </fo:table-body>
-    </fo:table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
+                </fo:block>
 
 
             </fo:static-content>
 
             <fo:flow flow-name="xsl-region-body">
-                    
-    <fo:table >
 
-        <fo:table-body>
-            <fo:table-row>
-                    <fo:table-cell >
-                        
+                <fo:table>
 
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell>
 
 
+                                <fo:block font-size="16pt" color="#899093" font-weight="bold">
 
 
+                                    {{invoice.subheadline.shop}}
 
 
+                                </fo:block>
 
 
+                            </fo:table-cell>
+                            <fo:table-cell display-align="after">
 
 
-    <fo:block  font-size="16pt" color="#899093" font-weight="bold" >
-        
+                                <fo:block text-align="end" font-size="10pt">
 
 
+                                    {{invoice.text.page}}
 
+                                    <fo:page-number/>/
+                                    <fo:page-number-citation ref-id="TheVeryLastPage"/>
+                                </fo:block>
 
 
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
 
 
+                <fo:block>
 
+                    <fo:table font-size="10pt" space-before="15mm">
+                        <fo:table-column column-width="55%"/>
+                        <fo:table-column column-width="45%"/>
 
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
 
 
+                                    <fo:block-container width="85%">
 
 
+                                        <fo:block>
 
 
+                                            {{customerSalutation-MR}}
 
+                                            &#160;
 
 
+                                            <xsl:value-of select="//request/customerInformation/firstName"/>
+                                            &#160;
 
 
- {{invoice.subheadline.shop}} 
+                                            <xsl:value-of select="//request/customerInformation/lastName"/>
+                                            &#160;
 
 
-    </fo:block>
+                                        </fo:block>
 
 
+                                    </fo:block-container>
 
 
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
 
 
-
-
-
-
-
-
-                    </fo:table-cell>
-                    <fo:table-cell  display-align="after" >
-                        
-
-
-
-
-
-
-
-    <fo:block  text-align="end" font-size="10pt" >
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- {{invoice.text.page}} 
-
-<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    </fo:table-cell>
-            </fo:table-row>
-        </fo:table-body>
-    </fo:table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    
-
-
-
-
-
-
-
-
-
-
-
-    <fo:block >
-        
-    <fo:table  font-size="10pt" space-before="15mm" >
-            <fo:table-column  column-width="55%" />
-            <fo:table-column  column-width="45%" />
-
-        <fo:table-body>
-            <fo:table-row>
-                    <fo:table-cell >
-                        
-
-
-
-
-
-
-
-
-
-    <fo:block-container  width="85%" >
-        
-
-
-
-
-
-
-
-
-
-
-
-    <fo:block >
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
-
-
-    </fo:block-container>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    </fo:table-cell>
-            </fo:table-row>
-        </fo:table-body>
-    </fo:table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </fo:block>
-
-
-
-
-
-
-
-
-
-
+                </fo:block>
 
 
                 <fo:block id="TheVeryLastPage"></fo:block>

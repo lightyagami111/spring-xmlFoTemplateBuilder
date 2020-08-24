@@ -23,13 +23,14 @@ ${#this.block}
 ${/this.block}
 
 
-${#this.text-block} ${> blocks} <fo:block/> ${/this.text-block}
-${#this.block-text} <fo:block/> ${> blocks} ${/this.block-text}
-${#this.text-space} ${> blocks} &#160; ${/this.text-space}
-${#this.text-space-v1} ${> blocks} &#160; ${> blocks} &#160; ${> blocks} ${/this.text-space-v1}
-${#this.space-text} &#160; ${> blocks} ${/this.space-text}
+${#this.blocks} ${> blocks} ${/this.blocks}
+${#this.flowComponents} ${> blocks} ${/this.flowComponents}
+${#this.blocks-block} ${> blocks} <fo:block/> ${/this.blocks-block}
+${#this.block-blocks} <fo:block/> ${> blocks} ${/this.block-blocks}
+${#this.blocks-space} ${> blocks} &#160; ${/this.blocks-space}
+${#this.space-blocks} &#160; ${> blocks} ${/this.space-blocks}
 
 
-${#this.contentKey} {{&{${.}}}} ${/this.contentKey}
+${#this.contentKey} {{${.}}} ${/this.contentKey}
 ${#this.requestField} <xsl:value-of select="${.}"/> ${/this.requestField}
 ${#this.text} ${.} ${/this.text}

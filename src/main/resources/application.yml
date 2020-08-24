@@ -1,14 +1,13 @@
 templateContentKeys:
-  field[customerInformation]:
-    field[salutation]:
-      value[MR]:
-        salutation: customerSalutation-MR
-      value[MRS]:
-        salutation: customerSalutation-MRS
-      value[MS]:
-        salutation: customerSalutation-MS
-      value[MS2]:
-        salutation: customerSalutation-MS2
+  field[salutation]:
+    value[MR]:
+      salutation: customerSalutation-MR
+    value[MRS]:
+      salutation: customerSalutation-MRS
+    value[MS]:
+      salutation: customerSalutation-MS
+    value[MS2]:
+      salutation: customerSalutation-MS2
 
   field[brand]:
     value[VW]:
@@ -48,57 +47,59 @@ templateLayout:
 
 templateFlowComponents:
   block-container-external-graphic:
-    external-graphic:
-      src: classpath:{//logo}
+    block-container-external-graphic:
+      external-graphic:
+        src: classpath:{//logo}
 
-  salutation-block:
-    field[customerInformation]:
-      field[customerType]:
-        value[PRIVATE]:
-          text-space-v1:
-            - contentKey: templateContentKeys.salutation
-            - requestField: //request/customerInformation/firstName
-            - requestField: //request/customerInformation/lastName
-        value[COMPANY]:
-          requestField: //request/customerInformation/company
+  block-salutation:
+    field[customerType]:
+      value[PRIVATE]:
+        blocks-space:
+          - contentKey: salutation
+          - requestField: //request/customerInformation/firstName
+          - requestField: //request/customerInformation/lastName
+      value[COMPANY]:
+        requestField: //request/customerInformation/company
+
+
 
 templateFlow:
   field[brand]:
     value[VW]:
       xsl-region-before-first:
-        - templateFlowComponents.block-container-external-graphic
+        - flowComponents: block-container-external-graphic
       xsl-region-before:
-        - templateFlowComponents.block-container-external-graphic
+        - flowComponents: block-container-external-graphic
         - page-number-citation:
             attributes: text-align="end" font-size="10pt" margin-top="12mm"
-            contentKey: templateContentKeys.pagenumbercitation
+            contentKey: pagenumbercitation
       xsl-region-after:
         - block:
             attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
-            contentKey: templateContentKeys.vatvw
+            contentKey: vatvw
             text-block:
-              contentKey: templateContentKeys.commercialregister
+              contentKey: commercialregister
         - block:
             attributes: font-size="7pt"
             table-row-1:
               table-cell:
                 - block:
                     attributes: color="#B4B8BA"
-                    contentKey: templateContentKeys.postalvw
+                    contentKey: postalvw
                 - block:
                     attributes: color="#B4B8BA"
                 - block:
                     attributes: color="#B4B8BA"
-                    contentKey: templateContentKeys.board
+                    contentKey: board
       xsl-region-body:
         - table-row-1:
             table-cell:
               - block:
                   attributes: font-size="16pt" color="#899093" font-weight="bold"
-                  contentKey: templateContentKeys.headingtitle
+                  contentKey: headingtitle
               - page-number-citation:
                   attributes: text-align="end" font-size="10pt"
-                  contentKey: templateContentKeys.pagenumbercitation
+                  contentKey: pagenumbercitation
                 attributes: display-align="after"
         - block:
             table-row-1:
@@ -109,7 +110,8 @@ templateFlow:
               table-cell:
                 - block-container:
                     attributes: width="85%"
-                    block: templateFlowComponents.salutation-block
+                    block:
+                      flowComponents: block-salutation
 
       field[mailTypeVariant]:
         value[voucher-delivery]:

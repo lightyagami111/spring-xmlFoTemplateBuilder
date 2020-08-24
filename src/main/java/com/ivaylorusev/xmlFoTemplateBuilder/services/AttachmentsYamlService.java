@@ -2,16 +2,14 @@ package com.ivaylorusev.xmlFoTemplateBuilder.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.ivaylorusev.xmlFoTemplateBuilder.ResourceService;
 import com.ivaylorusev.xmlFoTemplateBuilder.models.MailTypeVariant;
-import com.ivaylorusev.xmlFoTemplateBuilder.models.MasterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AttachmentsYamlService {
@@ -19,19 +17,19 @@ public class AttachmentsYamlService {
     @Autowired
     private ResourceService resourceService;
 
-    public YamlConfiguration getYamlConfiguration(MasterRequest masterRequest) throws Exception {
+    public YamlConfiguration getYamlConfiguration(YamlControlProperties yamlControlProperties) throws Exception {
+        HashMap<String, Object> templateFlow = getYamlMap(yamlControlProperties, "templateFlow");
+
+        HashMap<String, Object> templateFlowComponents = getYamlMaps(yamlControlProperties, "templateFlowComponents");
+        HashMap<String, Object> templateContentKeys = getYamlMap(yamlControlProperties, "templateContentKeys");
+        insertContentKeys(templateFlowComponents, templateContentKeys);
+        insertContentKeys(templateFlow, templateContentKeys);
+        insertFlowComponents(templateFlow, templateFlowComponents);
+
+
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-
-        yamlConfiguration.setTemplateContentKeys(getYamlMapWithParentComponentName(masterRequest, "templateContentKeys"));
-        yamlConfiguration.setTemplateLayout(getYamlMap(masterRequest, "templateLayout"));
-
-        yamlConfiguration.setTemplateFlow(getYamlMap(masterRequest, "templateFlow"));
-
-        HashMap<String, Object> templateFlowComponents = (HashMap<String, Object>) getTemplateConfigHashMap().get("templateFlowComponents");
-        for (Map.Entry<String, Object> entry: templateFlowComponents.entrySet()) {
-
-        }
-
+        yamlConfiguration.setTemplateLayout(getYamlMap(yamlControlProperties, "templateLayout"));
+        yamlConfiguration.setTemplateFlow(templateFlow);
 
         return yamlConfiguration;
     }
@@ -44,34 +42,37 @@ public class AttachmentsYamlService {
         return templateConfigHashMap;
     }
 
-    private HashMap<String, Object> getMasterRequestHashMap(MasterRequest request) {
+    private HashMap<String, Object> getYamlControlPropertiesAsMap(YamlControlProperties yamlControlProperties) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(new MailTypeVariantSerializer(MailTypeVariant.class));
         objectMapper.registerModule(module);
 
-        HashMap<String, Object> masterRequestHashMap = objectMapper.convertValue(request, HashMap.class);
-        return masterRequestHashMap;
+        HashMap<String, Object> yamlControlPropertiesMap = objectMapper.convertValue(yamlControlProperties, HashMap.class);
+        return yamlControlPropertiesMap;
     }
 
 
 
-    private HashMap getYamlMapWithParentComponentName(MasterRequest masterRequest, String yamlComponent) throws Exception {
-        HashMap<String, Object> outputChild = getYamlMap(masterRequest, yamlComponent);
-
-        HashMap<String, Object> outputParent = new HashMap<>();
-        outputParent.put(yamlComponent, outputChild);
-
-        return outputParent;
+    private HashMap getYamlMaps(YamlControlProperties yamlControlProperties, String yamlMapName) throws Exception {
+        HashMap<String, Object> yamlMaps = (HashMap<String, Object>) getTemplateConfigHashMap().get(yamlMapName);
+        for (Map.Entry<String, Object> entry: yamlMaps.entrySet()) {
+            yamlMaps.put(entry.getKey(), processYamlMap(yamlControlProperties, (HashMap) entry.getValue()));
+        }
+        return yamlMaps;
     }
 
-    private HashMap getYamlMap(MasterRequest masterRequest, String yamlComponent) throws Exception {
-        HashMap<String, Object> templateContentKeysYaml = (HashMap<String, Object>) getTemplateConfigHashMap().get(yamlComponent);
-        HashMap<String, Object> masterRequestHashMap = getMasterRequestHashMap(masterRequest);
-        filterConfigMap(masterRequestHashMap, templateContentKeysYaml);
+    private HashMap getYamlMap(YamlControlProperties yamlControlProperties, String yamlMapName) throws Exception {
+        HashMap<String, Object> yamlMap = (HashMap<String, Object>) getTemplateConfigHashMap().get(yamlMapName);
+        return processYamlMap(yamlControlProperties, yamlMap);
+    }
+
+    private HashMap processYamlMap(YamlControlProperties yamlControlProperties, HashMap<String, Object> yamlMap) {
+        HashMap<String, Object> yamlControlPropertiesMap = getYamlControlPropertiesAsMap(yamlControlProperties);
+        filterYamlMap(yamlControlPropertiesMap, yamlMap);
         HashMap<String, Object> output = new HashMap<>();
-        flatteringMap(templateContentKeysYaml, output);
+        flatYamlMap(yamlMap, output);
 
         return output;
     }
@@ -79,9 +80,9 @@ public class AttachmentsYamlService {
 
     /**
      *
-     * @param masterRequestHashMap
+     * @param yamlControlPropertiesMap
      *      example : {brand=...., mailTypeVariant=...., customerInf={salutation=....}}
-     * @param configHashMap example :
+     * @param yamlMap example :
      *  field[brand]:
      *
      *     value[VW]:
@@ -92,34 +93,60 @@ public class AttachmentsYamlService {
      *     value[SKODA]:
      *      root : .....
      *
-     * @return filtered configHashMap by masterRequest
+     * @return filtered yamlMap by yamlControlProperties
      */
-    private void filterConfigMap(HashMap<String, Object> masterRequestHashMap, HashMap<String, Object> configHashMap) {
-        for (Map.Entry<String, Object> entry : masterRequestHashMap.entrySet()) {
+    private void filterYamlMap(HashMap<String, Object> yamlControlPropertiesMap, HashMap<String, Object> yamlMap) {
+        for (Map.Entry<String, Object> entry : yamlControlPropertiesMap.entrySet()) {
             String yamlFieldName = getYamlFieldName(entry.getKey());
             Object fieldValue = entry.getValue();
 
-            if (fieldValue instanceof HashMap) { //embedded object in masterRequest
-                if (configHashMap.keySet().contains(yamlFieldName)) {
-                    HashMap<String, Object> valueByFieldName = (HashMap) configHashMap.get(yamlFieldName);
-                    filterConfigMap((HashMap<String, Object>) fieldValue, valueByFieldName);
+            if (fieldValue instanceof HashMap) { //embedded object in yamlControlProperties
+                if (yamlMap.keySet().contains(yamlFieldName)) {
+                    HashMap<String, Object> valueByFieldName = (HashMap) yamlMap.get(yamlFieldName);
+                    filterYamlMap((HashMap<String, Object>) fieldValue, valueByFieldName);
                 }
             }
             else {
-                if (configHashMap.keySet().contains(yamlFieldName)) {
-                    HashMap<String, Object> valueByFieldName = (HashMap) configHashMap.get(yamlFieldName);
+                if (yamlMap.keySet().contains(yamlFieldName)) {
+                    HashMap<String, Object> valueByFieldName = (HashMap) yamlMap.get(yamlFieldName);
                     String yamlValueName = getYamlValueName((String) fieldValue);
                     removeKeyValueReverse(yamlValueName, valueByFieldName);
 
                     Object byFieldValue = valueByFieldName.get(yamlValueName);
                     if ((byFieldValue instanceof HashMap)) {
-                        filterConfigMap(masterRequestHashMap, (HashMap<String, Object>) byFieldValue);
+                        filterYamlMap(yamlControlPropertiesMap, (HashMap<String, Object>) byFieldValue);
                     }
-                    else if (byFieldValue == null) { //config map filtered by field and value is empty, so remove it
-                        configHashMap.remove(yamlFieldName);
+                    else if (byFieldValue == null) {
+                        yamlMap.remove(yamlFieldName); //config map filtered by field and value is empty, so remove it
                     }
 
                 }
+            }
+        }
+    }
+
+    /**
+     * remove field[]/value[] mapping
+     * @param filteredYamlMap example :
+     * templateContentKeys:
+     *   field[customerInformation]:
+     *     field[salutation]:
+     *       value[MR]:
+     *         salutation: customerSalutation-MR
+     * @param output example :
+     *  templateContentKeys:
+     *    salutation: customerSalutation-MR
+     */
+    private void flatYamlMap(HashMap<String, Object> filteredYamlMap, HashMap<String, Object> output) {
+        for (Map.Entry<String, Object> entry : filteredYamlMap.entrySet()) {
+            String fieldName = entry.getKey();
+            Object fieldValue = entry.getValue();
+
+            if (fieldName.startsWith("field[") || fieldName.startsWith("value[")) {
+                flatYamlMap((HashMap<String, Object>) fieldValue, output);
+            }
+            else {
+                output.put(fieldName, fieldValue);
             }
         }
     }
@@ -142,18 +169,48 @@ public class AttachmentsYamlService {
         }
     }
 
-    private void flatteringMap(HashMap<String, Object> filteredConfigHashMap, HashMap<String, Object> output) {
-        for (Map.Entry<String, Object> entry : filteredConfigHashMap.entrySet()) {
+    private void insertContentKeys(HashMap<String, Object> templateFlowComponents, HashMap<String, Object> templateContentKeys) {
+        for (Map.Entry<String, Object> entry : templateFlowComponents.entrySet()) {
             String fieldName = entry.getKey();
             Object fieldValue = entry.getValue();
+            if (fieldValue instanceof HashMap) {
+                insertContentKeys((HashMap) fieldValue, templateContentKeys);
+            }
+            else if (fieldValue instanceof Collection) {
+                Collection c = (Collection) fieldValue;
+                for (Object o : c) {
+                    insertContentKeys((HashMap) o, templateContentKeys);
+                }
+            }
+            else if (fieldName.equalsIgnoreCase("contentKey")){
+                templateFlowComponents.put(fieldName, templateContentKeys.get(fieldValue));
+            }
 
-            if (fieldName.startsWith("field[") || fieldName.startsWith("value[")) {
-                flatteringMap((HashMap<String, Object>) fieldValue, output);
-            }
-            else {
-                output.put(fieldName, fieldValue);
-            }
         }
     }
+
+
+    private void insertFlowComponents(HashMap<String, Object> templateFlow, HashMap<String, Object> templateFlowComponents) {
+        for (Map.Entry<String, Object> entry : templateFlow.entrySet()) {
+            String fieldName = entry.getKey();
+            Object fieldValue = entry.getValue();
+            if (fieldValue instanceof HashMap) {
+                insertFlowComponents((HashMap) fieldValue, templateFlowComponents);
+            }
+            else if (fieldValue instanceof Collection) {
+                Collection c = (Collection) fieldValue;
+                for (Object o : c) {
+                    insertFlowComponents((HashMap) o, templateFlowComponents);
+                }
+            }
+            else if (fieldName.equalsIgnoreCase("flowComponents")){
+                templateFlow.put(fieldName, templateFlowComponents.get(fieldValue));
+            }
+
+        }
+    }
+
+
+
 
 }

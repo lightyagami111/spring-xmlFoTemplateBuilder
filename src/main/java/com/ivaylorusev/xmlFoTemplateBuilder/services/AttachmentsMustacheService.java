@@ -1,21 +1,23 @@
 package com.ivaylorusev.xmlFoTemplateBuilder.services;
 
+import com.ivaylorusev.xmlFoTemplateBuilder.ResourceService;
 import com.ivaylorusev.xmlFoTemplateBuilder.models.MasterRequest;
 import com.samskivert.mustache.Mustache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 @Service
 public class AttachmentsMustacheService {
 
-    private final ResourceService resourceService;
-    private final AttachmentsYamlService attachmentsYamlService;
+    @Autowired
+    private ResourceService resourceService;
+    @Autowired
+    private AttachmentsYamlService attachmentsYamlService;
 
 
     private Mustache.TemplateLoader templateLoader = new Mustache.TemplateLoader() {
@@ -26,17 +28,10 @@ public class AttachmentsMustacheService {
 
     private Mustache.Compiler templateLayoutCompiler = Mustache.compiler().withDelims("%{ }").escapeHTML(false);
     private Mustache.Compiler templateFlowCompiler = Mustache.compiler().withDelims("${ }").escapeHTML(false).withLoader(templateLoader);
-    private Mustache.Compiler templateDataCompiler = Mustache.compiler().withDelims("&{ }").escapeHTML(false);
-
-
-    public AttachmentsMustacheService(ResourceService resourceService, AttachmentsYamlService attachmentsYamlService) {
-        this.resourceService = resourceService;
-        this.attachmentsYamlService = attachmentsYamlService;
-    }
 
 
     public String buildAttachmentTemplate(MasterRequest masterRequest) throws Exception {
-        YamlConfiguration yamlConfiguration = attachmentsYamlService.getYamlConfiguration(masterRequest);
+        YamlConfiguration yamlConfiguration = attachmentsYamlService.getYamlConfiguration(new YamlControlProperties(masterRequest));
 
         //building root layout
         Object rootLayout = yamlConfiguration.getTemplateLayout().get("root");
@@ -53,7 +48,7 @@ public class AttachmentsMustacheService {
         String templateFlow = compile(templateFlowCompiler, templateLayout, yamlConfiguration.getTemplateFlow());
 
         //resolve content keys
-        return compile(templateDataCompiler, templateFlow, yamlConfiguration.getTemplateContentKeys());
+        return templateFlow;
 
     }
 
