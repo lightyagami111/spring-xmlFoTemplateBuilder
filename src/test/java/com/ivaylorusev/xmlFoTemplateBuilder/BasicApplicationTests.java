@@ -19,7 +19,7 @@ public class BasicApplicationTests {
     MailTypeVariant mtv = MailTypeVariant.ACTIVATION;
     Salutation s = Salutation.MR;
     CustomerType c = CustomerType.PRIVATE;
-    MasterRequest masterRequest = new MasterRequest(b, mtv, new CustomerInformation(s, c), new PaymentData(null));
+    MasterRequest masterRequest = new MasterRequest(b, mtv, new CustomerInformation(s, c), new PaymentData(PaymentType.CC_AMEX));
 
 
     @Test

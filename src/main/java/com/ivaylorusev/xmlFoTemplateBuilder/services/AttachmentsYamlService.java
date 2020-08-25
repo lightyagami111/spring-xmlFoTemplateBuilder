@@ -24,6 +24,7 @@ public class AttachmentsYamlService {
         HashMap<String, Object> templateContentKeys = getYamlMap(yamlControlProperties, "templateContentKeys");
         insertContentKeys(templateFlowComponents, templateContentKeys);
         insertContentKeys(templateFlow, templateContentKeys);
+        insertFlowComponents(templateFlowComponents, templateFlowComponents);
         insertFlowComponents(templateFlow, templateFlowComponents);
 
 
@@ -100,6 +101,10 @@ public class AttachmentsYamlService {
             String yamlFieldName = getYamlFieldName(entry.getKey());
             Object fieldValue = entry.getValue();
 
+            if (fieldValue == null) {
+                yamlMap.remove(yamlFieldName);
+                return;
+            }
             if (fieldValue instanceof HashMap) { //embedded object in yamlControlProperties
                 if (yamlMap.keySet().contains(yamlFieldName)) {
                     HashMap<String, Object> valueByFieldName = (HashMap) yamlMap.get(yamlFieldName);
@@ -109,15 +114,18 @@ public class AttachmentsYamlService {
             else {
                 if (yamlMap.keySet().contains(yamlFieldName)) {
                     HashMap<String, Object> valueByFieldName = (HashMap) yamlMap.get(yamlFieldName);
-                    String yamlValueName = getYamlValueName((String) fieldValue);
-                    removeKeyValueReverse(yamlValueName, valueByFieldName);
+                    removeKeyValueReverse((String) fieldValue, valueByFieldName);
 
-                    Object byFieldValue = valueByFieldName.get(yamlValueName);
-                    if ((byFieldValue instanceof HashMap)) {
-                        filterYamlMap(yamlControlPropertiesMap, (HashMap<String, Object>) byFieldValue);
+                    Object byFieldValues = get(valueByFieldName, fieldValue);
+                    if ((byFieldValues instanceof Collection)) {
+                        for (Object byFieldValue : (Collection) byFieldValues) {
+                            if (byFieldValue instanceof HashMap) {
+                                filterYamlMap(yamlControlPropertiesMap, (HashMap<String, Object>) byFieldValue);
+                            }
+                        }
                     }
-                    else if (byFieldValue == null) {
-                        yamlMap.remove(yamlFieldName); //config map filtered by field and value is empty, so remove it
+                    else if (byFieldValues == null) {
+                        yamlMap.remove(yamlFieldName);
                     }
 
                 }
@@ -155,15 +163,25 @@ public class AttachmentsYamlService {
         return "field[" + fieldName + "]";
     }
 
-    private String getYamlValueName(String valueName) {
-        return "value[" + valueName + "]";
+    public static <K,V> List<V> get(HashMap<K,V> linkedHashMap, Object key) {
+        List<V> result = new ArrayList<>();
+        Set<K> keySet = linkedHashMap.keySet();
+        for (K k : keySet) {
+            if (k.toString().contains(key.toString())) {
+                result.add(linkedHashMap.get(k));
+            }
+        }
+        if (result.isEmpty())
+            return null;
+        else
+            return result;
     }
 
-    private void removeKeyValueReverse(String key, HashMap<String, Object> testMap) {
-        Iterator<Map.Entry<String,Object>> iter = testMap.entrySet().iterator();
+    private void removeKeyValueReverse(String key, HashMap<String, Object> yamlMap) {
+        Iterator<Map.Entry<String,Object>> iter = yamlMap.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String,Object> entry = iter.next();
-            if(!key.equalsIgnoreCase(entry.getKey())){
+            if(!entry.getKey().contains(key)){
                 iter.remove();
             }
         }
@@ -173,17 +191,33 @@ public class AttachmentsYamlService {
         for (Map.Entry<String, Object> entry : templateFlowComponents.entrySet()) {
             String fieldName = entry.getKey();
             Object fieldValue = entry.getValue();
+
+            if (fieldName.equalsIgnoreCase("contentKey")
+                    || fieldName.equalsIgnoreCase("block-contentKey")){
+
+                if (fieldValue instanceof List) {
+                    List c = (List) fieldValue;
+                    for (int i=0; i < c.size(); i++) {
+                        Object contentKey = templateContentKeys.get(c.get(i));
+                        if (contentKey != null)
+                            c.set(i, contentKey);
+                    }
+                }
+                else {
+                    templateFlowComponents.put(fieldName, templateContentKeys.get(fieldValue));
+                }
+            }
+
             if (fieldValue instanceof HashMap) {
                 insertContentKeys((HashMap) fieldValue, templateContentKeys);
             }
             else if (fieldValue instanceof Collection) {
                 Collection c = (Collection) fieldValue;
                 for (Object o : c) {
-                    insertContentKeys((HashMap) o, templateContentKeys);
+                    if (o instanceof HashMap) {
+                        insertContentKeys((HashMap) o, templateContentKeys);
+                    }
                 }
-            }
-            else if (fieldName.equalsIgnoreCase("contentKey")){
-                templateFlowComponents.put(fieldName, templateContentKeys.get(fieldValue));
             }
 
         }
@@ -200,7 +234,9 @@ public class AttachmentsYamlService {
             else if (fieldValue instanceof Collection) {
                 Collection c = (Collection) fieldValue;
                 for (Object o : c) {
-                    insertFlowComponents((HashMap) o, templateFlowComponents);
+                    if (o instanceof HashMap) {
+                        insertFlowComponents((HashMap) o, templateFlowComponents);
+                    }
                 }
             }
             else if (fieldName.equalsIgnoreCase("flowComponents")){

@@ -13,8 +13,6 @@
                 <fo:region-before region-name="xsl-region-before-first" extent="1cm"/>
 
                 <fo:region-after region-name="xsl-region-after" extent="3cm" margin-bottom="2cm"/>
-
-
             </fo:simple-page-master>
             <fo:simple-page-master master-name="all-pages" page-height="29.7cm" page-width="21cm" margin-top="2.3cm"
                                    margin-bottom="2cm" margin-left="2cm" margin-right="2cm">
@@ -24,8 +22,6 @@
                 <fo:region-before region-name="xsl-region-before" extent="1cm"/>
 
                 <fo:region-after region-name="xsl-region-after" extent="3cm" margin-bottom="2cm"/>
-
-
             </fo:simple-page-master>
 
             <fo:page-sequence-master master-name="my-sequence">
@@ -34,57 +30,38 @@
             </fo:page-sequence-master>
 
         </fo:layout-master-set>
-
-
         <fo:page-sequence master-reference="my-sequence">
             <fo:static-content flow-name="xsl-region-before-first">
-
-
                 <fo:block-container margin-top="-7.5mm">
                     <fo:block text-align="left" margin-left="-4.5mm">
                         <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm"
                                              content-height="scale-to-fit" scaling="non-uniform"/>
                     </fo:block>
                 </fo:block-container>
-
-
             </fo:static-content>
 
             <fo:static-content flow-name="xsl-region-before">
-
-
                 <fo:block-container margin-top="-7.5mm">
                     <fo:block text-align="left" margin-left="-4.5mm">
                         <fo:external-graphic src="classpath:{//logo}" height="28.2mm" width="31mm"
                                              content-height="scale-to-fit" scaling="non-uniform"/>
                     </fo:block>
                 </fo:block-container>
-
-
                 <fo:block text-align="end" font-size="10pt" margin-top="12mm">
-
-
-                    {{invoice.text.page}}
-
+                    {{invoice.text.page}} &#160;
                     <fo:page-number/>/
                     <fo:page-number-citation ref-id="TheVeryLastPage"/>
                 </fo:block>
-
-
             </fo:static-content>
 
             <fo:static-content flow-name="xsl-region-after">
-
-
                 <fo:block font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm">
+                    {{invoice.text.commercialregister}} &#160;
+                    <fo:block/>
 
-
-                    {{invoice.text.vatvw}}
-
+                    {{invoice.text.vatvw}} &#160;
 
                 </fo:block>
-
-
                 <fo:block font-size="7pt">
 
                     <fo:table>
@@ -92,49 +69,25 @@
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell>
-
-
                                     <fo:block color="#B4B8BA">
-
-
-                                        {{invoice.text.postalvw}}
-
+                                        {{invoice.text.postalvw}} &#160;
 
                                     </fo:block>
-
-
                                 </fo:table-cell>
                                 <fo:table-cell>
-
-
                                     <fo:block color="#B4B8BA">
-
-
                                     </fo:block>
-
-
                                 </fo:table-cell>
                                 <fo:table-cell>
-
-
                                     <fo:block color="#B4B8BA">
-
-
-                                        {{invoice.text.board}}
-
+                                        {{invoice.text.board}} &#160;
 
                                     </fo:block>
-
-
                                 </fo:table-cell>
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
-
-
                 </fo:block>
-
-
             </fo:static-content>
 
             <fo:flow flow-name="xsl-region-body">
@@ -144,37 +97,21 @@
                     <fo:table-body>
                         <fo:table-row>
                             <fo:table-cell>
-
-
                                 <fo:block font-size="16pt" color="#899093" font-weight="bold">
-
-
-                                    {{invoice.subheadline.shop}}
-
+                                    {{invoice.subheadline.shop}} &#160;
 
                                 </fo:block>
-
-
                             </fo:table-cell>
                             <fo:table-cell display-align="after">
-
-
                                 <fo:block text-align="end" font-size="10pt">
-
-
-                                    {{invoice.text.page}}
-
+                                    {{invoice.text.page}} &#160;
                                     <fo:page-number/>/
                                     <fo:page-number-citation ref-id="TheVeryLastPage"/>
                                 </fo:block>
-
-
                             </fo:table-cell>
                         </fo:table-row>
                     </fo:table-body>
                 </fo:table>
-
-
                 <fo:block>
 
                     <fo:table font-size="10pt" space-before="15mm">
@@ -184,42 +121,120 @@
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell>
-
-
                                     <fo:block-container width="85%">
-
-
                                         <fo:block>
-
-
-                                            {{customerSalutation-MR}}
-
-                                            &#160;
-
-
-                                            <xsl:value-of select="//request/customerInformation/firstName"/>
-                                            &#160;
-
-
-                                            <xsl:value-of select="//request/customerInformation/lastName"/>
-                                            &#160;
-
-
+                                            {{customerSalutation-MRS}} &#160;
+                                            <xsl:value-of select="//request/customerInformation/firstName"/> &#160;
+                                            <xsl:value-of select="//request/customerInformation/lastName"/> &#160;
+                                            <fo:block/>
+                                            <xsl:value-of select="//request/customerInformation/addr1"/> &#160;
+                                            <xsl:value-of select="//request/customerInformation/houseNumber"/> &#160;
+                                            <fo:block/>
+                                            <xsl:value-of select="//request/customerInformation/postcode"/> &#160;
+                                            <xsl:value-of select="//request/customerInformation/city"/> &#160;
+                                            <fo:block/>
+                                            <xsl:value-of select="//request/customerInformation/countryCode"/> &#160;
+                                            <fo:block/>
+                                            <fo:block/>
+                                            <xsl:value-of select="//request/customerInformation/email"/> &#160;
                                         </fo:block>
-
-
                                     </fo:block-container>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <fo:table>
+                                            <fo:table-body>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block>
+                                                            {{invoice.label.invoicedate}}
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                            <xsl:value-of select="//request/invoiceData/invoiceDate"/>
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block>
+                                                            {{invoice.label.invoiceno}}
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                            <xsl:value-of select="//request/invoiceData/invoiceNumber"/>
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block>
+                                                            {{invoice.text.orderdate}}
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                            <xsl:value-of select="//request/orderDate"/>
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block>
+                                                            {{invoice.text.orderno}}
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                            <xsl:call-template name="intersperse-with-zero-spaces">
+                                                                <xsl:with-param name="str"
+                                                                                select="//request/orderIdentifier"/>
+                                                            </xsl:call-template>
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                    <fo:table-cell number-columns-spanned="2">
+                                                        <fo:block>
+                                                            {{invoice.label.dateinvoiceservice}}
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block>
+                                                            {{invoice.label.paymentmethod}}
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                            <fo:inline>
+                                                                {{invoice.label.paycreditcard}} &#160;
+                                                                {{invoice.label.paycreditcard.americanexpress}} &#160;
 
+                                                            </fo:inline>
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                            </fo:table-body>
 
+                                        </fo:table>
+                                    </fo:block>
                                 </fo:table-cell>
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
-
-
                 </fo:block>
-
-
                 <fo:block id="TheVeryLastPage"></fo:block>
             </fo:flow>
 

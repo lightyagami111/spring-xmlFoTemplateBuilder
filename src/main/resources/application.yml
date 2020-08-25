@@ -12,8 +12,9 @@ templateContentKeys:
   field[brand]:
     value[VW]:
       field[mailTypeVariant]:
-        value[credit-node]:
+        value[credit-note]:
           headingtitle: label.credit.note
+          creditNoteInvoiceNumberLabel: cs-credit-note-pdf-subheadline
 
       commercialregister: invoice.text.commercialregister
       vatvw: invoice.text.vatvw
@@ -25,12 +26,50 @@ templateContentKeys:
       field[mailTypeVariant]:
         value[activation]:
           headingtitle: invoice.subheadline.shop
-        value[credit-node]:
+          label.supplyDate: invoice.label.supplydate
+        value[credit-note]:
           headingtitle: invoice.label.credit-note
+          creditNoteInvoiceNumberLabel: invoice.label.credit-note-to-the-invoice
 
       footeraddress: invoice.footer.address
 
+  field[mailTypeVariant]:
+    value[activation]:
+      field[paymentType]:
+        value[CC_VISA, CC_AMEX, CC_MASTER, CC_JCB, PAYPAL]:
+          dateinvoiceservice: invoice.label.dateinvoiceservice
+
+  field[paymentType]:
+    value[PREPAID]:
+      label.paymentType: invoice.label.paymentmethodadvance
+    value[PAYPAL]:
+      label.paymentType: invoice.label.paypaypal
+    value[CC_VISA]:
+      label.paymentType: invoice.label.paycreditcard.visa
+      label.paycreditcard: invoice.label.paycreditcard
+    value[CC_AMEX]:
+      label.paymentType: invoice.label.paycreditcard.americanexpress
+      label.paycreditcard: invoice.label.paycreditcard
+    value[CC_MASTER]:
+      label.paymentType: invoice.label.paycreditcard.mastercard
+      label.paycreditcard: invoice.label.paycreditcard
+    value[CC_JCB]:
+      label.paymentType: invoice.label.paycreditcard.JCB
+      label.paycreditcard: invoice.label.paycreditcard
+
+    field[mailTypeVariant]:
+      value[VOUCHER_INVOICE_EU]:
+        label.paymentType: ds-invoice-label-purchase-on-account
+      value[VOUCHER_INVOICE_DE]:
+        label.paymentType: ds-invoice-label-sepa
+
   pagenumbercitation: invoice.text.page
+  label.invoiceDate: invoice.label.invoicedate
+  label.invoiceNumber: invoice.label.invoiceno
+  label.orderDate: invoice.text.orderdate
+  label.orderNumber: invoice.text.orderno
+  label.vatno: invoice.text.vatno
+  label.paymentmethod: invoice.label.paymentmethod
 
 
 templateLayout:
@@ -46,20 +85,119 @@ templateLayout:
       root: root-v1.2
 
 templateFlowComponents:
-  block-container-external-graphic:
+  component-external-graphic:
     block-container-external-graphic:
       external-graphic:
         src: classpath:{//logo}
 
-  block-salutation:
+  component-salutation:
     field[customerType]:
       value[PRIVATE]:
-        blocks-space:
-          - contentKey: salutation
-          - requestField: //request/customerInformation/firstName
-          - requestField: //request/customerInformation/lastName
+        contentKey: salutation
+        requestField:
+          - //request/customerInformation/firstName
+          - //request/customerInformation/lastName
       value[COMPANY]:
         requestField: //request/customerInformation/company
+
+  component-customerInformation:
+    block-container:
+      attributes: width="85%"
+      block:
+        blocks-seq:
+          - flowComponents: component-salutation
+          - requestField:
+              - //request/customerInformation/addr1
+              - //request/customerInformation/houseNumber
+          - requestField:
+              - //request/customerInformation/postcode
+              - //request/customerInformation/city
+          - requestField: //request/customerInformation/countryCode
+          - requestField: null
+        requestField: //request/customerInformation/email
+
+  component-creditNoteInvoiceNumberLabel:
+    field[mailTypeVariant]:
+      value[credit-note]:
+        table-cell-ncs-2:
+          - block-contentKey: creditNoteInvoiceNumberLabel
+
+  component-creditNoteInvoiceNumberField:
+    field[mailTypeVariant]:
+      value[credit-note]:
+        table-cell-ncs-2:
+          - block-end-requestField: //request/invoiceData/creditNoteInvoiceNumber
+
+  component-supplydate:
+    field[brand]:
+      value[SKODA]:
+        field[mailTypeVariant]:
+          value[activation]:
+            table-cell:
+              - block-contentKey: label.supplyDate
+              - block-end-requestField: //request/orderDate
+
+  component-vatno:
+    field[customerType]:
+      value[COMPANY]:
+        table-cell:
+          - block-contentKey: label.vatno
+          - block-end-requestField: //request/customerInformation/taxId
+
+  component-dateinvoiceservice:
+    field[mailTypeVariant]:
+      value[activation]:
+        field[paymentType]:
+          value[CC_VISA, CC_AMEX, CC_MASTER, CC_JCB, PAYPAL]:
+            table-cell-ncs-2:
+              block-contentKey: dateinvoiceservice
+
+  component-paymentmethod:
+    field[paymentType]:
+      value[PREPAID, PAYPAL]:
+        table-cell:
+          - block-contentKey: label.paymentmethod
+          - block-end-inline:
+              contentKey: label.paymentType
+      value[CC_VISA, CC_AMEX, CC_MASTER, CC_JCB]:
+        table-cell:
+          - block-contentKey: label.paymentmethod
+          - block-end-inline:
+              contentKey:
+                - label.paycreditcard
+                - label.paymentType
+
+      field[mailTypeVariant]:
+        value[VOUCHER_INVOICE_EU, VOUCHER_INVOICE_DE]:
+          table-cell:
+            - block-contentKey: label.paymentmethod
+            - block-end-inline:
+                contentKey: label.paymentType
+
+  component-invoiceInformation:
+    block:
+      table:
+        table-body:
+          table-row:
+            - table-cell:
+              - block-contentKey: label.invoiceDate
+              - block-end-requestField: //request/invoiceData/invoiceDate
+            - table-cell:
+              - block-contentKey: label.invoiceNumber
+              - block-end-requestField: //request/invoiceData/invoiceNumber
+            - flowComponents: component-creditNoteInvoiceNumberLabel
+            - flowComponents: component-creditNoteInvoiceNumberField
+            - table-cell:
+              - block-contentKey: label.orderDate
+              - block-end-requestField: //request/orderDate
+            - table-cell:
+              - block-contentKey: label.orderNumber
+              - block-end-requestField-intersperse: //request/orderIdentifier
+            - flowComponents: component-supplydate
+            - flowComponents: component-vatno
+            - flowComponents: component-dateinvoiceservice
+            - flowComponents: component-paymentmethod
+
 
 
 
@@ -67,9 +205,9 @@ templateFlow:
   field[brand]:
     value[VW]:
       xsl-region-before-first:
-        - flowComponents: block-container-external-graphic
+        - flowComponents: component-external-graphic
       xsl-region-before:
-        - flowComponents: block-container-external-graphic
+        - flowComponents: component-external-graphic
         - page-number-citation:
             attributes: text-align="end" font-size="10pt" margin-top="12mm"
             contentKey: pagenumbercitation
@@ -77,7 +215,7 @@ templateFlow:
         - block:
             attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
             contentKey: vatvw
-            text-block:
+            blocks-seq:
               contentKey: commercialregister
         - block:
             attributes: font-size="7pt"
@@ -108,10 +246,8 @@ templateFlow:
                 - attributes: column-width="55%"
                 - attributes: column-width="45%"
               table-cell:
-                - block-container:
-                    attributes: width="85%"
-                    block:
-                      flowComponents: block-salutation
+                - flowComponents: component-customerInformation
+                - flowComponents: component-invoiceInformation
 
       field[mailTypeVariant]:
         value[voucher-delivery]:

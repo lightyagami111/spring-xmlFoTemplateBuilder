@@ -9,7 +9,7 @@ ${#this.table}
         <fo:table-header>
             ${#this.table-cell}
                 <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
-                ${> block}
+                    ${> blocks}
                 </fo:table-cell>
             ${/this.table-cell}
         </fo:table-header>
@@ -17,15 +17,11 @@ ${#this.table}
 
     ${#this.table-body}
         <fo:table-body ${#this.attributes} ${.} ${/this.attributes}>
-        ${#this.table-row}
-            <fo:table-row ${#this.attributes} ${.} ${/this.attributes}>
-            ${#this.table-cell}
-                <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
+            ${#this.table-row}
+                <fo:table-row ${#this.attributes} ${.} ${/this.attributes}>
                     ${> blocks}
-                </fo:table-cell>
-            ${/this.table-cell}
-            </fo:table-row>
-        ${/this.table-row}
+                </fo:table-row>
+            ${/this.table-row}
         </fo:table-body>
     ${/this.table-body}
 
@@ -40,12 +36,21 @@ ${#this.table-row-1}
 
         <fo:table-body>
             <fo:table-row>
-                ${#this.table-cell}
-                    <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
-                        ${> blocks}
-                    </fo:table-cell>
-                ${/this.table-cell}
+                ${> blocks}
             </fo:table-row>
         </fo:table-body>
     </fo:table>
 ${/this.table-row-1}
+
+
+${#this.table-cell}
+    <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
+    ${> blocks}
+    </fo:table-cell>
+${/this.table-cell}
+
+${#this.table-cell-ncs-2}
+    <fo:table-cell number-columns-spanned="2" ${#this.attributes} ${.} ${/this.attributes}>
+    ${> blocks}
+    </fo:table-cell>
+${/this.table-cell-ncs-2}

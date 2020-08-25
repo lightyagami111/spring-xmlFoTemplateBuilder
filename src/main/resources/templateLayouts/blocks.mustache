@@ -22,15 +22,36 @@ ${#this.block}
     </fo:block>
 ${/this.block}
 
+${#this.block-end-inline}
+    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
+        <fo:inline>
+            ${> blocks}
+        </fo:inline>
+    </fo:block>
+${/this.block-end-inline}
 
-${#this.blocks} ${> blocks} ${/this.blocks}
+${#this.block-contentKey}
+    <fo:block ${#this.attributes} ${.} ${/this.attributes}>
+        {{${.}}}
+    </fo:block>
+${/this.block-contentKey}
+
+${#this.block-end-requestField}
+    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
+            <xsl:value-of select="${.}"/>
+    </fo:block>
+${/this.block-end-requestField}
+
+${#this.block-end-requestField-intersperse}
+    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
+        <xsl:call-template name="intersperse-with-zero-spaces">
+            <xsl:with-param name="str" select="${.}"/>
+        </xsl:call-template>
+    </fo:block>
+${/this.block-end-requestField-intersperse}
+
 ${#this.flowComponents} ${> blocks} ${/this.flowComponents}
-${#this.blocks-block} ${> blocks} <fo:block/> ${/this.blocks-block}
-${#this.block-blocks} <fo:block/> ${> blocks} ${/this.block-blocks}
-${#this.blocks-space} ${> blocks} &#160; ${/this.blocks-space}
-${#this.space-blocks} &#160; ${> blocks} ${/this.space-blocks}
+${#this.blocks-seq} ${> blocks} <fo:block/> ${/this.blocks-seq}
 
-
-${#this.contentKey} {{${.}}} ${/this.contentKey}
-${#this.requestField} <xsl:value-of select="${.}"/> ${/this.requestField}
-${#this.text} ${.} ${/this.text}
+${#this.contentKey} {{${.}}} &#160; ${/this.contentKey}
+${#this.requestField} <xsl:value-of select="${.}"/> &#160; ${/this.requestField}
