@@ -18,8 +18,9 @@ public class BasicApplicationTests {
     Brand b = Brand.VW;
     MailTypeVariant mtv = MailTypeVariant.ACTIVATION;
     Salutation s = Salutation.MR;
-    CustomerType c = CustomerType.PRIVATE;
-    MasterRequest masterRequest = new MasterRequest(b, mtv, new CustomerInformation(s, c), new PaymentData(PaymentType.CC_AMEX));
+    CustomerType c = CustomerType.COMPANY;
+    PaymentType pd = PaymentType.CC_AMEX;
+    MasterRequest masterRequest = new MasterRequest(b, mtv, new CustomerInformation(s, c), new PaymentData(pd), "11111");
 
 
     @Test

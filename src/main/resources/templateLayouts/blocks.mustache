@@ -22,6 +22,14 @@ ${#this.block}
     </fo:block>
 ${/this.block}
 
+${#this.block-inline}
+    <fo:block ${#this.attributes} ${.} ${/this.attributes}>
+        <fo:inline>
+            ${> blocks}
+        </fo:inline>
+    </fo:block>
+${/this.block-inline}
+
 ${#this.block-end-inline}
     <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
         <fo:inline>
@@ -36,11 +44,22 @@ ${#this.block-contentKey}
     </fo:block>
 ${/this.block-contentKey}
 
+${#this.block-end}
+    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
+    </fo:block>
+${/this.block-end}
+
 ${#this.block-end-requestField}
     <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
             <xsl:value-of select="${.}"/>
     </fo:block>
 ${/this.block-end-requestField}
+
+${#this.block-end-contentKey}
+    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
+        {{${.}}}
+    </fo:block>
+${/this.block-end-contentKey}
 
 ${#this.block-end-requestField-intersperse}
     <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
@@ -50,8 +69,13 @@ ${#this.block-end-requestField-intersperse}
     </fo:block>
 ${/this.block-end-requestField-intersperse}
 
+${#this.apply-xslTemplate}
+    <xsl:apply-templates select="${this.select}" />
+${/this.apply-xslTemplate}
+
 ${#this.flowComponents} ${> blocks} ${/this.flowComponents}
 ${#this.blocks-seq} ${> blocks} <fo:block/> ${/this.blocks-seq}
 
 ${#this.contentKey} {{${.}}} &#160; ${/this.contentKey}
 ${#this.requestField} <xsl:value-of select="${.}"/> &#160; ${/this.requestField}
+

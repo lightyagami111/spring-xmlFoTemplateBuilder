@@ -11,5 +11,6 @@ public class MasterRequest {
     private MailTypeVariant mailTypeVariant;
     private CustomerInformation customerInformation;
     private PaymentData paymentData;
+    private String voucherReferenceNumber;
 
 }

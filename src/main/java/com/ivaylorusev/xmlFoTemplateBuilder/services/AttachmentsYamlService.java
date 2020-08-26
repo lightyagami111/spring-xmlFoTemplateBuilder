@@ -193,7 +193,8 @@ public class AttachmentsYamlService {
             Object fieldValue = entry.getValue();
 
             if (fieldName.equalsIgnoreCase("contentKey")
-                    || fieldName.equalsIgnoreCase("block-contentKey")){
+                    || fieldName.equalsIgnoreCase("block-contentKey")
+                    || fieldName.equalsIgnoreCase("block-end-contentKey")){
 
                 if (fieldValue instanceof List) {
                     List c = (List) fieldValue;
@@ -228,6 +229,22 @@ public class AttachmentsYamlService {
         for (Map.Entry<String, Object> entry : templateFlow.entrySet()) {
             String fieldName = entry.getKey();
             Object fieldValue = entry.getValue();
+
+            if (fieldName.equalsIgnoreCase("flowComponents")){
+
+                if (fieldValue instanceof List) {
+                    List c = (List) fieldValue;
+                    for (int i=0; i < c.size(); i++) {
+                        Object contentKey = templateFlowComponents.get(c.get(i));
+                        if (contentKey != null)
+                            c.set(i, contentKey);
+                    }
+                }
+                else {
+                    templateFlow.put(fieldName, templateFlowComponents.get(fieldValue));
+                }
+            }
+
             if (fieldValue instanceof HashMap) {
                 insertFlowComponents((HashMap) fieldValue, templateFlowComponents);
             }
@@ -238,9 +255,6 @@ public class AttachmentsYamlService {
                         insertFlowComponents((HashMap) o, templateFlowComponents);
                     }
                 }
-            }
-            else if (fieldName.equalsIgnoreCase("flowComponents")){
-                templateFlow.put(fieldName, templateFlowComponents.get(fieldValue));
             }
 
         }
