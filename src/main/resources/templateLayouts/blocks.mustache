@@ -1,4 +1,5 @@
 ${> blocks-table}
+${> blocks-table-layouts}
 ${> blocks-external-graphic}
 ${> blocks-leader}
 
@@ -7,6 +8,12 @@ ${#this.page-number-citation}
         ${> blocks}<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
     </fo:block>
 ${/this.page-number-citation}
+
+${#this.page-number-citation-1}
+<fo:block text-align="end" font-size="10pt">
+    ${> blocks}<fo:page-number/>/<fo:page-number-citation ref-id="TheVeryLastPage"/>
+</fo:block>
+${/this.page-number-citation-1}
 
 
 ${#this.block-container}
@@ -22,21 +29,42 @@ ${#this.block}
     </fo:block>
 ${/this.block}
 
-${#this.block-inline}
-    <fo:block ${#this.attributes} ${.} ${/this.attributes}>
-        <fo:inline>
-            ${> blocks}
-        </fo:inline>
+${#this.block-end}
+    <fo:block text-align="end">
+        ${> blocks}
     </fo:block>
-${/this.block-inline}
+${/this.block-end}
 
-${#this.block-end-inline}
-    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
-        <fo:inline>
-            ${> blocks}
-        </fo:inline>
-    </fo:block>
-${/this.block-end-inline}
+${#this.block-bold}
+<fo:block font-weight="bold">
+    ${> blocks}
+</fo:block>
+${/this.block-bold}
+
+${#this.block-bold-right}
+<fo:block font-weight="bold" text-align="right">
+    ${> blocks}
+</fo:block>
+${/this.block-bold-right}
+
+${#this.block-color-1}
+<fo:block color="#B4B8BA">
+    ${> blocks}
+</fo:block>
+${/this.block-color-1}
+
+${#this.block-bold-1}
+<fo:block font-size="16pt" color="#899093" font-weight="bold">
+    ${> blocks}
+</fo:block>
+${/this.block-bold-1}
+
+
+${#this.inline}
+    <fo:inline>
+        ${> blocks}
+    </fo:inline>
+${/this.inline}
 
 ${#this.block-contentKey}
     <fo:block ${#this.attributes} ${.} ${/this.attributes}>
@@ -44,34 +72,21 @@ ${#this.block-contentKey}
     </fo:block>
 ${/this.block-contentKey}
 
-${#this.block-end}
-    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
-    </fo:block>
-${/this.block-end}
-
-${#this.block-end-requestField}
-    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
-            <xsl:value-of select="${.}"/>
-    </fo:block>
-${/this.block-end-requestField}
-
-${#this.block-end-contentKey}
-    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
-        {{${.}}}
-    </fo:block>
-${/this.block-end-contentKey}
-
-${#this.block-end-requestField-intersperse}
-    <fo:block text-align="end" ${#this.attributes} ${.} ${/this.attributes}>
-        <xsl:call-template name="intersperse-with-zero-spaces">
-            <xsl:with-param name="str" select="${.}"/>
-        </xsl:call-template>
-    </fo:block>
-${/this.block-end-requestField-intersperse}
+${#this.intersperse}
+    <xsl:call-template name="intersperse-with-zero-spaces">
+        <xsl:with-param name="str" select="${.}"/>
+    </xsl:call-template>
+${/this.intersperse}
 
 ${#this.apply-xslTemplate}
     <xsl:apply-templates select="${this.select}" />
 ${/this.apply-xslTemplate}
+
+${#this.xslTemplate}
+    <xsl:template match="${this.match}">
+        ${> blocks}
+    </xsl:template>
+${/this.xslTemplate}
 
 ${#this.flowComponents} ${> blocks} ${/this.flowComponents}
 ${#this.blocks-seq} ${> blocks} <fo:block/> ${/this.blocks-seq}

@@ -24,113 +24,16 @@ ${#this.table}
     </fo:table>
 ${/this.table}
 
-${#this.table-row}
-    <fo:table-row ${#this.attributes} ${.} ${/this.attributes}>
-        ${> blocks}
-    </fo:table-row>
-${/this.table-row}
-
-${#this.table-row-1}
-    <fo:table ${#this.attributes} ${.} ${/this.attributes}>
-        ${#this.table-column}
-            <fo:table-column ${#this.attributes} ${.} ${/this.attributes}/>
-        ${/this.table-column}
-
-        <fo:table-body>
-            <fo:table-row>
-                ${> blocks}
-            </fo:table-row>
-        </fo:table-body>
-    </fo:table>
-${/this.table-row-1}
-
-${#this.table-layout-1}
-<fo:table table-layout="fixed" width="100%" border-collapse="separate" margin-top="-6.06mm" border-separation="4mm" xsl:use-attribute-sets="borderbottom">
-    <fo:table-column column-width="40%"/>
-    <fo:table-column column-width="20%"/>
-    <fo:table-column column-width="20%"/>
-    <fo:table-column column-width="20%"/>
-
-    ${#this.table-header}
-        ${> blocks}
-    ${/this.table-header}
-
-    ${#this.table-body}
-        <fo:table-body width="100%">
-            ${> blocks}
-        </fo:table-body>
-    ${/this.table-body}
-</fo:table>
-${/this.table-layout-1}
-
-${#this.table-layout-2}
-<fo:table table-layout="fixed" width="100%" border-collapse="separate" margin-top="-6.06mm" border-separation="4mm" xsl:use-attribute-sets="borderbottom">
-    <fo:table-column column-width="33%"/>
-    <fo:table-column column-width="20%"/>
-    <fo:table-column column-width="27%"/>
-    <fo:table-column column-width="20%"/>
-    ${#this.table-header}
-        ${> blocks}
-    ${/this.table-header}
-
-    ${#this.table-body}
-    <fo:table-body width="100%" font-size="11pt">
-        ${> blocks}
-    </fo:table-body>
-    ${/this.table-body}
-</fo:table>
-${/this.table-layout-2}
-
-${#this.table-layout-3}
-<fo:table table-layout="fixed" width="100%" border-collapse="separate" margin-top="-6.06mm" border-separation="4mm" xsl:use-attribute-sets="borderbottom">
-    <fo:table-column column-width="17%"/>
-    <fo:table-column column-width="43%"/>
-    <fo:table-column column-width="20%"/>
-    <fo:table-column column-width="20%"/>
-    ${#this.table-header}
-        ${> blocks}
-    ${/this.table-header}
-
-    ${#this.table-body}
-    <fo:table-body width="100%" font-size="11pt">
-        ${> blocks}
-    </fo:table-body>
-    ${/this.table-body}
-</fo:table>
-${/this.table-layout-3}
 
 
 ${#this.table-headers-layout-1}
-<fo:table-header width="100%" font-size="12pt">
+<fo:table-header font-size="12pt">
     <fo:table-row>
+        ${#this.table-cell}
         <fo:table-cell>
-            <fo:block font-weight="bold">
-                ${#table-cell[0]}
-                    ${> blocks}
-                ${/table-cell[0]}
-            </fo:block>
+            ${> blocks}
         </fo:table-cell>
-        <fo:table-cell>
-            <fo:block font-weight="bold">
-                ${#table-cell[1]}
-                ${> blocks}
-                ${/table-cell[1]}
-            </fo:block>
-        </fo:table-cell>
-        <fo:table-cell>
-            <fo:block font-weight="bold">
-                ${#table-cell[2]}
-                ${> blocks}
-                ${/table-cell[2]}
-            </fo:block>
-        </fo:table-cell>
-        <fo:table-cell>
-            <fo:block font-weight="bold" text-align="right">
-                ${#table-cell[3]}
-                ${> blocks}
-                ${/table-cell[3]}
-            </fo:block>
-        </fo:table-cell>
+        ${/this.table-cell}
     </fo:table-row>
     <fo:table-row>
         <fo:table-cell number-columns-spanned="4">
@@ -143,6 +46,14 @@ ${#this.table-headers-layout-1}
 ${/this.table-headers-layout-1}
 
 
+
+${#this.table-row}
+    <fo:table-row ${#this.attributes} ${.} ${/this.attributes}>
+        ${> blocks}
+    </fo:table-row>
+${/this.table-row}
+
+
 ${#this.table-cell}
     <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
     ${> blocks}
@@ -150,7 +61,19 @@ ${#this.table-cell}
 ${/this.table-cell}
 
 ${#this.table-cell-ncs-2}
-    <fo:table-cell number-columns-spanned="2" ${#this.attributes} ${.} ${/this.attributes}>
-    ${> blocks}
+    <fo:table-cell number-columns-spanned="2">
+        ${> blocks}
     </fo:table-cell>
 ${/this.table-cell-ncs-2}
+
+${#this.table-cell-end-ncs-2}
+<fo:table-cell text-align="end" number-columns-spanned="2">
+    ${> blocks}
+</fo:table-cell>
+${/this.table-cell-end-ncs-2}
+
+${#this.table-cell-daa}
+    <fo:table-cell display-align="after">
+        ${> blocks}
+    </fo:table-cell>
+${/this.table-cell-daa}

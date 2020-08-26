@@ -21,9 +21,7 @@
         </fo:root>
     </xsl:template>
 
-    ${#xslTemplate}
-    <xsl:template match="${this.match}">
+    ${#xsl-region-xslTemplates}
         ${> blocks}
-    </xsl:template>
-    ${/xslTemplate}
+    ${/xsl-region-xslTemplates}
 </xsl:stylesheet>

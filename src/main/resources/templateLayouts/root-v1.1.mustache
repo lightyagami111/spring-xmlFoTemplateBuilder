@@ -68,9 +68,7 @@
         </fo:root>
     </xsl:template>
 
-    ${#xslTemplate}
-        <xsl:template match="${this.match}">
-            ${> blocks}
-        </xsl:template>
-    ${/xslTemplate}
+    ${#xsl-region-xslTemplates}
+        ${> blocks}
+    ${/xsl-region-xslTemplates}
 </xsl:stylesheet>

@@ -1,0 +1,101 @@
+${#this.table-layout-1}
+<fo:table table-layout="fixed" width="100%" border-collapse="separate" margin-top="-6.06mm" border-separation="4mm" xsl:use-attribute-sets="borderbottom">
+    <fo:table-column column-width="40%"/>
+    <fo:table-column column-width="20%"/>
+    <fo:table-column column-width="20%"/>
+    <fo:table-column column-width="20%"/>
+
+    ${#this.table-header}
+    ${> blocks}
+    ${/this.table-header}
+
+    ${#this.table-body}
+    <fo:table-body width="100%">
+        ${> blocks}
+    </fo:table-body>
+    ${/this.table-body}
+</fo:table>
+${/this.table-layout-1}
+
+${#this.table-layout-2}
+<fo:table table-layout="fixed" width="100%" border-collapse="separate" margin-top="-6.06mm" border-separation="4mm" xsl:use-attribute-sets="borderbottom">
+    <fo:table-column column-width="33%"/>
+    <fo:table-column column-width="20%"/>
+    <fo:table-column column-width="27%"/>
+    <fo:table-column column-width="20%"/>
+    ${#this.table-header}
+    ${> blocks}
+    ${/this.table-header}
+
+    ${#this.table-body}
+    <fo:table-body font-size="11pt">
+        ${> blocks}
+    </fo:table-body>
+    ${/this.table-body}
+</fo:table>
+${/this.table-layout-2}
+
+
+${#this.table-layout-3}
+<fo:table table-layout="fixed" margin-top="-6.06mm" width="100%" border-collapse="separate" border-separation="4mm" xsl:use-attribute-sets="borderbottom">
+    <fo:table-column column-width="17%"/>
+    <fo:table-column column-width="43%"/>
+    <fo:table-column column-width="20%" />
+    <fo:table-column column-width="20%"/>
+    ${#this.table-header}
+    ${> blocks}
+    ${/this.table-header}
+
+    ${#this.table-body}
+    <fo:table-body width="100%">
+        ${> blocks}
+    </fo:table-body>
+    ${/this.table-body}
+</fo:table>
+${/this.table-layout-3}
+
+${#this.table-layout-4}
+<fo:table table-layout="fixed" border-collapse="separate" space-after="7mm">
+    <fo:table-column column-width="45%"/>
+    <fo:table-column column-width="30%"/>
+    <fo:table-column column-width="25%"/>
+    ${#this.table-body}
+    <fo:table-body>
+        ${> blocks}
+    </fo:table-body>
+    ${/this.table-body}
+</fo:table>
+${/this.table-layout-4}
+
+
+${#this.table-layout-5}
+<fo:table table-layout="fixed" border-collapse="separate">
+    <fo:table-column column-width="45%"/>
+    <fo:table-column column-width="30%"/>
+    <fo:table-column column-width="25%"/>
+    ${#this.table-body}
+    <fo:table-body>
+        ${> blocks}
+    </fo:table-body>
+    ${/this.table-body}
+</fo:table>
+${/this.table-layout-5}
+
+${#this.table-layout-6}
+<fo:table>
+    <fo:table-body>
+        ${> blocks}
+    </fo:table-body>
+</fo:table>
+${/this.table-layout-6}
+
+${#this.table-layout-7}
+<fo:table font-size="10pt" space-before="15mm">
+    <fo:table-column column-width="55%"/>
+    <fo:table-column column-width="45%"/>
+
+    <fo:table-body>
+        ${> blocks}
+    </fo:table-body>
+</fo:table>
+${/this.table-layout-7}

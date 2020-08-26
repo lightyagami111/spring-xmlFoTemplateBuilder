@@ -15,17 +15,52 @@ public class BasicApplicationTests {
     @Autowired
     private AttachmentsMustacheService attachmentsMustacheService;
 
-    Brand b = Brand.VW;
-    MailTypeVariant mtv = MailTypeVariant.ACTIVATION;
-    Salutation s = Salutation.MR;
-    CustomerType c = CustomerType.COMPANY;
-    PaymentType pd = PaymentType.CC_AMEX;
-    MasterRequest masterRequest = new MasterRequest(b, mtv, new CustomerInformation(s, c), new PaymentData(pd), "11111");
-
-
     @Test
     public void parse() throws Exception {
-        Dump.dumpToXlsFile("format", attachmentsMustacheService.buildAttachmentTemplate(masterRequest));
+        MasterRequest masterRequestDump = new MasterRequest(Brand.VW, MailTypeVariant.ACTIVATION,
+                                                            new CustomerInformation(Salutation.MR, CustomerType.COMPANY),
+                                                            new PaymentData(PaymentType.CC_MASTER),
+                                                "444444");
+
+        Dump.dumpToXlsFile("format", attachmentsMustacheService.buildAttachmentTemplate(masterRequestDump));
+
+        /*
+        attachmentsMustacheService.buildAttachmentTemplate(new MasterRequest(Brand.VW, MailTypeVariant.CREDIT_NOTE,
+                new CustomerInformation(Salutation.MR, CustomerType.COMPANY),
+                new PaymentData(PaymentType.CC_MASTER),
+                null));
+
+        attachmentsMustacheService.buildAttachmentTemplate(new MasterRequest(Brand.VW, MailTypeVariant.CREDIT_NOTE,
+                new CustomerInformation(Salutation.MR, CustomerType.PRIVATE),
+                new PaymentData(PaymentType.CC_MASTER),
+                null));
+
+        attachmentsMustacheService.buildAttachmentTemplate(new MasterRequest(Brand.VW, MailTypeVariant.CREDIT_NOTE,
+                new CustomerInformation(Salutation.MR, CustomerType.COMPANY),
+                new PaymentData(PaymentType.PREPAID),
+                null));
+
+        attachmentsMustacheService.buildAttachmentTemplate(new MasterRequest(Brand.VW, MailTypeVariant.CREDIT_NOTE,
+                new CustomerInformation(Salutation.MR, CustomerType.COMPANY),
+                new PaymentData(PaymentType.CC_MASTER),
+                "54654654645"));
+
+        attachmentsMustacheService.buildAttachmentTemplate(new MasterRequest(Brand.VW, MailTypeVariant.ACTIVATION,
+                new CustomerInformation(Salutation.MR, CustomerType.PRIVATE),
+                new PaymentData(PaymentType.CC_VISA),
+                null));
+
+        attachmentsMustacheService.buildAttachmentTemplate(new MasterRequest(Brand.VW, MailTypeVariant.VOUCHER_INVOICE_DE,
+                new CustomerInformation(Salutation.MR, CustomerType.COMPANY),
+                new PaymentData(PaymentType.CC_MASTER),
+                null));
+
+        attachmentsMustacheService.buildAttachmentTemplate(new MasterRequest(Brand.VW, MailTypeVariant.VOUCHER_INVOICE_EU,
+                new CustomerInformation(Salutation.MR, CustomerType.COMPANY),
+                new PaymentData(PaymentType.CC_MASTER),
+                null));
+         */
+
     }
 
 

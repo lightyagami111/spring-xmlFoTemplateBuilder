@@ -1,11 +1,19 @@
-${#this.block-leader}
-  <fo:block ${#this.attributes} ${.} ${/this.attributes}>
-    <fo:leader leader-pattern="${this.leader.pattern}" ${#this.leader.attributes} ${.} ${/this.leader.attributes}/>
-  </fo:block>
-${/this.block-leader}
+${#this.leader-1}
+<fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="0.3mm" text-align="end" color="#D4D7D8"/>
+${/this.leader-1}
 
-${#this.block-leader-rule-v1}
-<fo:block margin-bottom="5mm" margin-top="2.22mm">
-    <fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"/>
-</fo:block>
-${/this.block-leader-rule-v1}
+${#this.leader-2}
+<fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="0.3mm" color="#ECECEC"/>
+${/this.leader-2}
+
+${#this.leader-3}
+<fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="1pt" text-align="end" color="#D4D7D8"/>
+${/this.leader-3}
+
+${#this.leader-4}
+<fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid" rule-thickness="1pt" text-align="end" color="#B4B8BA"/>
+${/this.leader-4}
+
+
+
+

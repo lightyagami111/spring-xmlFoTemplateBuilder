@@ -65,7 +65,6 @@
                     </fo:block>
                     <fo:block font-size="7pt">
                         <fo:table>
-
                             <fo:table-body>
                                 <fo:table-row>
                                     <fo:table-cell>
@@ -73,15 +72,18 @@
                                             {{invoice.text.postalvw}} &#160;
                                         </fo:block>
                                     </fo:table-cell>
+
                                     <fo:table-cell>
                                         <fo:block color="#B4B8BA">
                                         </fo:block>
                                     </fo:table-cell>
+
                                     <fo:table-cell>
                                         <fo:block color="#B4B8BA">
                                             {{invoice.text.board}} &#160;
                                         </fo:block>
                                     </fo:table-cell>
+
                                 </fo:table-row>
                             </fo:table-body>
                         </fo:table>
@@ -90,14 +92,15 @@
 
                 <fo:flow flow-name="xsl-region-body">
                     <fo:table>
-
                         <fo:table-body>
                             <fo:table-row>
+
                                 <fo:table-cell>
                                     <fo:block font-size="16pt" color="#899093" font-weight="bold">
                                         {{invoice.subheadline.shop}} &#160;
                                     </fo:block>
                                 </fo:table-cell>
+
                                 <fo:table-cell display-align="after">
                                     <fo:block text-align="end" font-size="10pt">
                                         {{invoice.text.page}} &#160;
@@ -105,6 +108,7 @@
                                         <fo:page-number-citation ref-id="TheVeryLastPage"/>
                                     </fo:block>
                                 </fo:table-cell>
+
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
@@ -142,7 +146,6 @@
                                         <fo:block>
                                             <fo:table>
                                                 <fo:table-body>
-
                                                     <fo:table-row>
                                                         <fo:table-cell>
                                                             <fo:block>
@@ -153,6 +156,7 @@
                                                             <fo:block text-align="end">
                                                                 <xsl:value-of
                                                                         select="//request/invoiceData/invoiceDate"/>
+                                                                &#160;
                                                             </fo:block>
                                                         </fo:table-cell>
                                                     </fo:table-row>
@@ -166,6 +170,7 @@
                                                             <fo:block text-align="end">
                                                                 <xsl:value-of
                                                                         select="//request/invoiceData/invoiceNumber"/>
+                                                                &#160;
                                                             </fo:block>
                                                         </fo:table-cell>
                                                     </fo:table-row>
@@ -181,7 +186,7 @@
                                                         </fo:table-cell>
                                                         <fo:table-cell>
                                                             <fo:block text-align="end">
-                                                                <xsl:value-of select="//request/orderDate"/>
+                                                                <xsl:value-of select="//request/orderDate"/> &#160;
                                                             </fo:block>
                                                         </fo:table-cell>
                                                     </fo:table-row>
@@ -193,10 +198,8 @@
                                                         </fo:table-cell>
                                                         <fo:table-cell>
                                                             <fo:block text-align="end">
-                                                                <xsl:call-template name="intersperse-with-zero-spaces">
-                                                                    <xsl:with-param name="str"
-                                                                                    select="//request/orderIdentifier"/>
-                                                                </xsl:call-template>
+                                                                <xsl:value-of select="//request/orderIdentifier"/>
+                                                                &#160;
                                                             </fo:block>
                                                         </fo:table-cell>
                                                     </fo:table-row>
@@ -212,6 +215,7 @@
                                                             <fo:block text-align="end">
                                                                 <xsl:value-of
                                                                         select="//request/customerInformation/taxId"/>
+                                                                &#160;
                                                             </fo:block>
                                                         </fo:table-cell>
                                                     </fo:table-row>
@@ -232,8 +236,7 @@
                                                             <fo:block text-align="end">
                                                                 <fo:inline>
                                                                     {{invoice.label.paycreditcard}} &#160;
-                                                                    {{invoice.label.paycreditcard.americanexpress}}
-                                                                    &#160;
+                                                                    {{invoice.label.paycreditcard.mastercard}} &#160;
                                                                 </fo:inline>
                                                             </fo:block>
                                                         </fo:table-cell>
@@ -247,95 +250,239 @@
                             </fo:table-body>
                         </fo:table>
                     </fo:block>
-                    <fo:block text-align="end" padding="20pt 20pt 0pt 0pt">
-                        <fo:table table-layout="fixed" border-collapse="separate" space-after="7mm">
-
-                            <fo:table-column column-width="45%"/>
-                            <fo:table-column column-width="30%"/>
-                            <fo:table-column column-width="25%"/>
-                            <fo:table-body>
-
-                                <fo:table-row>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end">
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end">
-                                            {{invoice.label.total}}
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end">
-                                            <xsl:value-of select="invoiceNetAmount"/> &#160;
-                                            <xsl:value-of select="paymentCurrencyCode"/> &#160;
-                                        </fo:block>
-                                    </fo:table-cell>
-                                </fo:table-row>
-                                <fo:table-row>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end">
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end" color="{$color}">
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end" color="{$color}">
-                                            <xsl:value-of select="invoiceVatAmount"/> &#160;
-                                            <xsl:value-of select="paymentCurrencyCode"/> &#160;
-                                        </fo:block>
-                                    </fo:table-cell>
-                                </fo:table-row>
-                                <fo:table-row>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end">
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell text-align="end" number-columns-spanned="2">
-                                        <fo:block>
-                                            <fo:leader leader-pattern="rule" leader-length="100%" rule-style="solid"
-                                                       rule-thickness="1pt" text-align="end" color="{$color}"/>
-                                        </fo:block>
-                                    </fo:table-cell>
-                                </fo:table-row>
-                                <fo:table-row>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end">
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold">
-                                            {{label.subtotal}} &#160;
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold">
-                                            <xsl:value-of select="invoiceVoucherGrossAmount"/> &#160;
-                                            <xsl:value-of select="paymentCurrencyCode"/> &#160;
-                                        </fo:block>
-                                    </fo:table-cell>
-                                </fo:table-row>
-                                <fo:table-row>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end">
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold">
-                                        </fo:block>
-                                    </fo:table-cell>
-                                    <fo:table-cell>
-                                        <fo:block text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold">
-                                            <xsl:value-of select="invoiceGrossAmount"/> &#160;
-                                            <xsl:value-of select="paymentCurrencyCode"/> &#160;
-                                        </fo:block>
-                                    </fo:table-cell>
-                                </fo:table-row>
-                            </fo:table-body>
-
-                        </fo:table>
+                    <fo:block>
+                        <xsl:apply-templates select="//orderPositionsMapByVin"/>
+                        <fo:block text-align="end" padding="20pt 20pt 0pt 0pt" space-after="7mm">
+                            <fo:block>
+                                <fo:table table-layout="fixed" border-collapse="separate">
+                                    <fo:table-column column-width="45%"/>
+                                    <fo:table-column column-width="30%"/>
+                                    <fo:table-column column-width="25%"/>
+                                    <fo:table-body>
+                                        <fo:table-row>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end">
+                                                </fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end">
+                                                    {{invoice.label.total}} &#160;
+                                                </fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end">
+                                                    <xsl:value-of select="//request/invoiceData/invoiceNetAmount"/>
+                                                    &#160;
+                                                    <xsl:value-of select="//request/paymentData/paymentCurrencyCode"/>
+                                                    &#160;
+                                                </fo:block>
+                                            </fo:table-cell>
+                                        </fo:table-row>
+                                        <fo:table-row>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end">
+                                                </fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end" color="{$color}">
+                                                    {{invoice.label.vat}} &#160;
+                                                </fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end" color="{$color}">
+                                                    <xsl:value-of select="//request/invoiceData/invoiceVatAmount"/>
+                                                    &#160;
+                                                    <xsl:value-of select="//request/paymentData/paymentCurrencyCode"/>
+                                                    &#160;
+                                                </fo:block>
+                                            </fo:table-cell>
+                                        </fo:table-row>
+                                        <fo:table-row>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end">
+                                                </fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell text-align="end" number-columns-spanned="2">
+                                                <fo:block>
+                                                    <fo:leader leader-pattern="rule" leader-length="100%"
+                                                               rule-style="solid" rule-thickness="1pt" text-align="end"
+                                                               color="#D4D7D8"/>
+                                                </fo:block>
+                                            </fo:table-cell>
+                                        </fo:table-row>
+                                    </fo:table-body>
+                                </fo:table>
+                            </fo:block>
+                            <fo:block>
+                                <fo:block>
+                                    <fo:table table-layout="fixed" border-collapse="separate">
+                                        <fo:table-column column-width="45%"/>
+                                        <fo:table-column column-width="30%"/>
+                                        <fo:table-column column-width="25%"/>
+                                        <fo:table-body>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block text-align="end">
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                                <fo:table-cell>
+                                                    <fo:block text-align="end" padding="10pt 0pt 0pt 0pt"
+                                                              font-weight="bold">
+                                                        {{label.subtotal}} &#160;
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                                <fo:table-cell>
+                                                    <fo:block text-align="end" padding="10pt 0pt 0pt 0pt"
+                                                              font-weight="bold">
+                                                        <xsl:value-of
+                                                                select="//request/invoiceData/invoiceVoucherData/invoiceVoucherGrossAmount"/>
+                                                        &#160;
+                                                        <xsl:value-of
+                                                                select="//request/paymentData/paymentCurrencyCode"/>
+                                                        &#160;
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block text-align="end">
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                                <fo:table-cell>
+                                                    <fo:block text-align="end" padding="10pt 0pt 0pt 0pt">
+                                                        <fo:block font-weight="bold">
+                                                            {{ds-general-label-voucher}} &#160;
+                                                        </fo:block>
+                                                        <fo:block>
+                                                            <xsl:value-of select="//voucherCode"/> &#160;
+                                                        </fo:block>
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                                <fo:table-cell>
+                                                    <fo:block text-align="end" padding="10pt 0pt 0pt 0pt"
+                                                              font-weight="bold">
+                                                        <xsl:value-of select="//request/orderPosition/voucherAmount"/>
+                                                        &#160;
+                                                        <xsl:value-of
+                                                                select="//request/paymentData/paymentCurrencyCode"/>
+                                                        &#160;
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block text-align="end">
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                                <fo:table-cell text-align="end" number-columns-spanned="2">
+                                                    <fo:block>
+                                                        <fo:leader leader-pattern="rule" leader-length="100%"
+                                                                   rule-style="solid" rule-thickness="1pt"
+                                                                   text-align="end" color="#B4B8BA"/>
+                                                    </fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                        </fo:table-body>
+                                    </fo:table>
+                                </fo:block>
+                                <fo:block>
+                                    <fo:block>
+                                        <fo:table table-layout="fixed" border-collapse="separate">
+                                            <fo:table-column column-width="45%"/>
+                                            <fo:table-column column-width="30%"/>
+                                            <fo:table-column column-width="25%"/>
+                                            <fo:table-body>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end" padding="10pt 0pt 0pt 0pt">
+                                                            {{invoice.label.total}} &#160;
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end" padding="10pt 0pt 0pt 0pt">
+                                                            <xsl:value-of
+                                                                    select="//request/invoiceData/invoiceVoucherData/invoiceVoucherNetAmount"/>
+                                                            &#160;
+                                                            <xsl:value-of
+                                                                    select="//request/paymentData/paymentCurrencyCode"/>
+                                                            &#160;
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end" color="#B4B8BA">
+                                                            {{invoice.label.vat}} &#160;
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end" color="#B4B8BA">
+                                                            <xsl:value-of
+                                                                    select="//request/invoiceData/invoiceVoucherData/invoiceVoucherVatAmount"/>
+                                                            &#160;
+                                                            <xsl:value-of
+                                                                    select="//request/paymentData/paymentCurrencyCode"/>
+                                                            &#160;
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                                <fo:table-row>
+                                                    <fo:table-cell>
+                                                        <fo:block text-align="end">
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                    <fo:table-cell text-align="end" number-columns-spanned="2">
+                                                        <fo:block>
+                                                            <fo:leader leader-pattern="rule" leader-length="100%"
+                                                                       rule-style="solid" rule-thickness="1pt"
+                                                                       text-align="end" color="#B4B8BA"/>
+                                                        </fo:block>
+                                                    </fo:table-cell>
+                                                </fo:table-row>
+                                            </fo:table-body>
+                                        </fo:table>
+                                    </fo:block>
+                                </fo:block>
+                            </fo:block>
+                            <fo:block>
+                                <fo:table table-layout="fixed" border-collapse="separate">
+                                    <fo:table-column column-width="45%"/>
+                                    <fo:table-column column-width="30%"/>
+                                    <fo:table-column column-width="25%"/>
+                                    <fo:table-body>
+                                        <fo:table-row>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end">
+                                                </fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end" padding="10pt 0pt 0pt 0pt"
+                                                          font-weight="bold">
+                                                    {{invoice.label.invoicetotal}} &#160;
+                                                </fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell>
+                                                <fo:block text-align="end" padding="10pt 0pt 0pt 0pt"
+                                                          font-weight="bold">
+                                                    <xsl:value-of select="//request/invoiceData/invoiceGrossAmount"/>
+                                                    &#160;
+                                                    <xsl:value-of select="//request/paymentData/paymentCurrencyCode"/>
+                                                    &#160;
+                                                </fo:block>
+                                            </fo:table-cell>
+                                        </fo:table-row>
+                                    </fo:table-body>
+                                </fo:table>
+                            </fo:block>
+                        </fo:block>
                     </fo:block>
                     <fo:block id="TheVeryLastPage"></fo:block>
                 </fo:flow>
@@ -344,8 +491,7 @@
 
         </fo:root>
     </xsl:template>
-
-    <xsl:template match="//request/orderPositionsMapByVin">
+    <xsl:template match="//orderPositionsMapByVin">
         <fo:block font-size="10pt" space-before="15mm">
             <fo:table>
                 <fo:table-header>
@@ -353,17 +499,15 @@
                         <fo:block font-size="16pt" font-weight="bold">
                             <xsl:value-of select="modelName"/> &#160;
                         </fo:block>
-
+                    </fo:table-cell>
+                    <fo:table-cell>
                         <fo:block margin-bottom="1cm">
-                            <fo:inline>
-                                <xsl:value-of select="vin"/> &#160;
-                            </fo:inline>
+                            <xsl:value-of select="vin"/> &#160;
                         </fo:block>
                     </fo:table-cell>
                 </fo:table-header>
 
                 <fo:table-body>
-
                     <fo:table-row>
                         <fo:table-cell>
                             <fo:table table-layout="fixed" width="100%" border-collapse="separate" margin-top="-6.06mm"
@@ -372,7 +516,7 @@
                                 <fo:table-column column-width="20%"/>
                                 <fo:table-column column-width="20%"/>
                                 <fo:table-column column-width="20%"/>
-                                <fo:table-header width="100%" font-size="12pt">
+                                <fo:table-header font-size="12pt">
                                     <fo:table-row>
                                         <fo:table-cell>
                                             <fo:block font-weight="bold">
