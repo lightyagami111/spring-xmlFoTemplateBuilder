@@ -56,7 +56,7 @@ public class ResourceService {
     }
     
     public InputStream getTemplateConfig() {
-        return this.getInputStream(Paths.get("application.yml"));
+        return this.getInputStream(Paths.get("attachments-config.yml"));
     }
     
     public String getComponent(String dir, String componentName) {

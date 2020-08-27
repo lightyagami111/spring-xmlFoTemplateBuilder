@@ -3,9 +3,11 @@ package com.ivaylorusev.xmlFoTemplateBuilder.yamlservices;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.ivaylorusev.xmlFoTemplateBuilder.ResourceService;
+import com.ivaylorusev.xmlFoTemplateBuilder.models.InvoiceVoucherData;
 import com.ivaylorusev.xmlFoTemplateBuilder.models.MailTypeVariant;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ivaylorusev.xmlFoTemplateBuilder.models.MasterRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -14,16 +16,26 @@ import java.util.*;
 @Service
 public class AttachmentsYamlService {
 
-    @Autowired
-    private ResourceService resourceService;
+    private final ResourceService resourceService;
+    private HashMap templateConfigHashMap;
 
-    public YamlConfiguration getYamlConfiguration(YamlControlProperties yamlControlProperties) throws Exception {
+    public AttachmentsYamlService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
+
+    public YamlConfiguration getYamlConfiguration(MasterRequest masterRequest) throws Exception {
+        YamlControlProperties yamlControlProperties = getYamlControlProperties(masterRequest);
+        templateConfigHashMap = getTemplateConfigHashMap();
+
         HashMap<String, Object> templateFlow = getYamlMap(yamlControlProperties, "templateFlow");
 
         HashMap<String, Object> templateFlowComponents = getYamlMaps(yamlControlProperties, "templateFlowComponents");
         HashMap<String, Object> templateContentKeys = getYamlMap(yamlControlProperties, "templateContentKeys");
+
         insertContentKeys(templateFlowComponents, templateContentKeys);
         insertContentKeys(templateFlow, templateContentKeys);
+
+
         insertFlowComponents(templateFlowComponents, templateFlowComponents);
         insertFlowComponents(templateFlow, templateFlowComponents);
 
@@ -33,6 +45,27 @@ public class AttachmentsYamlService {
         yamlConfiguration.setTemplateFlow(templateFlow);
 
         return yamlConfiguration;
+    }
+
+    private YamlControlProperties getYamlControlProperties(MasterRequest masterRequest) {
+        InvoiceVoucherData invoiceVoucherData;
+        Optional<String> voucherReferenceNumber = Optional.ofNullable(masterRequest.getVoucherReferenceNumber());
+        if (voucherReferenceNumber.isPresent() &&
+                StringUtils.hasText(voucherReferenceNumber.get())) {
+            invoiceVoucherData = InvoiceVoucherData.HAVE_VOUCHER_DATA;
+        }
+        else {
+            invoiceVoucherData = InvoiceVoucherData.NO_VOUCHER_DATA;
+        }
+
+        return new YamlControlProperties(
+                masterRequest.getBrand(),
+                masterRequest.getMailTypeVariant(),
+                masterRequest.getCustomerInformation().getSalutation(),
+                masterRequest.getCustomerInformation().getCustomerType(),
+                masterRequest.getPaymentData().getPaymentType(),
+                invoiceVoucherData
+        );
     }
 
     private HashMap getTemplateConfigHashMap() throws Exception {
@@ -57,15 +90,13 @@ public class AttachmentsYamlService {
 
 
     private HashMap getYamlMaps(YamlControlProperties yamlControlProperties, String yamlMapName) throws Exception {
-        HashMap<String, Object> yamlMaps = (HashMap<String, Object>) getTemplateConfigHashMap().get(yamlMapName);
-        for (Map.Entry<String, Object> entry: yamlMaps.entrySet()) {
-            yamlMaps.put(entry.getKey(), processYamlMap(yamlControlProperties, (HashMap) entry.getValue()));
-        }
+        HashMap<String, Object> yamlMaps = (HashMap<String, Object>) templateConfigHashMap.get(yamlMapName);
+        yamlMaps.replaceAll((k, v) -> processYamlMap(yamlControlProperties, (HashMap) v));
         return yamlMaps;
     }
 
     private HashMap getYamlMap(YamlControlProperties yamlControlProperties, String yamlMapName) throws Exception {
-        HashMap<String, Object> yamlMap = (HashMap<String, Object>) getTemplateConfigHashMap().get(yamlMapName);
+        HashMap<String, Object> yamlMap = (HashMap<String, Object>) templateConfigHashMap.get(yamlMapName);
         return processYamlMap(yamlControlProperties, yamlMap);
     }
 

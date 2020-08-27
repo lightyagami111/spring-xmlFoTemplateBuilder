@@ -17,7 +17,7 @@ public class BasicApplicationTests {
 
     @Test
     public void parse() throws Exception {
-        MasterRequest masterRequestDump = new MasterRequest(Brand.VW, MailTypeVariant.VOUCHER_DELIVERY,
+        MasterRequest masterRequestDump = new MasterRequest(Brand.VW, MailTypeVariant.ACTIVATION,
                                                             new CustomerInformation(Salutation.MR, CustomerType.COMPANY),
                                                             new PaymentData(PaymentType.CC_MASTER),
                                                 "444444");

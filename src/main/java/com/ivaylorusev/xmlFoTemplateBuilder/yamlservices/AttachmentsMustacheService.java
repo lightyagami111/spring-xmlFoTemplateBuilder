@@ -31,7 +31,7 @@ public class AttachmentsMustacheService {
 
 
     public String buildAttachmentTemplate(MasterRequest masterRequest) throws Exception {
-        YamlConfiguration yamlConfiguration = attachmentsYamlService.getYamlConfiguration(new YamlControlProperties(masterRequest));
+        YamlConfiguration yamlConfiguration = attachmentsYamlService.getYamlConfiguration(masterRequest);
 
         //building root layout
         Object rootLayout = yamlConfiguration.getTemplateLayout().get("root");
