@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ivaylorusev.xmlFoTemplateBuilder.models;
+package com.ivaylorusev.xmlFoTemplateBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * @author Ivaylo Rusev
  */
-public class ExtendedHashMap {
+public class HashMapUtils {
 
     public static <K,V> List<Object> findMatchedKeys(HashMap<K,V> linkedHashMap, Object key) {
         List<Object> resultKeys = new ArrayList<>();

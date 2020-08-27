@@ -223,10 +223,7 @@ public class AttachmentsYamlService {
             String fieldName = entry.getKey();
             Object fieldValue = entry.getValue();
 
-            if (fieldName.equalsIgnoreCase("contentKey")
-                    || fieldName.equalsIgnoreCase("block-contentKey")
-                    || fieldName.equalsIgnoreCase("block-end-contentKey")){
-
+            if (fieldName.equalsIgnoreCase("contentKey")){
                 if (fieldValue instanceof List) {
                     List c = (List) fieldValue;
                     for (int i=0; i < c.size(); i++) {

@@ -34,7 +34,7 @@ public class ResourceService {
         return resourceLoader.getResource(CLASSPATH + path.toString());
     }
     
-    private InputStream getInputStream(Path path) {
+    public InputStream getInputStream(Path path) {
         InputStream result = new ByteArrayInputStream(new byte[]{});
         try {
             Resource resource = getResource(path);
