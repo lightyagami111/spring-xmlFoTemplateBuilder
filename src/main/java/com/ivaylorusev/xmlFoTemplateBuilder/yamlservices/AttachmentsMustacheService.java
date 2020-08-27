@@ -1,4 +1,4 @@
-package com.ivaylorusev.xmlFoTemplateBuilder.services;
+package com.ivaylorusev.xmlFoTemplateBuilder.yamlservices;
 
 import com.ivaylorusev.xmlFoTemplateBuilder.ResourceService;
 import com.ivaylorusev.xmlFoTemplateBuilder.models.MasterRequest;

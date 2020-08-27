@@ -1,4 +1,4 @@
-package com.ivaylorusev.xmlFoTemplateBuilder.services;
+package com.ivaylorusev.xmlFoTemplateBuilder.yamlservices;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

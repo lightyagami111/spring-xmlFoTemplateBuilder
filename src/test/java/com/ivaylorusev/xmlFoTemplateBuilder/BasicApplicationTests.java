@@ -1,7 +1,7 @@
 package com.ivaylorusev.xmlFoTemplateBuilder;
 
 import com.ivaylorusev.xmlFoTemplateBuilder.models.*;
-import com.ivaylorusev.xmlFoTemplateBuilder.services.AttachmentsMustacheService;
+import com.ivaylorusev.xmlFoTemplateBuilder.yamlservices.AttachmentsMustacheService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
