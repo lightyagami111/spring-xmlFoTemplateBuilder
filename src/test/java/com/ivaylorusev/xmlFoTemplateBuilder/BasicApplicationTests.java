@@ -39,7 +39,7 @@ public class BasicApplicationTests {
 
     }
 
-//    @Ignore
+    @Ignore
     @Test
     public void parseAll() throws Exception {
         List<MasterRequest> masterRequests = readCSV.readYamlPropCombinations(-1);
