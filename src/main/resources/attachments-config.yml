@@ -28,14 +28,14 @@ templateContentKeys:
   label.orderPositions-table.price.grossPrice: text.grossPrice
   label.orderPositions-table.price: invoice.label.price
   label.footeraddress: invoice.footer.address
-  label.ds-voucher-pdf-headline-bold: ds-voucher-pdf-headline-bold
-  label.ds-voucher-pdf-headline: ds-voucher-pdf-headline
-  label.ds-voucher-pdf-text: ds-voucher-pdf-text
-  label.ds-voucher-pdf-subheadline-amount: ds-voucher-pdf-subheadline-amount
-  label.ds-voucher-pdf-label-code: ds-voucher-pdf-label-code
-  label.ds-voucher-pdf-label-voucher-date: ds-voucher-pdf-label-voucher-date
-  label.ds-voucher-pdf-label-expiry-date: ds-voucher-pdf-label-expiry-date
-  label.ds-voucher-pdf-disclaimer-headline: ds-voucher-pdf-disclaimer-headline
+  #  label.ds-voucher-pdf-headline-bold: ds-voucher-pdf-headline-bold
+  #  label.ds-voucher-pdf-headline: ds-voucher-pdf-headline
+  #  label.ds-voucher-pdf-text: ds-voucher-pdf-text
+  #  label.ds-voucher-pdf-subheadline-amount: ds-voucher-pdf-subheadline-amount
+  #  label.ds-voucher-pdf-label-code: ds-voucher-pdf-label-code
+  #  label.ds-voucher-pdf-label-voucher-date: ds-voucher-pdf-label-voucher-date
+  #  label.ds-voucher-pdf-label-expiry-date: ds-voucher-pdf-label-expiry-date
+  #  label.ds-voucher-pdf-disclaimer-headline: ds-voucher-pdf-disclaimer-headline
 
   field[salutation]:
     value[MR]:
@@ -152,7 +152,6 @@ templateFlowComponents:
               - //request/customerInformation/postcode
               - //request/customerInformation/city
           - requestField: //request/customerInformation/countryCode
-          - requestField: null
         requestField: //request/customerInformation/email
 
   component-creditNoteInvoiceNumberLabel:
@@ -234,27 +233,27 @@ templateFlowComponents:
         table-body:
           table-row:
             - table-cell:
-              - block:
-                  contentKey: label.invoiceDate
-              - block-23:
-                  requestField: //request/invoiceData/invoiceDate
+                - block:
+                    contentKey: label.invoiceDate
+                - block-23:
+                    requestField: //request/invoiceData/invoiceDate
             - table-cell:
-              - block:
-                  contentKey: label.invoiceNumber
-              - block-23:
-                  requestField: //request/invoiceData/invoiceNumber
+                - block:
+                    contentKey: label.invoiceNumber
+                - block-23:
+                    requestField: //request/invoiceData/invoiceNumber
             - flowComponents: component-creditNoteInvoiceNumberLabel
             - flowComponents: component-creditNoteInvoiceNumberField
             - table-cell:
-              - block:
-                  contentKey: label.orderDate
-              - block-23:
-                  requestField: //request/orderDate
+                - block:
+                    contentKey: label.orderDate
+                - block-23:
+                    requestField: //request/orderDate
             - table-cell:
-              - block:
-                  contentKey: label.orderNumber
-              - block-23:
-                  xslTemplate-call-intersperse: //request/orderIdentifier
+                - block:
+                    contentKey: label.orderNumber
+                - block-23:
+                    xslTemplate-call-intersperse: //request/orderIdentifier
             - flowComponents: component-supplydate
             - flowComponents: component-vatno
             - flowComponents: component-dateinvoiceservice
@@ -446,38 +445,40 @@ templateFlowComponents:
               - table-cell:
                   block-end: show
                 table-cell-4:
-                  leader-4: show
+                  block:
+                    leader-4: show
 
   component-invoiceData-voucher:
-      field[invoiceVoucherData]:
-        value[HAVE_VOUCHER_DATA]:
-          block:
-            - table-3:
-                table-body:
-                  table-row:
-                    - table-cell:
-                       - block-23: show
-                       - block-20:
-                           contentKey: label.subtotal
-                       - block-20:
-                           requestField:
-                             - //request/invoiceData/invoiceVoucherData/invoiceVoucherGrossAmount
-                             - //request/paymentData/paymentCurrencyCode
-                    - table-cell:
+    field[invoiceVoucherData]:
+      value[HAVE_VOUCHER_DATA]:
+        block:
+          - table-3:
+              table-body:
+                table-row:
+                  - table-cell:
+                      - block-23: show
+                      - block-20:
+                          contentKey: label.subtotal
+                      - block-20:
+                          requestField:
+                            - //request/invoiceData/invoiceVoucherData/invoiceVoucherGrossAmount
+                            - //request/paymentData/paymentCurrencyCode
+                  - table-cell:
                       - block-23: show
                       - block-21:
                           block-10:
-                              contentKey: label.ds-voucher
+                            contentKey: label.ds-voucher
                           block:
                             requestField: //voucherCode
                       - block-20:
                           requestField-: //request/orderPosition/voucherAmount
                           requestField: //request/paymentData/paymentCurrencyCode
-                    - table-cell:
-                        block-end: show
-                      table-cell-4:
+                  - table-cell:
+                      block-end: show
+                    table-cell-4:
+                      block:
                         leader-4: show
-            - flowComponents: component-invoiceData-voucher[customerType=COMPANY]
+          - flowComponents: component-invoiceData-voucher[customerType=COMPANY]
 
   component-invoiceData[brand=VW]:
     block-15:
@@ -509,7 +510,8 @@ templateFlowComponents:
                   - table-cell:
                       block-end: show
                     table-cell-4:
-                      leader-3: show
+                      block:
+                        leader-3: show
         - flowComponents: component-invoiceData-voucher
         - table-3:
             table-column:
@@ -578,7 +580,8 @@ templateFlowComponents:
             - table-cell:
                 block-end: show
               table-cell-4:
-                leader-1: show
+                block:
+                  leader-1: show
             - table-cell:
                 - block-23: show
                 - block-43:
@@ -776,9 +779,9 @@ templateFlow:
               table-body-2:
                 table-row:
                   table-cell:
-                      - block:
-                          contentKey: label.footeraddress
-                      - block: show
+                    - block:
+                        contentKey: label.footeraddress
+                    - block: show
       xsl-region-body:
         - table-8:
             table-body-2:
