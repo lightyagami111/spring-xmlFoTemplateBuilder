@@ -14,14 +14,10 @@
                     ${#xsl-region-body}
                         ${> blocks}
                     ${/xsl-region-body}
-                    <fo:block id="TheVeryLastPage"></fo:block>
                 </fo:flow>
             </fo:page-sequence>
 
         </fo:root>
     </xsl:template>
 
-    ${#xsl-region-xslTemplates}
-        ${> blocks}
-    ${/xsl-region-xslTemplates}
 </xsl:stylesheet>

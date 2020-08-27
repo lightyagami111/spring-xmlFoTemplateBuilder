@@ -1,79 +1,165 @@
+${#this.table-1}
+	<fo:table table-layout="fixed"  margin-top="-6.06mm"  width="100%" border-collapse="separate"  border-separation="4mm" xsl:use-attribute-sets="borderbottom">
+		${> blocks}
+	</fo:table>
+${/this.table-1}
+
+${#this.table-2}
+	<fo:table table-layout="fixed" border-collapse="separate" space-after="7mm">
+		${> blocks}
+	</fo:table>
+${/this.table-2}
+
+${#this.table-3}
+	<fo:table table-layout="fixed" border-collapse="separate">
+		${> blocks}
+	</fo:table>
+${/this.table-3}
+
+${#this.table-4}
+	<fo:table table-layout="fixed" width="100%" border-collapse="separate" font-size="10pt" space-before="15mm">
+		${> blocks}
+	</fo:table>
+${/this.table-4}
+
+${#this.table-5}
+	<fo:table table-layout="fixed" width="100%" border-collapse="separate" font-size="11pt" space-before="8mm" margin-bottom="23.3mm">
+		${> blocks}
+	</fo:table>
+${/this.table-5}
+
+${#this.table-6}
+	<fo:table table-layout="fixed" width="100%" border-collapse="separate" margin-top="-6.06mm" border-separation="4mm" xsl:use-attribute-sets="borderbottom">
+		${> blocks}
+	</fo:table>
+${/this.table-6}
+
+${#this.table-7}
+	<fo:table table-layout="fixed" width="100%" border-collapse="separate">
+		${> blocks}
+	</fo:table>
+${/this.table-7}
+
+${#this.table-8}
+	<fo:table table-layout="fixed" width="100%">
+		${> blocks}
+	</fo:table>
+${/this.table-8}
+
+${#this.table-9}
+	<fo:table border-collapse="separate" table-layout="fixed" width="100%" margin-top="6.045mm">
+		${> blocks}
+	</fo:table>
+${/this.table-9}
+
+${#this.table-10}
+	<fo:table border-collapse="separate" table-layout="fixed" width="100%" margin-top="6.885mm">
+		${> blocks}
+	</fo:table>
+${/this.table-10}
+
+${#this.table-11}
+	<fo:table border-collapse="separate" table-layout="fixed" width="100%">
+		${> blocks}
+	</fo:table>
+${/this.table-11}
+
 ${#this.table}
-    <fo:table ${#this.attributes} ${.} ${/this.attributes}>
-
-    ${#this.table-column}
-        <fo:table-column ${#this.attributes} ${.} ${/this.attributes}/>
-    ${/this.table-column}
-
-    ${#this.table-header}
-        <fo:table-header>
-            ${#this.table-cell}
-                <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
-                    ${> blocks}
-                </fo:table-cell>
-            ${/this.table-cell}
-        </fo:table-header>
-    ${/this.table-header}
-
-    ${#this.table-body}
-        <fo:table-body ${#this.attributes} ${.} ${/this.attributes}>
-            ${> blocks}
-        </fo:table-body>
-    ${/this.table-body}
-
-    </fo:table>
+	<fo:table>
+		${> blocks}
+	</fo:table>
 ${/this.table}
 
 
 
-${#this.table-headers-layout-1}
-<fo:table-header font-size="12pt">
-    <fo:table-row>
-        ${#this.table-cell}
-        <fo:table-cell>
-            ${> blocks}
-        </fo:table-cell>
-        ${/this.table-cell}
-    </fo:table-row>
-    <fo:table-row>
-        <fo:table-cell number-columns-spanned="4">
-            <fo:block  xsl:use-attribute-sets="borderbottom" margin-left="-2mm" margin-right="-2mm">
 
-            </fo:block>
-        </fo:table-cell>
-    </fo:table-row>
+
+${#this.table-column}
+	<fo:table-column column-width="${this.column-width}"/>
+${/this.table-column}
+
+
+
+
+
+${#this.table-header}
+<fo:table-header>
+    ${> blocks}
 </fo:table-header>
-${/this.table-headers-layout-1}
+${/this.table-header}
+
+${#this.table-header-1}
+	<fo:table-header width="100%" font-size="12pt">
+		${> blocks}
+	</fo:table-header>
+${/this.table-header-1}
+
+
+
+
+
+${#this.table-body}
+<fo:table-body>
+    ${> blocks}
+</fo:table-body>
+${/this.table-body}
+
+${#this.table-body-1}
+	<fo:table-body width="100%" font-size="11pt">
+		${> blocks}
+	</fo:table-body>
+${/this.table-body-1}
+
+${#this.table-body-2}
+	<fo:table-body width="100%">
+		${> blocks}
+	</fo:table-body>
+${/this.table-body-2}
+
+
+
+
+
 
 
 
 ${#this.table-row}
-    <fo:table-row ${#this.attributes} ${.} ${/this.attributes}>
-        ${> blocks}
-    </fo:table-row>
+	<fo:table-row>
+		${> blocks}
+	</fo:table-row>
 ${/this.table-row}
 
 
+
+
+
 ${#this.table-cell}
-    <fo:table-cell ${#this.attributes} ${.} ${/this.attributes}>
-    ${> blocks}
-    </fo:table-cell>
-${/this.table-cell}
-
-${#this.table-cell-ncs-2}
-    <fo:table-cell number-columns-spanned="2">
-        ${> blocks}
-    </fo:table-cell>
-${/this.table-cell-ncs-2}
-
-${#this.table-cell-end-ncs-2}
-<fo:table-cell text-align="end" number-columns-spanned="2">
+<fo:table-cell>
     ${> blocks}
 </fo:table-cell>
-${/this.table-cell-end-ncs-2}
+${/this.table-cell}
 
-${#this.table-cell-daa}
-    <fo:table-cell display-align="after">
-        ${> blocks}
-    </fo:table-cell>
-${/this.table-cell-daa}
+${#this.table-cell-1}
+	<fo:table-cell display-align="after">
+		${> blocks}
+	</fo:table-cell>
+${/this.table-cell-1}
+
+${#this.table-cell-2}
+	<fo:table-cell number-columns-spanned="2">
+		${> blocks}
+	</fo:table-cell>
+${/this.table-cell-2}
+
+${#this.table-cell-3}
+	<fo:table-cell number-columns-spanned="4">
+		${> blocks}
+	</fo:table-cell>
+${/this.table-cell-3}
+
+${#this.table-cell-4}
+	<fo:table-cell text-align="end" number-columns-spanned="2">
+		${> blocks}
+	</fo:table-cell>
+${/this.table-cell-4}
+

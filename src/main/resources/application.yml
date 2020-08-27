@@ -28,6 +28,14 @@ templateContentKeys:
   label.orderPositions-table.price.grossPrice: text.grossPrice
   label.orderPositions-table.price: invoice.label.price
   label.footeraddress: invoice.footer.address
+  label.ds-voucher-pdf-headline-bold: ds-voucher-pdf-headline-bold
+  label.ds-voucher-pdf-headline: ds-voucher-pdf-headline
+  label.ds-voucher-pdf-text: ds-voucher-pdf-text
+  label.ds-voucher-pdf-subheadline-amount: ds-voucher-pdf-subheadline-amount
+  label.ds-voucher-pdf-label-code: ds-voucher-pdf-label-code
+  label.ds-voucher-pdf-label-voucher-date: ds-voucher-pdf-label-voucher-date
+  label.ds-voucher-pdf-label-expiry-date: ds-voucher-pdf-label-expiry-date
+  label.ds-voucher-pdf-disclaimer-headline: ds-voucher-pdf-disclaimer-headline
 
   field[salutation]:
     value[MR]:
@@ -106,9 +114,21 @@ templateLayout:
 
 templateFlowComponents:
   component-external-graphic:
-    block-container-external-graphic:
-      external-graphic:
-        src: classpath:{//logo}
+    field[brand]:
+      value[VW]:
+        external-graphic-1:
+          src: classpath:{//logo}
+
+        field[mailTypeVariant]:
+          value[voucher-delivery]:
+            external-graphic-3:
+              src: classpath:{//logo}
+
+      value[SKODA]:
+        external-graphic-2:
+          src: classpath:{//logo}
+
+
 
   component-salutation:
     field[customerType]:
@@ -121,8 +141,7 @@ templateFlowComponents:
         requestField: //request/customerInformation/company
 
   component-customerInformation:
-    block-container:
-      attributes: width="85%"
+    block-39:
       block:
         blocks-seq:
           - flowComponents: component-salutation
@@ -139,15 +158,15 @@ templateFlowComponents:
   component-creditNoteInvoiceNumberLabel:
     field[mailTypeVariant]:
       value[credit-note]:
-        table-cell-ncs-2:
-          - block-contentKey: label.creditNoteInvoiceNumber
+        table-cell-2:
+          - block:
+              contentKey: label.creditNoteInvoiceNumber
 
   component-creditNoteInvoiceNumberField:
     field[mailTypeVariant]:
       value[credit-note]:
-        table-cell-ncs-2:
-          - block:
-              attributes: text-align="end"
+        table-cell-2:
+          - block-23:
               requestField: //request/invoiceData/creditNoteInvoiceNumber
 
   component-supplydate:
@@ -156,18 +175,18 @@ templateFlowComponents:
         field[mailTypeVariant]:
           value[activation]:
             table-cell:
-              - block-contentKey: label.supplyDate
               - block:
-                  attributes: text-align="end"
+                  contentKey: label.supplyDate
+              - block-23:
                   requestField: //request/orderDate
 
   component-vatno:
     field[customerType]:
       value[COMPANY]:
         table-cell:
-          - block-contentKey: label.vatno
           - block:
-              attributes: text-align="end"
+              contentKey: label.vatno
+          - block-23:
               requestField: //request/customerInformation/taxId
 
   component-dateinvoiceservice:
@@ -175,23 +194,24 @@ templateFlowComponents:
       value[activation]:
         field[paymentType]:
           value[CC_VISA, CC_AMEX, CC_MASTER, CC_JCB, PAYPAL]:
-            table-cell-ncs-2:
-              block-contentKey: label.dateinvoiceservice
+            table-cell-2:
+              block:
+                contentKey: label.dateinvoiceservice
 
   component-paymentmethod:
     field[paymentType]:
       value[PREPAID, PAYPAL]:
         table-cell:
-          - block-contentKey: label.paymentmethod
           - block:
-              attributes: text-align="end"
+              contentKey: label.paymentmethod
+          - block-23:
               inline:
                 contentKey: label.paymentType
       value[CC_VISA, CC_AMEX, CC_MASTER, CC_JCB]:
         table-cell:
-          - block-contentKey: label.paymentmethod
           - block:
-              attributes: text-align="end"
+              contentKey: label.paymentmethod
+          - block-23:
               inline:
                 contentKey:
                   - label.paycreditcard
@@ -202,9 +222,9 @@ templateFlowComponents:
           field[mailTypeVariant]:
             value[voucher-invoice-eu, voucher-invoice-de]:
               table-cell:
-                - block-contentKey: label.paymentmethod
                 - block:
-                    attributes: text-align="end"
+                    contentKey: label.paymentmethod
+                - block-23:
                     inline:
                       contentKey: label.paymentType
 
@@ -214,27 +234,27 @@ templateFlowComponents:
         table-body:
           table-row:
             - table-cell:
-              - block-contentKey: label.invoiceDate
               - block:
-                  attributes: text-align="end"
+                  contentKey: label.invoiceDate
+              - block-23:
                   requestField: //request/invoiceData/invoiceDate
             - table-cell:
-              - block-contentKey: label.invoiceNumber
               - block:
-                  attributes: text-align="end"
+                  contentKey: label.invoiceNumber
+              - block-23:
                   requestField: //request/invoiceData/invoiceNumber
             - flowComponents: component-creditNoteInvoiceNumberLabel
             - flowComponents: component-creditNoteInvoiceNumberField
             - table-cell:
-              - block-contentKey: label.orderDate
               - block:
-                  attributes: text-align="end"
+                  contentKey: label.orderDate
+              - block-23:
                   requestField: //request/orderDate
             - table-cell:
-              - block-contentKey: label.orderNumber
               - block:
-                  attributes: text-align="end"
-                  requestField: //request/orderIdentifier
+                  contentKey: label.orderNumber
+              - block-23:
+                  xslTemplate-call-intersperse: //request/orderIdentifier
             - flowComponents: component-supplydate
             - flowComponents: component-vatno
             - flowComponents: component-dateinvoiceservice
@@ -261,72 +281,84 @@ templateFlowComponents:
               - label.orderPositions-table.price
               - label.orderPositions-table.price.grossPrice
 
-  component-orderPositions-table-headers:
-    table-headers-layout-1:
-      table-cell:
-        - block-bold:
-            contentKey: label.product
-        - block-bold:
-            contentKey: label.articelno
-        - block-bold:
-            contentKey: label.orderPositions-table.period
-        - block-bold-right:
-            flowComponents: component-orderPositions-table-header-price
-
-    field[mailTypeVariant]:
-      value[voucher-invoice-de, voucher-invoice-eu]:
-        table-headers-layout-1:
-          table-cell:
-            - block-bold:
-                contentKey: label.product
-            - block-bold:
-                contentKey: label.voucher-code
-            - block-bold:
-                contentKey: label.amount
-            - block-bold-right:
-                contentKey:
-                  - label.orderPositions-table.price
-                  - label.orderPositions-table.price.netPrice
 
   component-orderPositions-table:
     field[brand]:
       value[VW]:
-        table-layout-1:
-          table-header:
-            flowComponents: component-orderPositions-table-headers
-          table-body:
-            apply-xslTemplate:
+        table-6:
+          table-column:
+            - column-width: 40%
+            - column-width: 20%
+            - column-width: 20%
+            - column-width: 20%
+          table-header-1:
+            table-cell:
+              - block-10:
+                  contentKey: label.product
+              - block-10:
+                  contentKey: label.articelno
+              - block-10:
+                  contentKey: label.orderPositions-table.period
+              - block-9:
+                  flowComponents: component-orderPositions-table-header-price
+          table-body-2:
+            xslTemplate-apply:
               select: orderPositions
 
       field[mailTypeVariant]:
         value[voucher-invoice-de, voucher-invoice-eu]:
-          table-layout-3:
-            table-header:
-              flowComponents: component-orderPositions-table-headers
-            table-body:
-              apply-xslTemplate:
+          table-1:
+            table-column:
+              - column-width: 17%
+              - column-width: 43%
+              - column-width: 20%
+              - column-width: 20%
+            table-header-1:
+              table-cell:
+                - block-10:
+                    contentKey: label.product
+                - block-10:
+                    contentKey: label.voucher-code
+                - block-10:
+                    contentKey: label.amount
+                - block-9:
+                    contentKey:
+                      - label.orderPositions-table.price
+                      - label.orderPositions-table.price.netPrice
+            table-body-2:
+              xslTemplate-apply:
                 select: //request/voucherPositions
 
 
       value[SKODA]:
-        table-layout-2:
-          table-header:
-            flowComponents: component-orderPositions-table-headers
-          table-body:
-            apply-xslTemplate:
+        table-6:
+          table-column:
+            - column-width: 33%
+            - column-width: 20%
+            - column-width: 27%
+            - column-width: 20%
+          table-header-1:
+            table-cell:
+              - block-10:
+                  contentKey: label.product
+              - block-10:
+                  contentKey: label.articelno
+              - block-10:
+                  contentKey: label.orderPositions-table.period
+              - block-9:
+                  flowComponents: component-orderPositions-table-header-price
+          table-body-1:
+            xslTemplate-apply:
               select: orderPositions
 
   component-orderPositionsMapByVin:
-    block:
-      attributes: font-size="10pt" space-before="15mm"
+    block-3:
       table:
         table-header:
           table-cell:
-            - block:
-                attributes: font-size="16pt" font-weight="bold"
+            - block-6:
                 requestField: modelName
-            - block:
-                attributes: margin-bottom="1cm"
+            - block-12:
                 requestField: vin
         table-body:
           table-row:
@@ -366,8 +398,7 @@ templateFlowComponents:
             requestField: articleLicense/salesItemNumber
         - block:
             flowComponents: component-orderPositions-runDuration
-        - block:
-            attributes: text-align="right"
+        - block-26:
             flowComponents: component-orderPositions-totalAmount
             requestField: //request/paymentData/paymentCurrencyCode
 
@@ -380,13 +411,12 @@ templateFlowComponents:
                 - block:
                     contentKey: label.ds-voucher
                 - block:
-                    intersperse: voucherReferenceNumber
+                    xslTemplate-call-intersperse: voucherReferenceNumber
                 - block:
                     requestField:
                       - voucherAmount
                       - //request/paymentData/paymentCurrencyCode
-                - block:
-                    attributes: text-align="right"
+                - block-26:
                     requestField:
                       - discountedPrice
                       - //request/paymentData/paymentCurrencyCode
@@ -394,189 +424,166 @@ templateFlowComponents:
   component-invoiceData-voucher[customerType=COMPANY]:
     field[customerType]:
       value[COMPANY]:
-        block:
-          - table-layout-5:
-              table-body:
-                table-row:
-                  - table-cell:
-                      - block:
-                          attributes: text-align="end"
-                      - block:
-                          attributes: text-align="end" padding="10pt 0pt 0pt 0pt"
-                          contentKey: label.invoiceTotal2
-                      - block:
-                          attributes: text-align="end" padding="10pt 0pt 0pt 0pt"
-                          requestField:
-                            - //request/invoiceData/invoiceVoucherData/invoiceVoucherNetAmount
-                            - //request/paymentData/paymentCurrencyCode
-                  - table-cell:
-                      - block:
-                          attributes: text-align="end"
-                      - block:
-                          attributes: text-align="end" color="#B4B8BA"
-                          contentKey: label.vat
-                      - block:
-                          attributes: text-align="end" color="#B4B8BA"
-                          requestField:
-                            - //request/invoiceData/invoiceVoucherData/invoiceVoucherVatAmount
-                            - //request/paymentData/paymentCurrencyCode
-                  - table-cell:
-                      block-end: true
-                    table-cell-end-ncs-2:
-                      leader-4: true
+        table-3:
+          table-body:
+            table-row:
+              - table-cell:
+                  - block-23: show
+                  - block-21:
+                      contentKey: label.invoiceTotal2
+                  - block-21:
+                      requestField:
+                        - //request/invoiceData/invoiceVoucherData/invoiceVoucherNetAmount
+                        - //request/paymentData/paymentCurrencyCode
+              - table-cell:
+                  - block-23: show
+                  - block-40:
+                      contentKey: label.vat
+                  - block-40:
+                      requestField:
+                        - //request/invoiceData/invoiceVoucherData/invoiceVoucherVatAmount
+                        - //request/paymentData/paymentCurrencyCode
+              - table-cell:
+                  block-end: show
+                table-cell-4:
+                  leader-4: show
 
   component-invoiceData-voucher:
       field[invoiceVoucherData]:
         value[HAVE_VOUCHER_DATA]:
           block:
-            - table-layout-5:
+            - table-3:
                 table-body:
                   table-row:
                     - table-cell:
-                       - block:
-                           attributes: text-align="end"
-                       - block:
-                           attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold"
+                       - block-23: show
+                       - block-20:
                            contentKey: label.subtotal
-                       - block:
-                           attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold"
+                       - block-20:
                            requestField:
                              - //request/invoiceData/invoiceVoucherData/invoiceVoucherGrossAmount
                              - //request/paymentData/paymentCurrencyCode
                     - table-cell:
-                      - block:
-                          attributes: text-align="end"
-                      - block:
-                          attributes: text-align="end" padding="10pt 0pt 0pt 0pt"
-                          block:
-                            - attributes: font-weight="bold"
+                      - block-23: show
+                      - block-21:
+                          block-10:
                               contentKey: label.ds-voucher
-                            - requestField: //voucherCode
-                      - block:
-                          attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold"
-                          requestField:
-                            - //request/orderPosition/voucherAmount
-                            - //request/paymentData/paymentCurrencyCode
+                          block:
+                            requestField: //voucherCode
+                      - block-20:
+                          requestField-: //request/orderPosition/voucherAmount
+                          requestField: //request/paymentData/paymentCurrencyCode
                     - table-cell:
-                        block-end: true
-                      table-cell-end-ncs-2:
-                        leader-4: true
+                        block-end: show
+                      table-cell-4:
+                        leader-4: show
             - flowComponents: component-invoiceData-voucher[customerType=COMPANY]
 
   component-invoiceData[brand=VW]:
-    block:
-      attributes: text-align="end" padding="20pt 20pt 0pt 0pt" space-after="7mm"
+    block-15:
       block:
-        - table-layout-5:
-            table-body:
-              table-row:
-                - table-cell:
-                    - block:
-                        attributes: text-align="end"
-                    - block:
-                        attributes: text-align="end"
-                        contentKey: label.invoiceTotal2
-                    - block:
-                        attributes: text-align="end"
-                        requestField:
-                          - //request/invoiceData/invoiceNetAmount
-                          - //request/paymentData/paymentCurrencyCode
-                - table-cell:
-                    - block:
-                        attributes: text-align="end"
-                    - block:
-                        attributes: text-align="end" color="{$color}"
-                        contentKey: label.vat
-                    - block:
-                        attributes: text-align="end" color="{$color}"
-                        requestField:
-                          - //request/invoiceData/invoiceVatAmount
-                          - //request/paymentData/paymentCurrencyCode
-                - table-cell:
-                    block-end: true
-                  table-cell-end-ncs-2:
-                    leader-3: true
+        - block-22:
+            table-3:
+              table-column:
+                - column-width: 45%
+                - column-width: 30%
+                - column-width: 25%
+              table-body:
+                table-row:
+                  - table-cell:
+                      - block-23: show
+                      - block-23:
+                          contentKey: label.invoiceTotal2
+                      - block-23:
+                          requestField:
+                            - //request/invoiceData/invoiceNetAmount
+                            - //request/paymentData/paymentCurrencyCode
+                  - table-cell:
+                      - block-23: show
+                      - block-41:
+                          contentKey: label.vat
+                      - block-41:
+                          requestField:
+                            - //request/invoiceData/invoiceVatAmount
+                            - //request/paymentData/paymentCurrencyCode
+                  - table-cell:
+                      block-end: show
+                    table-cell-4:
+                      leader-3: show
         - flowComponents: component-invoiceData-voucher
-        - table-layout-5:
+        - table-3:
+            table-column:
+              - column-width: 45%
+              - column-width: 30%
+              - column-width: 25%
             table-body:
               table-row:
                 - table-cell:
-                    - block:
-                        attributes: text-align="end"
-                    - block:
-                        attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold"
+                    - block-23: show
+                    - block-20:
                         contentKey: label.invoiceTotal
-                    - block:
-                        attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold"
+                    - block-20:
                         requestField:
                           - //request/invoiceData/invoiceGrossAmount
                           - //request/paymentData/paymentCurrencyCode
 
   component-invoiceData[brand=VW, mailType=VOUCHER_INVOICE]:
     block:
-      block:
-        - attributes: text-align="end" padding="20pt 20pt 0pt 0pt"
-          table-layout-4:
+      block-22:
+        - table-2:
+            table-column:
+              - column-width: 45%
+              - column-width: 30%
+              - column-width: 25%
             table-body:
               table-row:
                 table-cell:
-                  - block:
-                      attributes: text-align="end"
-                  - block:
-                      attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold"
+                  - block-23: show
+                  - block-20:
                       contentKey: label.invoiceTotal
-                  - block:
-                      attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold"
+                  - block-20:
                       requestFields:
                         - //request/voucherPositions/voucherAmount
                         - //request/paymentData/paymentCurrencyCode
 
-        - attributes: text-align="start" font-size="10pt" padding="20pt 20pt 0pt 0pt"
-          contentKey: label.voucherInvoice.disclamer
-
-        - attributes: text-align="start" font-size="10pt" padding="20pt 20pt 0pt 0pt" linefeed-treatment="preserve"
-          contentKey: label.invoiceTotal.text
+        - contentKey: label.voucherInvoice.disclamer
+      block-27:
+        contentKey: label.invoiceTotal.text
 
   component-invoiceData[brand=SKODA]:
-    block:
-      attributes: text-align="end" padding="20pt 20pt 0pt 0pt" font-size="10pt" margin-left="19mm"
-      table-layout-5:
+    block-11:
+      table-3:
+        table-column:
+          - column-width: 45%
+          - column-width: 30%
+          - column-width: 25%
         table-body:
           table-row:
             - table-cell:
-                - block:
-                    attributes: text-align="end"
-                - block:
-                    attributes: text-align="start" margin-left="0.5cm"
+                - block-23: show
+                - block-42:
                     contentKey: label.invoiceTotal2
-                - block:
-                    attributes: text-align="end"
+                - block-23:
                     requestField:
                       - //request/invoiceData/invoiceNetAmount
                       - //request/paymentData/paymentCurrencyCode
             - table-cell:
-                - block:
-                    attributes: text-align="end"
-                - block:
-                    attributes: text-align="start" margin-left="0.5cm"
+                - block-23: show
+                - block-42:
                     contentKey: label.vat
-                - block:
-                    attributes: text-align="end"
+                - block-23:
                     requestField:
                       - //request/invoiceData/invoiceVatAmount
                       - //request/paymentData/paymentCurrencyCode
             - table-cell:
-                block-end: true
-              table-cell-end-ncs-2:
-                leader-1: true
+                block-end: show
+              table-cell-4:
+                leader-1: show
             - table-cell:
-                - block:
-                    attributes: text-align="end"
-                - block:
-                    attributes: text-align="start" padding="10pt 0pt 0pt 0pt" font-weight="bold" margin-left="0.5cm" font-size="12pt"
+                - block-23: show
+                - block-43:
                     contentKey: label.invoiceTotal
-                - block:
-                    attributes: text-align="end" padding="10pt 0pt 0pt 0pt" font-weight="bold" font-size="12pt"
+                - block-44:
                     requestField:
                       - //request/invoiceData/invoiceGrossAmount
                       - //request/paymentData/paymentCurrencyCode
@@ -595,8 +602,9 @@ templateFlowComponents:
 
   component-positions-invoiceData:
     block:
-      apply-xslTemplate:
-        select: //orderPositionsMapByVin
+      block:
+        xslTemplate-apply:
+          select: //orderPositionsMapByVin
       flowComponents: component-invoiceData
 
     field[brand]:
@@ -604,12 +612,11 @@ templateFlowComponents:
         field[mailTypeVariant]:
           value[voucher-invoice-de, voucher-invoice-eu]:
             block:
-              - attributes: font-size="10pt" space-before="15mm"
-                flowComponents: component-orderPositions-table
+              - flowComponents: component-orderPositions-table
               - flowComponents: component-invoiceData
 
   component-xslTemplates:
-    xslTemplate:
+    xslTemplate-match:
       - match: //orderPositionsMapByVin
         flowComponents: component-orderPositionsMapByVin
       - match: orderPositions
@@ -619,7 +626,7 @@ templateFlowComponents:
       value[VW]:
         field[mailTypeVariant]:
           value[voucher-invoice-de, voucher-invoice-eu]:
-            xslTemplate:
+            xslTemplate-match:
               match: //request/voucherPositions
               flowComponents: component-orderPositions
 
@@ -628,43 +635,52 @@ templateFlow:
   field[brand]:
     value[VW]:
       xsl-region-before-first:
-        - flowComponents: component-external-graphic
+        - block-37:
+            block-24:
+              flowComponents: component-external-graphic
       xsl-region-before:
-        - flowComponents: component-external-graphic
-        - page-number-citation:
-            attributes: text-align="end" font-size="10pt" margin-top="12mm"
-            contentKey: label.pagenumbercitation
+        - block-37:
+            block-24:
+              flowComponents: component-external-graphic
+        - block-19:
+            page-number-citation:
+              contentKey: label.pagenumbercitation
       xsl-region-after:
-        - block:
-            attributes: font-size="7pt" color="#B4B8BA" margin-bottom="0.5cm"
+        - block-7:
             contentKey: label.vatvw
             blocks-seq:
               contentKey: label.commercialregister
-        - block:
-            attributes: font-size="7pt"
-            table-layout-6:
-              table-row:
-                table-cell:
-                  - block-color-1:
-                      contentKey: label.postalvw
-                  - block-color-1: true
-                  - block-color-1:
-                      contentKey: label.board
+        - block-8:
+            table-7:
+              table-body-2:
+                table-row:
+                  table-cell:
+                    - block-1:
+                        contentKey: label.postalvw
+                    - block-1: show
+                    - block-1:
+                        contentKey: label.board
       xsl-region-body:
-        - table-layout-6:
-            table-row:
-              table-cell:
-                block-bold-1:
-                  contentKey: label.headingtitle
-              table-cell-daa:
-                page-number-citation-1:
-                  contentKey: label.pagenumbercitation
-        - block:
-            table-layout-7:
+        - table-8:
+            table-body-2:
               table-row:
                 table-cell:
-                  - flowComponents: component-customerInformation
-                  - flowComponents: component-invoiceInformation
+                  block-5:
+                    contentKey: label.headingtitle
+                table-cell-1:
+                  block-18:
+                    page-number-citation:
+                      contentKey: label.pagenumbercitation
+        - block:
+            table-4:
+              table-column:
+                - column-width: 55%
+                - column-width: 45%
+              table-body-2:
+                table-row:
+                  table-cell:
+                    - flowComponents: component-customerInformation
+                    - flowComponents: component-invoiceInformation
         - flowComponents: component-positions-invoiceData
       xsl-region-xslTemplates:
         flowComponents: component-xslTemplates
@@ -672,11 +688,118 @@ templateFlow:
 
       field[mailTypeVariant]:
         value[voucher-delivery]:
+          xsl-region-body:
+            - block-51:
+                contentKey1: label.ds-voucher-pdf-headline-bold
+                contentKey2: label.ds-voucher-pdf-headline
+            - block-52:
+                external-graphic-3:
+                  src: classpath:{//logo}
+            - block-36:
+                block-34:
+                  block:
+                    - block-2:
+                        contentKey: label.ds-voucher-pdf-text
+                    - block-58:
+                        contentKey: label.ds-voucher-pdf-subheadline-amount
+                    - table-10:
+                        table-column:
+                          - column-width: 80mm
+                          - column-width: 80mm
+                        table-body:
+                          table-row:
+                            table-cell:
+                              - block-container:
+                                  - table-11:
+                                      table-column:
+                                        - column-width: 30mm
+                                        - column-width: 48.85mm
+                                      table-body:
+                                        table-row:
+                                          table-cell:
+                                            - block-53:
+                                                contentKey: label.ds-voucher-pdf-label-code
+                                            - block-54:
+                                                requestField: //voucherCode
+                                  - table-9:
+                                      table-column:
+                                        - column-width: 30mm
+                                        - column-width: 48.85mm
+                                      table-body:
+                                        table-row:
+                                          table-cell:
+                                            - block-55:
+                                                block:
+                                                  - contentKey: label.ds-voucher-pdf-label-voucher-date
+                                                  - contentKey: label.ds-voucher-pdf-label-expiry-date
+                                            - block-56:
+                                                block:
+                                                  - requestField: //request/orderPosition/itemActivationDate
+                                                  - requestField: //request/orderPosition/itemExpirationDate
+                              - block-59:
+                                  block:
+                                    external-graphic-4-xslVar:
+                                      xslVar:
+                                        name: qrCode
+                                        select: //qrCode
+                block-57:
+                  contentKey: label.ds-voucher-pdf-disclaimer-headline
+
 
 
     value[SKODA]:
       xsl-region-before-first:
+        block-container:
+          block:
+            - block-45:
+                flowComponents: component-external-graphic
+            - block-46:
+                leader-2: show
       xsl-region-before:
+        - block-container:
+          block:
+            - block-45:
+                flowComponents: component-external-graphic
+            - block-46:
+                leader-2: show
+        - block-47:
+            page-number-citation:
+              contentKey: label.pagenumbercitation
       xsl-region-after:
+        - block:
+            leader-2: show
+        - block-48:
+            table-8:
+              table-column:
+                - column-width: 70%
+                - column-width: 30%
+              table-body-2:
+                table-row:
+                  table-cell:
+                      - block:
+                          contentKey: label.footeraddress
+                      - block: show
       xsl-region-body:
-      xslTemplate:
+        - table-8:
+            table-body-2:
+              table-row:
+                table-cell:
+                  block-49:
+                    contentKey: label.headingtitle
+                table-cell-1:
+                  block-50:
+                    page-number-citation:
+                      contentKey: label.pagenumbercitation
+        - block:
+            table-4:
+              table-column:
+                - column-width: 55%
+                - column-width: 45%
+              table-body-2:
+                table-row:
+                  table-cell:
+                    - flowComponents: component-customerInformation
+                    - flowComponents: component-invoiceInformation
+        - flowComponents: component-positions-invoiceData
+      xsl-region-xslTemplates:
+        flowComponents: component-xslTemplates
