@@ -91,7 +91,9 @@ public class AttachmentsYamlService {
 
     private HashMap getYamlMaps(YamlControlProperties yamlControlProperties, String yamlMapName) throws Exception {
         HashMap<String, Object> yamlMaps = (HashMap<String, Object>) templateConfigHashMap.get(yamlMapName);
-        yamlMaps.replaceAll((k, v) -> processYamlMap(yamlControlProperties, (HashMap) v));
+        yamlMaps.replaceAll((k, v) ->
+                processYamlMap(yamlControlProperties, (HashMap) v)
+        );
         return yamlMaps;
     }
 
@@ -254,38 +256,100 @@ public class AttachmentsYamlService {
 
 
     private void insertFlowComponents(HashMap<String, Object> templateFlow, HashMap<String, Object> templateFlowComponents) {
-        for (Map.Entry<String, Object> entry : templateFlow.entrySet()) {
+        Iterator<Map.Entry<String,Object>> iter = templateFlow.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String,Object> entry = iter.next();
+
             String fieldName = entry.getKey();
             Object fieldValue = entry.getValue();
 
             if (fieldName.equalsIgnoreCase("flowComponents")){
-
                 if (fieldValue instanceof List) {
-                    List c = (List) fieldValue;
-                    for (int i=0; i < c.size(); i++) {
-                        Object contentKey = templateFlowComponents.get(c.get(i));
-                        if (contentKey != null)
-                            c.set(i, contentKey);
+                    List listComponents = (List) fieldValue;
+                    Iterator iterListComponents = listComponents.iterator();
+                    while (iterListComponents.hasNext()) {
+                        putOrRemove(iterListComponents.next(), iterListComponents, listComponents, templateFlowComponents);
                     }
                 }
+
                 else {
-                    templateFlow.put(fieldName, templateFlowComponents.get(fieldValue));
+                    putOrRemove(entry, iter, templateFlow, templateFlowComponents);
                 }
             }
 
-            if (fieldValue instanceof HashMap) {
-                insertFlowComponents((HashMap) fieldValue, templateFlowComponents);
-            }
-            else if (fieldValue instanceof Collection) {
-                Collection c = (Collection) fieldValue;
-                for (Object o : c) {
-                    if (o instanceof HashMap) {
-                        insertFlowComponents((HashMap) o, templateFlowComponents);
+            else {
+                if (fieldValue instanceof HashMap) {
+                    insertFlowComponents((HashMap) fieldValue, templateFlowComponents);
+                    removeIfEmpty(fieldValue, iter);
+                }
+                else if (fieldValue instanceof List) {
+                    List listComponents = (List) fieldValue;
+                    Iterator iterListComponents = listComponents.iterator();
+                    while (iterListComponents.hasNext()) {
+                        Object o = iterListComponents.next();
+                        removeIfEmpty(o, iterListComponents);
+                        if (o instanceof HashMap) {
+                            insertFlowComponents((HashMap) o, templateFlowComponents);
+                            removeIfEmpty(o, iterListComponents);
+                        }
                     }
+                    removeIfEmpty(fieldValue, iter);
                 }
             }
+
 
         }
+
+    }
+
+    private void removeIfEmpty(Object fieldValue, Iterator iter) {
+        if (isEmpty(fieldValue)) {
+            iter.remove();
+        }
+    }
+
+
+    private void putOrRemove(Object fieldValue, Iterator iter, List listComponents, HashMap<String, Object> templateFlowComponents) {
+        Object component = templateFlowComponents.get(fieldValue);
+
+        if (isEmpty(component)) {
+            iter.remove();
+        }
+        else {
+            int i = listComponents.indexOf(fieldValue);
+            listComponents.set(i, component);
+        }
+
+
+    }
+
+    private void putOrRemove(Map.Entry<String,Object> entry, Iterator iter, HashMap<String, Object> templateFlow, HashMap<String, Object> templateFlowComponents) {
+        String fieldName = entry.getKey();
+        Object fieldValue = entry.getValue();
+
+        Object component = templateFlowComponents.get(fieldValue);
+        if (isEmpty(component)) {
+            iter.remove();
+        }
+        else {
+            templateFlow.put(fieldName, component);
+        }
+
+    }
+
+    private boolean isEmpty(Object component) {
+        boolean b = false;
+
+        if (component == null)
+            b = true;
+        if (component instanceof Collection)
+            if (((Collection) component).size() == 0)
+                b = true;
+        if (component instanceof HashMap)
+            if (((HashMap) component).size() == 0)
+                b = true;
+
+        return b;
     }
 
 

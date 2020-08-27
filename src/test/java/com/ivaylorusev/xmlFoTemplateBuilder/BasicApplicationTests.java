@@ -39,18 +39,19 @@ public class BasicApplicationTests {
 
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void parseAll() throws Exception {
-        List<MasterRequest> masterRequests = readCSV.readYamlPropCombinations(-3);
+        List<MasterRequest> masterRequests = readCSV.readYamlPropCombinations(-1);
 
         for (MasterRequest mr : masterRequests) {
             try {
                 attachmentsMustacheService.buildAttachmentTemplate(mr);
             } catch (Exception e) {
                 System.out.println("wrong master request see 'wrong...' files ");
-                Dump.dumpToYamlFile("wrong masterrequest", mr);
-                e.printStackTrace();
+                long currentTimeMillis = System.currentTimeMillis();
+                Dump.dumpToYamlFile(currentTimeMillis + " wrong masterrequest data", mr);
+                Dump.dumpException(currentTimeMillis + " wrong masterrequest stackTrace", e);
             }
         }
     }

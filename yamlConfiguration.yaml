@@ -1,0 +1,206 @@
+!!com.ivaylorusev.xmlFoTemplateBuilder.yamlservices.YamlConfiguration
+templateFlow:
+  xsl-region-after:
+  - block-7:
+      contentKey: invoice.text.vatvw
+      blocks-seq: {contentKey: invoice.text.commercialregister}
+  - block-8:
+      table-7:
+        table-body-2:
+          table-row:
+            table-cell:
+            - block-1: {contentKey: invoice.text.postalvw}
+            - {block-1: show}
+            - block-1: {contentKey: invoice.text.board}
+  xsl-region-before-first:
+  - block-37:
+      block-24:
+        flowComponents: &id001
+          external-graphic-1: {src: 'classpath:{//logo}'}
+  xsl-region-xslTemplates:
+    flowComponents:
+      xslTemplate-match:
+      - match: //orderPositionsMapByVin
+        flowComponents:
+          block-3:
+            table:
+              table-header:
+                table-cell:
+                - block-6: {requestField: modelName}
+                - block-12: {requestField: vin}
+              table-body:
+                table-row:
+                  table-cell:
+                    flowComponents:
+                      table-6:
+                        table-column:
+                        - {column-width: 40%}
+                        - {column-width: 20%}
+                        - {column-width: 20%}
+                        - {column-width: 20%}
+                        table-header-1:
+                          table-cell:
+                          - block-10: {contentKey: label.product}
+                          - block-10: {contentKey: invoice.labe.articelno}
+                          - block-10: {contentKey: invoice.label.period}
+                          - block-9:
+                              flowComponents:
+                                contentKey: [invoice.label.price, text.netPrice]
+                        table-body-2:
+                          xslTemplate-apply: {select: orderPositions}
+      - match: orderPositions
+        flowComponents:
+          table-row:
+            table-cell:
+            - block: {requestField: articleLicense/salesItemName}
+            - block: {requestField: articleLicense/salesItemNumber}
+            - block:
+                flowComponents: {requestField: articleLicense/articleRunDuration}
+            - block-26:
+                flowComponents: {requestField: articleLicense/salesItemTotalNetAmount}
+                requestField: //request/paymentData/paymentCurrencyCode
+  xsl-region-before:
+  - block-37:
+      block-24:
+        flowComponents: *id001
+  - block-19:
+      page-number-citation: {contentKey: invoice.text.page}
+  xsl-region-body:
+  - table-8:
+      table-body-2:
+        table-row:
+          table-cell:
+            block-5: {contentKey: invoice.subheadline.shop}
+          table-cell-1:
+            block-18:
+              page-number-citation: {contentKey: invoice.text.page}
+  - block:
+      table-4:
+        table-column:
+        - {column-width: 55%}
+        - {column-width: 45%}
+        table-body-2:
+          table-row:
+            table-cell:
+            - flowComponents:
+                block-39:
+                  block:
+                    blocks-seq:
+                    - flowComponents: {requestField: //request/customerInformation/company}
+                    - requestField: [//request/customerInformation/addr1, //request/customerInformation/houseNumber]
+                    - requestField: [//request/customerInformation/postcode, //request/customerInformation/city]
+                    - {requestField: //request/customerInformation/countryCode}
+                    - {requestField: null}
+                    requestField: //request/customerInformation/email
+            - flowComponents:
+                block:
+                  table:
+                    table-body:
+                      table-row:
+                      - table-cell:
+                        - block: {contentKey: invoice.label.invoicedate}
+                        - block-23: {requestField: //request/invoiceData/invoiceDate}
+                      - table-cell:
+                        - block: {contentKey: invoice.label.invoiceno}
+                        - block-23: {requestField: //request/invoiceData/invoiceNumber}
+                      - table-cell:
+                        - block: {contentKey: invoice.text.orderdate}
+                        - block-23: {requestField: //request/orderDate}
+                      - table-cell:
+                        - block: {contentKey: invoice.text.orderno}
+                        - block-23: {xslTemplate-call-intersperse: //request/orderIdentifier}
+                      - flowComponents:
+                          table-cell:
+                          - block: {contentKey: invoice.text.vatno}
+                          - block-23: {requestField: //request/customerInformation/taxId}
+                      - flowComponents:
+                          table-cell-2:
+                            block: {contentKey: invoice.label.dateinvoiceservice}
+                      - flowComponents:
+                          table-cell:
+                          - block: {contentKey: invoice.label.paymentmethod}
+                          - block-23:
+                              inline:
+                                contentKey: [invoice.label.paycreditcard, invoice.label.paycreditcard.mastercard]
+  - flowComponents:
+      block:
+        block:
+          xslTemplate-apply: {select: //orderPositionsMapByVin}
+        flowComponents:
+          flowComponents:
+            block-15:
+              block:
+              - block-22:
+                  table-3:
+                    table-column:
+                    - {column-width: 45%}
+                    - {column-width: 30%}
+                    - {column-width: 25%}
+                    table-body:
+                      table-row:
+                      - table-cell:
+                        - {block-23: show}
+                        - block-23: {contentKey: invoice.label.total}
+                        - block-23:
+                            requestField: [//request/invoiceData/invoiceNetAmount,
+                              //request/paymentData/paymentCurrencyCode]
+                      - table-cell:
+                        - {block-23: show}
+                        - block-41: {contentKey: invoice.label.vat}
+                        - block-41:
+                            requestField: [//request/invoiceData/invoiceVatAmount,
+                              //request/paymentData/paymentCurrencyCode]
+                      - table-cell: {block-end: show}
+                        table-cell-4: {leader-3: show}
+              - flowComponents:
+                  block:
+                  - table-3:
+                      table-body:
+                        table-row:
+                        - table-cell:
+                          - {block-23: show}
+                          - block-20: {contentKey: label.subtotal}
+                          - block-20:
+                              requestField: [//request/invoiceData/invoiceVoucherData/invoiceVoucherGrossAmount,
+                                //request/paymentData/paymentCurrencyCode]
+                        - table-cell:
+                          - {block-23: show}
+                          - block-21:
+                              block-10: {contentKey: ds-general-label-voucher}
+                              block: {requestField: //voucherCode}
+                          - block-20: {requestField-: //request/orderPosition/voucherAmount,
+                              requestField: //request/paymentData/paymentCurrencyCode}
+                        - table-cell: {block-end: show}
+                          table-cell-4: {leader-4: show}
+                  - flowComponents:
+                      table-3:
+                        table-body:
+                          table-row:
+                          - table-cell:
+                            - {block-23: show}
+                            - block-21: {contentKey: invoice.label.total}
+                            - block-21:
+                                requestField: [//request/invoiceData/invoiceVoucherData/invoiceVoucherNetAmount,
+                                  //request/paymentData/paymentCurrencyCode]
+                          - table-cell:
+                            - {block-23: show}
+                            - block-40: {contentKey: invoice.label.vat}
+                            - block-40:
+                                requestField: [//request/invoiceData/invoiceVoucherData/invoiceVoucherVatAmount,
+                                  //request/paymentData/paymentCurrencyCode]
+                          - table-cell: {block-end: show}
+                            table-cell-4: {leader-4: show}
+              - table-3:
+                  table-column:
+                  - {column-width: 45%}
+                  - {column-width: 30%}
+                  - {column-width: 25%}
+                  table-body:
+                    table-row:
+                    - table-cell:
+                      - {block-23: show}
+                      - block-20: {contentKey: invoice.label.invoicetotal}
+                      - block-20:
+                          requestField: [//request/invoiceData/invoiceGrossAmount,
+                            //request/paymentData/paymentCurrencyCode]
+templateLayout: {root: root-v1.1}
